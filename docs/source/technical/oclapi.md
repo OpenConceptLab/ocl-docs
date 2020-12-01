@@ -146,13 +146,13 @@ Click on gear icon and choose `Add Remote` option
 
 Configure interpreter with SSH credentials as in the image (default password is `Root123`):
 
-![alt](https://github.com/OpenConceptLab/oclapi/blob/master/img/remote_interpreter_config.png)
+![alt](https://raw.githubusercontent.com/OpenConceptLab/oclapi/master/img/remote_interpreter_config.png)
 
 There will be warnings about unknown host etc. but don't don't worry, just confirm.
 
 Setup django debug configuration as in the image (Path mapping should be `absolute path to project directory=/code`):
 
-![alt](https://github.com/OpenConceptLab/oclapi/blob/master/img/docker_debug_config.png)
+![alt](https://raw.githubusercontent.com/OpenConceptLab/oclapi/master/img/docker_debug_config.png)
 
 Run your configuration! Debugging server will run on [http://0.0.0.0:8001/](http://0.0.0.0:8001/)
 
