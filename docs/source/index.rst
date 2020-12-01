@@ -19,7 +19,13 @@ Technical Documentation
 
   Sometimes it is useful to interact with OCL using custom information models, rather than using traditional terminology information models. The OCL Interface Layer exposes a set of APIs for some of these custom models
 
-  * Learn how to interact with OCL through: `Interface layer API reference <https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest>`_
+  * Learn how to interact with OCL through: `Interface layer API <https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest>`_
+
+* **CIEL Integration**
+
+  When a new version of CIEL is released it needs to be updated in OCL to make it available for CIEL subscribers like OpenMRS. Importing into CIEL documents the steps and people involved to make the new CIEL version available in OCL.
+
+  * Process for `importing into CIEL <https://docs.google.com/document/d/1YyGeCvKDuxG7ceQK0KZahPjNEj2N4EdJ01p67bIgMJk>`_
 
 
 
