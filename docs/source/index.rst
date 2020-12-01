@@ -2,17 +2,12 @@ OCL documentation
 ==================
 
 
+Technical Documentation
+-----------------------
+
 .. toctree::
    :maxdepth: 2
+   :hidden:
+   :caption: Technical Documentation
 
-   setup/oclapi.md
-
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   oclapi.md
