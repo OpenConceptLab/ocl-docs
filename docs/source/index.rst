@@ -1,6 +1,7 @@
 OCL documentation
 ==================
 
+OCL Documentation is used to provide information to users on the use, operation, maintenance, and design of OCL tools
 
 Technical Documentation
 -----------------------
@@ -10,4 +11,5 @@ Technical Documentation
    :hidden:
    :caption: Technical Documentation
 
-   oclapi.md
+   technical/oclapi.md
+   technical/releases.md
