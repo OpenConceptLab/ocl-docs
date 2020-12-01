@@ -18,9 +18,10 @@ Add a page under - https://github.com/OpenConceptLab/ocl-docs/tree/main/docs/sou
 Note: If you want to edit files locally and/or are planning to make multiple edits and want to avoid multiple commits. Follow the following steps
 
 1. Clone the repo
-2. Go to `docs` folder
-3. Execute `make clean` to clean earlier changes
-4. execute `make html` and if the build is succesful it should return with -
+2. install requirements using `pip install -r requirements.txt`
+3. Go to `docs` folder
+4. Execute `make clean` to clean earlier changes
+5. execute `make html` and if the build is successful it should return with -
 
   ```
   build succeeded.
