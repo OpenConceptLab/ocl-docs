@@ -6,10 +6,28 @@ OCL Documentation is used to provide information to users on the use, operation,
 Technical Documentation
 -----------------------
 
+* **Terminology Service**
+
+  OCL maintains a public metadata clearinghouse with a host of tools for making it easy for entities to store and retrieve their metadata data. This is possible through the OCL Terminology service which acts as the engine of all the services and makes it possible through a list of API endpoints. But, if an entity would like to host their own data, OCL makes it possible through the Open Source code and installation steps to setup their own instance of Terminology service.
+
+  * Getting Started guide to setup and contribute to terminology service or:
+    :doc:`OCL API </technical/oclapi>`
+  * Learn about recent changes, enhancements and bug fixes in OCL API:
+    :doc:`Release Notes </technical/releases>`
+
+* **Interface layer**
+
+  Sometimes it is useful to interact with OCL using custom information models, rather than using traditional terminology information models. The OCL Interface Layer exposes a set of APIs for some of these custom models
+
+  * Learn how to interact with OCL through: `Interface layer API reference <https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest>`_
+
+
+
+
 .. toctree::
    :maxdepth: 2
    :hidden:
    :caption: Technical Documentation
 
-   technical/oclapi.md
-   technical/releases.md
+   technical/oclapi
+   technical/releases
