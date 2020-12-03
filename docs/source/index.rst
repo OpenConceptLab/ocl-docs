@@ -17,6 +17,9 @@ Technical Documentation
 
 * **Interface layer**
 
+  .. note::
+    Currently Interface layer only supports PEPFAR usecases through OpenHIM mediators.
+
   Sometimes it is useful to interact with OCL using custom information models, rather than using traditional terminology information models. The OCL Interface Layer exposes a set of APIs for some of these custom models
 
   * Learn how to interact with OCL through: `Interface layer API <https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest>`_
