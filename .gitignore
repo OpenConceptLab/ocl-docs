@@ -3,3 +3,5 @@
 # ignoring anything under build
 docs/build/
 .idea
+.vscode
+_build
