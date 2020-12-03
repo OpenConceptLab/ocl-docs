@@ -2,3 +2,4 @@
 
 # ignoring anything under build
 docs/build/
+.idea
