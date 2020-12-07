@@ -1,6 +1,4 @@
-OCL API
-======
-
+# OCL API Developer Guide
 ## Contributing
 
 We welcome all pull requests. Before starting any work, please check https://github.com/OpenConceptLab/ocl_issues/issues if the change you want to work on has been already reported there. If it's not there, create a new issue so that it can be discussed. We should triage the issue and get back to you in a few days.
@@ -365,8 +363,10 @@ Locales: https://github.com/OpenConceptLab/ocl_import/blob/master/OCL_Locales/lo
 MapTypes: https://github.com/OpenConceptLab/ocl_import/blob/master/OCL_MapTypes/maptypes_fixed.json
 
 
----------------------------------------------------------------------
+-----------------------------------------------------
 
 Copyright (C) 2016 Open Concept Lab. Use of this software is subject to the terms of the Mozille Public License v2.0. Open Concept Lab is also distributed under the terms the Healthcare Disclaimer described at http://www.openconceptlab.com/license/.
 
----------------------------------------------------------------------
+-----------------------------------------------------
+
+<!--- --->
