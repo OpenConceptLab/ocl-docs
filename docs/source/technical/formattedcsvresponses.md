@@ -11,9 +11,9 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * Mappings
 * References
 
-# Content below is out of date!
+## Content below is out of date!
 
-## Users
+### Users
 **Columns** - excludes extras and navigation URLs
 * type
 * uuid
@@ -32,7 +32,7 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Organizations
+### Organizations
 **Columns** - excludes extras, short_code, and navigation URLs
 * type
 * id
@@ -52,10 +52,10 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Organization Members
+### Organization Members
 **Columns** - excludes ??
 
-## Sources
+### Sources
 **Columns** - excludes extras, short_code, and navigation URLs
 * type
 * id
@@ -81,7 +81,7 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Collections
+### Collections
 **Columns** - excludes extras, short_code, and navigation URLs
 * type
 * id
@@ -107,7 +107,7 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Repository Versions
+### Repository Versions
 **Columns** - excludes extras, root/previous/parent urls
 * type - e.g. "Source Version" or "Collection Version"
 * id
@@ -121,7 +121,7 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Mappings
+### Mappings
 **Simplified**
 * from_concept - [:owner]:[:source]:[:fromConceptCode]
 * map_type
@@ -162,7 +162,7 @@ Most API requests allow setting the format to CSV. CSV responses only return a s
 * updated_on
 * updated_by
 
-## Concepts
+### Concepts
 **Columns** - excludes extras, navigation URLs
 * type
 * id
