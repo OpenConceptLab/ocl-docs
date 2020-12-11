@@ -34,37 +34,57 @@ Technical Documentation
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :hidden:
    :caption: Technical Documentation
-
+   
+   technical/oclapi
    technical/oclapiwiki
-   technical/oclapidevguide
    technical/oclapipermissionssummary
    technical/bulkimporting
-   technical/collections
-   technical/concepts
    technical/csvimport
    technical/customattributefilters
-   technical/dataintegritychecks
-   technical/developersguide
-   technical/dockernetworkingandsecurity
    technical/exportapi
-   technical/flower
    technical/formattedcsvresponses
-   technical/howtochecklogs
    technical/importingopenmrsconceptdictionary
-   technical/maintainingoclapidockercontainers
-   technical/mappings
    technical/openmrstooclmapping
-   technical/orgs
    technical/releases
-   technical/sources
-   technical/sslconfiguration
    technical/subscriptions
-   technical/switchingtomaintenancemodeonproduction
-   technical/users
    technical/validationschemas
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: API Resources
+
+   technical/concepts
+   technical/collections
+   technical/mappings
+   technical/orgs
+   technical/sources
+   technical/users
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: OCL Developer
+   
+   technical/oclapidevguide
+   technical/developersguide
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: System Administration
+
+   technical/dataintegritychecks
+   technical/dockernetworkingandsecurity
+   technical/flower
+   technical/howtochecklogs
+   technical/maintainingoclapidockercontainers
+   technical/sslconfiguration
+   technical/switchingtomaintenancemodeonproduction
+
 
 .. toctree::
    :maxdepth: 2
