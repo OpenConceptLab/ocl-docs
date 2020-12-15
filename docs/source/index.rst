@@ -11,7 +11,7 @@ Technical Documentation
   OCL maintains a public metadata clearinghouse with a host of tools for making it easy for entities to store and retrieve their metadata data. This is possible through the OCL Terminology service which acts as the engine of all the services and makes it possible through a list of API endpoints. But, if an entity would like to host their own data, OCL makes it possible through the Open Source code and installation steps to setup their own instance of Terminology service.
 
   * Getting Started guide to setup and contribute to terminology service or:
-    :doc:`OCL API </technical/oclapidevguide>`
+    :doc:`OCL API </oclapi/developer/gettingstarted>`
   * Learn about recent changes, enhancements and bug fixes in OCL API:
     :doc:`Release Notes </technical/releases>`
 
@@ -36,11 +36,19 @@ Technical Documentation
 .. toctree::
    :maxdepth: 4
    :hidden:
-   :caption: Technical Documentation
+   :caption: OCL API
    
-   technical/oclapi
-   technical/oclapiwiki
-   technical/oclapipermissionssummary
+   oclapi/overview
+   oclapi/user/index
+   oclapi/developer/index
+   oclapi/admin/index
+
+   
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+   :caption: Technical Documentation
+
    technical/bulkimporting
    technical/csvimport
    technical/customattributefilters
@@ -51,39 +59,6 @@ Technical Documentation
    technical/releases
    technical/subscriptions
    technical/validationschemas
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: API Resources
-
-   technical/concepts
-   technical/collections
-   technical/mappings
-   technical/orgs
-   technical/sources
-   technical/users
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: OCL Developer
-   
-   technical/oclapidevguide
-   technical/developersguide
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: System Administration
-
-   technical/dataintegritychecks
-   technical/dockernetworkingandsecurity
-   technical/flower
-   technical/howtochecklogs
-   technical/maintainingoclapidockercontainers
-   technical/sslconfiguration
-   technical/switchingtomaintenancemodeonproduction
 
 
 .. toctree::

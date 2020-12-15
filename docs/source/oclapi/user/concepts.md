@@ -1,42 +1,5 @@
 # Concepts
 
-## Table of Contents
-**Overview**
-* [Overview](concepts#overview)
-
-**Concepts**
-* [Get a single concept from a source](concepts#get-a-single-concept-from-a-source)
-* [List concepts in a source](concepts#list-concepts-in-a-source)
-* [List concepts across public sources](concepts#list-concepts-across-public-sources)
-* [Create new concept](concepts#create-new-concept)
-* [Edit concept](concepts#edit-concept)
-* [Retire concept](concepts#retire-concept)
-
-**Concept Versions**
-* [List versions of a concept](concepts#list-versions-of-a-concept)
-
-**Concept Names**
-* [Get a single concept name](concepts#get-a-single-concept-name)
-* [List concept names](concepts#list-concept-names)
-* [Create new concept name](concepts#create-new-concept-name)
-* [Edit concept name](concepts#edit-concept-name)
-* [Delete concept name](concepts#delete-concept-name)
-
-**Concept Descriptions**
-* [Get a single concept description](concepts#get-a-single-concept-description)
-* [List concept descriptions](concepts#list-concept-descriptions)
-* [Create new concept description](concepts#create-new-concept-description)
-* [Edit concept description](concepts#edit-concept-description)
-* [Delete concept description](concepts#delete-concept-description)
-
-**Extra Concept Metadata**
-* [Get a single extra](concepts#get-a-single-extra)
-* [List all extras](concepts#list-all-extras)
-* [Create or Update an extra](concepts#create-or-update-an-extra)
-* [Delete an extra](concepts#delete-an-extra)
-
-
-
 ## Overview
 The API exposes a representation of `concepts`. Concepts are stored in [[Sources]], such as CIEL, ICD-10, or WHO-IMR. [[Collections]] provide versioned containers of references to concepts across sources.
 

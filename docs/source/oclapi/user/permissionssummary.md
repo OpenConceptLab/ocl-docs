@@ -1,4 +1,4 @@
-# OCL API Permissions Summary
+# Permissions Summary
 
 Note: This document is currently a DRAFT version
 

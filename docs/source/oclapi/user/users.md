@@ -1,19 +1,4 @@
 # Users
-## Table of Contents
-**Overview**
-* [Overview](users#overview)
-
-**Users**
-* [Get a single user](users#get-a-single-user)
-* [Get the authenticated user](users#get-the-authenticated-user)
-* [Partial update of a user](users#partial-update-of-a-user)
-* [List all users](users#list-all-users)
-* [Create new user](users#create-new-user)
-* [Deactivate a user account](users#deactivate-a-user-account)
-* [Reactivate a deactivated user account](users#reactivate-a-deactivated-user-account)
-* [Retrieve auth token for end user](users#retrieve-auth-token)
-
-
 
 ## Overview
 The API exposes a representation of OCL `users`. Access to most resources via the API requires an authenticated user and the authentication information must be passed with the request.

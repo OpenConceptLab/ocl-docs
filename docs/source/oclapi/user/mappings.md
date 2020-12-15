@@ -1,15 +1,4 @@
 # Mappings
-## Table of Contents
-* [Overview](mappings#overview)
-* [Get a single mapping](mappings#get-a-single-mapping)
-* [List mappings for a concept within a single source](mappings#list-mappings-for-a-concept-within-a-single-source)
-* [List all mappings within a specific source](mappings#list-all-mappings-within-a-specific-source)
-* [List mappings across public sources](mappings#list-mappings-across-public-sources)
-* [Create a new mapping](mappings#create-a-new-mapping)
-* [Edit a mapping](mappings#edit-a-mapping)
-* [Retire mapping](mappings#retire-mapping)
-
-
 
 ## Overview
 The API exposes a representation of `mappings` to represent relationships between 2 concepts. The type of relationship is defined by the `map_type` attribute. Relationships are unidirectional, originating from the `from_concept` to the `to_concept`, even if the inverse mapping is equivalent (e.g. "Same As" relationship). Note that the inverse mappings can be retrieved from the "to_concept" by setting the "includeInverseMappings" to `true`. `mappings` are also used to store hierarchical relationships (such as parent/child), and OpenMRS-specific relationships such as Question/Answer and Concept Sets.

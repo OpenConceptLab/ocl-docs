@@ -1,4 +1,4 @@
-# OCL API Developer Guide
+# Getting Started
 ## Contributing
 
 We welcome all pull requests. Before starting any work, please check https://github.com/OpenConceptLab/ocl_issues/issues if the change you want to work on has been already reported there. If it's not there, create a new issue so that it can be discussed. We should triage the issue and get back to you in a few days.

@@ -1,23 +1,4 @@
 # Orgs
-## Table of Contents
-**Overview**
-* [Overview](orgs#overview)
-
-**Organizations**
-* [Get a single organization](orgs#get-a-single-organization)
-* [List organizations](orgs#list-organizations)
-* [Create new organization](orgs#create-new-organization)
-* [Update organization](orgs#update-organization)
-* [Deactivate an organization](orgs#deactivate-an-organization)
-* [Delete an organization](orgs#delete-an-organization)
-
-**Members**
-* [List members of an organization](orgs#list-members-of-an-organization)
-* [Get organization member status](orgs#get-organization-member-status)
-* [Add new member to organization](orgs#add-new-member-to-organization)
-* [Remove member from organization](orgs#remove-member-from-organization)
-
-
 
 ## Overview
 The API exposes a representation of OCL `orgs`. `users` are members of `orgs`. `orgs` may "own" `collections` and `sources` in the same way that `users` may. However, `orgs` do not actually perform any edits since they cannot authenticate; instead, `users` which are members with appropriate permissions may create new `sources` and `collections` on behalf of an organization.

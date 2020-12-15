@@ -1,46 +1,5 @@
 # Collections
 
-## Table of Contents
-**Overview**
-* [Overview](collections#overview)
-
-**Collections**
-* [Get a single collection](collections#get-a-single-collection)
-* [List all collections for a specific user or organization](collections#list-all-collections-for-a-specific-user-or-organization)
-* [List all collections for all of a user's organizations](collections#list-all-collections-for-all-of-a-users-organizations)
-* [List all public collections](collections#list-all-public-collections)
-* [Create collection](collections#create-collection)
-* [Edit collection](collections#edit-collection)
-* [Deactivate a collection](collections#deactivate-a-collection)
-
-**Collection Versions**
-* [Get single version of a collection](collections#get-single-version-of-a-collection)
-* [List all versions of a collection](collections#list-all-versions-of-a-collection)
-* [Create new version of a collection](collections#create-new-version-of-a-collection)
-* [Edit a collection version](collections#edit-a-collection-version)
-* [Deactivate a collection version](collections#deactivate-a-collection-version)
-* [Retrieve and clear processing flag on a collection version](collections#retrieve-and-clear-processing-flag-on-a-collection-version)
-
-**References**
-* [List all references in a collection](collections#list-all-references-in-a-collection)
-* [Add a reference to a collection](collections#add-a-reference-to-a-collection)
-* [Delete a reference from a collection](collections#delete-a-reference-from-a-collection)
-
-**Collection Concepts**
-* [Get single concept from a collection](collections#get-single-concept-from-a-collection)
-* [List concepts referenced in a collection](collections#list-concepts-referenced-in-a-collection)
-* [Concept subresource Requests](collections#concept-subresource-requests)
-
-**Collection Mappings**
-* [Get a single mapping from a collection](collections#get-a-single-mapping-from-a-collection)
-* [List mappings for a single concept that are contained in the collection](collections#list-mappings-for-a-single-concept-that-are-contained-in-the-collection)
-* [List mappings in a collection](collections#list-mappings-in-a-collection)
-
-**Other**
-* [Search and Filter Behavior](collections#search-and-filter-behavior)
-
-
-
 ## Overview
 The API exposes a representation of `collections`, which are versioned containers of references to `concepts` and `mappings`. Note that `sources` are used to actually author `concepts` and `mappings`, whereas `collections` are used to organize existing `concepts` and `mappings` into useful logical groupings, such as a diabetes value set or a Community Maternal-Child Starter Set. Collections reference concepts and mappings by combining one or more expressions that return concepts and mappings. Some expressions may be processed dynamically, meaning that the `concepts` and `mappings` in a collection may change automatically.
 

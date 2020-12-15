@@ -1,27 +1,4 @@
 # Sources
-## Table of Contents
-**Overview**
-* [Overview](sources#overview)
-
-**Sources**
-* [Get a single source](sources#get-a-single-source)
-* [List all sources for specific user or organization](sources#list-all-sources-for-specific-user-or-organization)
-* [List all sources for all of a user's organizations](sources#list-all-sources-for-all-of-a-users-organizations)
-* [List all public sources](sources#list-all-public-sources)
-* [Create source](sources#create-source)
-* [Edit source](sources#edit-source)
-* [Deactivate a source](sources#deactivate-a-source)
-
-**Source Versions**
-* [Get single version of a source](sources#get-single-version-of-a-source)
-* [List children of a source version -- DEPRECATED](sources#list-children-of-a-source-version----deprecated)
-* [List all versions of a source](sources#list-all-versions-of-a-source)
-* [Create new version of a source](sources#create-new-version-of-a-source)
-* [Edit a version of a source](sources#edit-a-version-of-a-source)
-* [Deactivate a version of a source](sources#deactivate-a-version-of-a-source)
-* [Retrieve and clear processing flag on a source version](sources#retrieve-and-clear-processing-flag-on-a-source-version)
-
-
 
 ## Overview
 The API exposes a representation of sources which are versioned repositories of concepts (e.g. terms, measures, or indicators) and mappings. Sources are used to create and edit concepts and mappings. Examples of `sources` include an OpenMRS concept dictionary (e.g. CIEL, AMPATH, PIH), a reference terminology or codeset (e.g. SNOMED CT, ICD-10), or indicator registry (e.g. WHO Indicator Registry). Custom dictionaries are also supported, which are useful for representing local or proprietary content or content that is still under development. Each source is owned by either a user or an organization.
