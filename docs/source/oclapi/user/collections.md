@@ -401,7 +401,7 @@ GET /orgs/:org/collections/:collection/versions/:version/
     "updated_by": "johndoe",
 
     "collection": {
-        # Copy of collection metadata saved here at the time of collection version creation
+       
     }
 }
 ```
@@ -484,7 +484,7 @@ POST /orgs/:org/collections/:collection/versions/
     "updated_by": "johndoe",
 
     "collection": {
-        # Copy of collection metadata saved here at the time of collection version creation
+        
     }
 }
 ```
@@ -535,7 +535,7 @@ POST /orgs/:org/collections/:collection/versions/:version/
     "updated_by": "johndoe",
 
     "collection": {
-        # Copy of collection metadata saved here at the time of collection version creation
+        
     }
 }
 ```
@@ -742,7 +742,7 @@ Status: 200 OK
             "name": "Tuberculosis of lung, confirmed by culture only",
             "locale": "en",
             "locale_preferred": "true",
-            "name_type": None
+            "name_type": "None"
         },
         {
             "type": "ConceptName",
@@ -751,7 +751,7 @@ Status: 200 OK
             "name": "Tuberculose pulmonaire, confirmée par culture seulement",
             "locale": "fr",
             "locale_preferred": "true",
-            "name_type": None
+            "name_type": "None"
         }
     ],
     "descriptions": [
@@ -762,7 +762,7 @@ Status: 200 OK
             "description": "Tuberculous bronchiectasis, fibrosis of lung, pneumonia, pneumothorax, confirmed by sputum microscopy with culture only",
             "locale": "en",
             "locale_preferred": "true",
-            "description_type": None
+            "description_type": "None"
         }
     ],
     "mappings": [

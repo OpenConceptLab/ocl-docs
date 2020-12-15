@@ -369,7 +369,7 @@ GET /orgs/:org/sources/:source/:version/
 
     "url": "/orgs/Regenstrief/sources/loinc2/2.2/",
     "source_url": "/orgs/Regenstrief/sources/loinc2/",
-    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",      # Use of this field is deprecated and will be removed
+    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",      
     "previous_version_url": "/orgs/Regenstrief/sources/loinc2/2.1/",
     "root_version_url": "/orgs/Regenstrief/sources/loinc2/1.0/",
 
@@ -381,7 +381,6 @@ GET /orgs/:org/sources/:source/:version/
     "updated_by": "johndoe",
 
     "source": {
-        # Copy of source metadata saved here at the time of source version creation
     }
 }
 ```
@@ -488,7 +487,7 @@ POST /orgs/:org/sources/:source/versions/
 
     "url": "/orgs/Regenstrief/sources/loinc2/2.45/",
     "source_url": "/orgs/Regenstrief/sources/loinc2/",
-    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",          # Use of this field is deprecated and will be removed
+    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",          
     "previous_version_url": "/orgs/Regenstrief/sources/loinc2/2.44/",
     "root_version_url": "/orgs/Regenstrief/sources/loinc2/1.0/",
 
@@ -500,7 +499,7 @@ POST /orgs/:org/sources/:source/versions/
     "updated_by": "johndoe",
 
     "source": {
-        # Copy of source metadata saved here at the time of source version creation
+        
     }
 }
 ```
@@ -543,7 +542,7 @@ POST /orgs/:org/sources/:source/:version/
 
     "url": "/orgs/Regenstrief/sources/loinc2/2.45/",
     "source_url": "/orgs/Regenstrief/sources/loinc2/",
-    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",        # Use of this field is deprecated and will be removed
+    "parent_version_url": "/orgs/Regenstrief/sources/loinc2/2.0/",        
     "previous_version_url": "/orgs/Regenstrief/sources/loinc2/2.44/",
     "root_version_url": "/orgs/Regenstrief/sources/loinc2/1.0/",
 
@@ -555,7 +554,7 @@ POST /orgs/:org/sources/:source/:version/
     "updated_by": "johndoe",
 
     "source": {
-        # Copy of source document saved here at the time of source version creation
+        
     }
 }
 ```

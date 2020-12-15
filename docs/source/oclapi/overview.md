@@ -172,7 +172,6 @@ GET /concepts/?q=malaria&includeRetired=true
         }
     },
     "results": {
-        // Results are included here
     }
 }
 ```

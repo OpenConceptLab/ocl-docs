@@ -89,7 +89,7 @@ GET /orgs/WHO/sources/ICD-10-2010/concepts/A15.1/?includeInverseMappings=true
             "name": "Tuberculosis of lung, confirmed by culture only",
             "locale": "en",
             "locale_preferred": "true",
-            "name_type": None
+            "name_type": "None"
         },
         {
             "type": "ConceptName",
@@ -98,7 +98,7 @@ GET /orgs/WHO/sources/ICD-10-2010/concepts/A15.1/?includeInverseMappings=true
             "name": "Tuberculose pulmonaire, confirmée par culture seulement",
             "locale": "fr",
             "locale_preferred": "true",
-            "name_type": None
+            "name_type": "None"
         }
     ],
 
@@ -110,7 +110,7 @@ GET /orgs/WHO/sources/ICD-10-2010/concepts/A15.1/?includeInverseMappings=true
             "description": "Tuberculous bronchiectasis, fibrosis of lung, pneumonia, pneumothorax, confirmed by sputum microscopy with culture only",
             "locale": "en",
             "locale_preferred": "true",
-            "description_type": None
+            "description_type": "None"
         }
     ],
 
@@ -556,8 +556,6 @@ Status: 200 OK
         "is_latest_concept_version": "true",
         "update_comment": "Updated the descriptions",
         "concept": {
-            # Full concept details are included here, the same as if requesting:
-            # GET /orgs/WHO/sources/ICD-10/concepts/A15.1/a93-3j8083-d993mf/
         }
     },
     {
@@ -570,8 +568,6 @@ Status: 200 OK
         "version_created_by": "johndoe",
         "update_comment": "Initial submission",
         "concept": {
-            # Full concept details are included here, the same as if requesting:
-            # GET /orgs/WHO/sources/ICD-10/concepts/A15.1/abc345jf9fj/
         }
     }
 ]
@@ -770,7 +766,7 @@ GET /user/sources/:source/[:sourceVersion/]concepts/:concept/[:conceptVersion/]d
     "description": "Tuberculous bronchiectasis, fibrosis of lung, pneumonia, pneumothorax, confirmed by sputum microscopy with culture only",
     "locale": "en",
     "locale_preferred": "true",
-    "description_type": None
+    "description_type": "None"
 }
 ```
 
@@ -802,7 +798,7 @@ GET /user/sources/:source/[:sourceVersion/]concepts/:concept/[:conceptVersion/]d
         "description": "Tuberculous bronchiectasis, fibrosis of lung, pneumonia, pneumothorax, confirmed by sputum microscopy with culture only",
         "locale": "en",
         "locale_preferred": "true",
-        "description_type": None
+        "description_type": "None"
     },
     {
         "type": "ConceptDescription",
@@ -811,7 +807,7 @@ GET /user/sources/:source/[:sourceVersion/]concepts/:concept/[:conceptVersion/]d
         "description": "Another less relevant and more lengthy description here",
         "locale": "en",
         "locale_preferred": "false",
-        "description_type": None
+        "description_type": "None"
     }
 ]
 ```
@@ -854,7 +850,7 @@ POST /user/sources/:source/concepts/:concept/descriptions/
     "description": "Tuberculous bronchiectasis, fibrosis of lung, pneumonia, pneumothorax, confirmed by sputum microscopy with culture only",
     "locale": "en",
     "locale_preferred": "true",
-    "description_type": None
+    "description_type": "None"
 }
 ```
 
@@ -894,7 +890,7 @@ PUT /user/sources/:source/concepts/:concept/descriptions/:description_id/
     "description": "Culture-only confirmation of tuberculous bronchiectasis, fibrosis of lung, pneumonia, or pneumothorax",
     "locale": "en",
     "locale_preferred": "true",
-    "description_type": None
+    "description_type": "None"
 }
 ```
 

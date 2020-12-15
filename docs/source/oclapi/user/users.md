@@ -30,7 +30,7 @@ GET /users/:user/
     "location": "Kenya",
     "email": "johndoe@me.com",
     "preferred_locale": "en",
-    "website": "http://mydomain.me/",          # NOT CURRENTLY IMPLEMENTED
+    "website": "http://mydomain.me/",         
 
     "url": "/users/johndoe/",
     "collections_url": "/users/johndoe/collections/",
@@ -169,7 +169,7 @@ POST /users/
     "location": "Eldoret, Kenya",
     "email": "jdoe@me.com",
     "preferred_locale": "en,sw",
-    "website": "http://mydomain.me/",         # NOT CURRENTLY IMPLEMENTED
+    "website": "http://mydomain.me/",         
 
     "extras": { "my-field": "my-value" },
 
@@ -236,7 +236,7 @@ POST /users/signup/
     "location": "Eldoret, Kenya",
     "email": "jdoe@me.com",
     "preferred_locale": "en,sw",
-    "website": "http://mydomain.me/",         # NOT CURRENTLY IMPLEMENTED
+    "website": "http://mydomain.me/",         
 
     "extras": { "my-field": "my-value" },
 
