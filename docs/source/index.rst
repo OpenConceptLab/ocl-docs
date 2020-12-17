@@ -47,6 +47,16 @@ Technical Documentation
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :caption: OCL FHIR
+   
+   oclfhir/overview
+   oclfhir/codesystem
+   oclfhir/conceptmap
+   oclfhir/valueset
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
    :caption: OCL OpenMRS
    
    oclomrs/importingopenmrsconceptdictionary
