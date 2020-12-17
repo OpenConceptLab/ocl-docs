@@ -13,7 +13,7 @@ Technical Documentation
   * Getting Started guide to setup and contribute to terminology service or:
     :doc:`OCL API </oclapi/developer/gettingstarted>`
   * Learn about recent changes, enhancements and bug fixes in OCL API:
-    :doc:`Release Notes </technical/releases>`
+    :doc:`Release Notes </oclapi/releases>`
 
 * **Interface layer**
 
@@ -42,7 +42,15 @@ Technical Documentation
    oclapi/user/index
    oclapi/developer/index
    oclapi/admin/index
+   oclapi/releases
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: OCL OpenMRS
+   
+   oclomrs/importingopenmrsconceptdictionary
+   oclomrs/openmrstooclmapping
    
 .. toctree::
    :maxdepth: 3
@@ -54,9 +62,6 @@ Technical Documentation
    technical/customattributefilters
    technical/exportapi
    technical/formattedcsvresponses
-   technical/importingopenmrsconceptdictionary
-   technical/openmrstooclmapping
-   technical/releases
    technical/subscriptions
    technical/validationschemas
 
