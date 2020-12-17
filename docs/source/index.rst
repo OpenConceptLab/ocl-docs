@@ -60,7 +60,7 @@ Technical Documentation
    :caption: OCL OpenMRS
    
    oclomrs/openmrstooclmapping
-   oclomrs/importingopenmrsconceptdictionary
+   oclomrs/importingciel
 
    
 .. toctree::
