@@ -59,8 +59,9 @@ Technical Documentation
    :hidden:
    :caption: OCL OpenMRS
    
-   oclomrs/importingopenmrsconceptdictionary
    oclomrs/openmrstooclmapping
+   oclomrs/importingopenmrsconceptdictionary
+
    
 .. toctree::
    :maxdepth: 3
@@ -81,4 +82,5 @@ Technical Documentation
    :hidden:
    :caption: OCL Roadmaps
 
-   roadmaps/OCL2020roadmap
+   roadmaps/2021/roadmap
+   roadmaps/2020/roadmap

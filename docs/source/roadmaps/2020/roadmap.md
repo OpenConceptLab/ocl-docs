@@ -14,7 +14,7 @@ Over the last 2 years, largely through projects with the Ethiopia Ministry of He
 
 **Core Products: “OCL Toolkit”**
 
-![OCL20 Toolkit](OCL20Toolkit.png)
+![OCL20 Toolkit](Toolkit.png)
 
 The OCL toolkit consists of four core products:
 
