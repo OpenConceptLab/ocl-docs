@@ -31,7 +31,7 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 # for Sphinx-1.4 or newer
-extensions = ['recommonmark', 'sphinx_markdown_tables', 'sphinxcontrib.httpdomain', 'sphinx_tabs.tabs']
+extensions = ['recommonmark', 'sphinx_markdown_tables']
 
 # for Sphinx-1.3
 from recommonmark.parser import CommonMarkParser

@@ -1,5 +1,6 @@
 # Overview
-FHIR Terminology Service for Open Concept Lab
+
+OpenConceptLab FHIR terminology service allows OCL users to manage resources in FHIR format. The OCL FHIR terminology service is implemented based on IHE's (Integrating the Healthcare Enterprise) mobile sharing ValueSets, CodeSystems, and ConceptMaps (mSVCM) profile. Based on mSVCM profile, OCL FHIR terminology service provides ability to retrieve ValueSets, CodeSystems and ConceptMaps along with ability to perform FHIR operations on this resources.
 
 ## versions
 FHIR        v4.0.1

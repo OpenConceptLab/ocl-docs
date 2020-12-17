@@ -51,7 +51,6 @@ Technical Documentation
    
    oclfhir/overview
    oclfhir/codesystem
-   oclfhir/conceptmap
    oclfhir/valueset
 
 .. toctree::
