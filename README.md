@@ -41,7 +41,7 @@ Note: If you want to edit files locally and/or are planning to make multiple edi
   - [x] Imported first iteration of documents
   - [ ] Resolve relevance for a few files
   - [ ] Add note to all imported files
-- [x] Import Release notes
-- [ ] Import OCL Repo readme files
+  - [x] Import Release notes
+  - [ ] Import OCL Repo readme files
   - [x] Import OCL API readme files
   - [ ] make a list of other repos

@@ -42,12 +42,13 @@ Technical Documentation
    oclapi/user/index
    oclapi/developer/index
    oclapi/admin/index
+   oclapi/technical/index
    oclapi/releases
 
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OCL FHIR
+   :caption: OCL on FHIR
    
    oclfhir/overview
    oclfhir/codesystem
@@ -56,25 +57,10 @@ Technical Documentation
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OCL OpenMRS
+   :caption: OCL for OpenMRS
    
    oclomrs/openmrstooclmapping
    oclomrs/importingciel
-
-   
-.. toctree::
-   :maxdepth: 3
-   :hidden:
-   :caption: Technical Documentation
-
-   technical/bulkimporting
-   technical/csvimport
-   technical/customattributefilters
-   technical/exportapi
-   technical/formattedcsvresponses
-   technical/subscriptions
-   technical/validationschemas
-
 
 .. toctree::
    :maxdepth: 2

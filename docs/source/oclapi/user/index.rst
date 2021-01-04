@@ -2,7 +2,7 @@ User Documentation
 ===================
 
 
-API Resources
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
