@@ -7,12 +7,12 @@ The Open Concept Lab Open-source Product Roadmap is a set of milestones for our 
 - Timelines and priorities are dependent on resources and client needs and will change accordingly.
 ## OCL Toolkit Overview
 The OCL community develops and supports these tools as open-source software that is free to download and use:
-- OCL Terminology Service: Core REST API terminology service
-- OCL Authoring Interface: Web client to author metadata and manage releases
-- OCL Metadata Browser: Primary tool for search and visualizing metadata in OCL
-- OCL for OpenMRS Authoring Interface: Specialized tool for creating and managing clinical concept dictionaries
+- **OCL Terminology Service**: Core REST API terminology service
+- **OCL Authoring Interface**: Web client to author metadata and manage releases
+- **OCL Metadata Browser**: Primary tool for search and visualizing metadata in OCL
+- **OCL for OpenMRS Authoring Interface**: Specialized tool for creating and managing clinical concept dictionaries
 
-OCL also supports the Metadata Clearinghouse, which is a shared instance of all OCL tools hosted at openconceptlab.org. The Metadata Clearinghouse aims to be a central location for organizations to access and publish terminology and related metadata important to low- and middle-income countries.
+OCL also supports the **Metadata Clearinghouse**, which is a shared instance of all OCL's open source tools hosted at www.openconceptlab.org. The Metadata Clearinghouse aims to be a central location for organizations to access and publish terminology and related metadata important to low- and middle-income countries.
 
 ## 2021 OCL Roadmap
 ### Summary of Goals
