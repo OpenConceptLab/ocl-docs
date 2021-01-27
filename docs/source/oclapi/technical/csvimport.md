@@ -74,7 +74,7 @@ Organize the CSV to make sure the order of metadata is `Organizations>Sources>Co
 This [Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing) has a complete set of starter content which can be used as a template to load an Organization, Sources, Collections, Concepts and Mappings.
 
 
-### CSV Columns
+### CSV Import Reference (Columns)
 #### Organization
 * **resource_type** - "Organization"
 * **id** - OCL resource identifier for the organization
