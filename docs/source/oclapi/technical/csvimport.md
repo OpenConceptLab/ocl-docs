@@ -20,7 +20,7 @@ Config Settings
 '''
 csv_filename = 'Simple CSV Import example.csv'
 ocl_env_url = 'https://api.staging.aws.openconceptlab.org'
-ocl_api_token = '27ee9d42d863a90c1b7c825a5a4dc72116f97353'
+ocl_api_token = 'my-token-here'
 
 '''
 Load CSV file 
