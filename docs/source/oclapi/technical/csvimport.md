@@ -12,26 +12,27 @@ The following code snippet uses the `ocldev` package to load a CSV file, convert
 [Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing)
 
 ```python
-import ocldev.oclresourcelist
-import ocldev.oclfleximporter
+from ocldev import oclresourcelist
+from ocldev import oclfleximporter
+import json
 
-csv_filename = 'filename.csv'
-ocl_env_url = 'https://api.openconceptlab.org'
-ocl_api_token = 'my-ocl-api-token'
+csv_filename = 'CSV Import Example.csv'
+ocl_env_url = 'https://api.staging.aws.openconceptlab.org'
+ocl_api_token = 'mytoken'
 
-csv_resource_list = ocldev.oclresourcelist.OclCsvResourceList.load_from_file(csv_filename)
+csv_resource_list = oclresourcelist.OclCsvResourceList.load_from_file(csv_filename)
 json_resource_list = csv_resource_list.convert_to_ocl_formatted_json()
 json_resource_list.validate()
 
-import_response = ocldev.oclfleximporter.OclBulkImporter.post(
+import_response = oclfleximporter.OclBulkImporter.post(
     input_list=json_resource_list, api_url_root=ocl_env_url, api_token=ocl_api_token)
 import_response.raise_for_status()
 import_response_json = import_response.json()
 bulk_import_task_id = import_response_json['task']
 
 bulk_import_status_url = '%s/manage/bulkimport/?task=%s' % (ocl_env_url, bulk_import_task_id)
-print 'Bulk Import Task ID: %s' % bulk_import_task_id
-print 'Bulk Import Status URL: %s' % bulk_import_status_url
+print('Bulk Import Task ID: %s' % bulk_import_task_id)
+print('Bulk Import Status URL: %s' % bulk_import_status_url)
 ```
 
 ### CSV Columns
