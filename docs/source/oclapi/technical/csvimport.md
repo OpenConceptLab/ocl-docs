@@ -4,52 +4,44 @@
 
 OCL provides APIs for importing CSV files and converting CSV files to JSON. CSV files submitted to the API must be compatible with the standard CSV template, which is designed to support the most common import scenarios. For scenarios not supported by the standard CSV template, you may work directly with [ocldev.oclcsvtojsonconverter](https://github.com/OpenConceptLab/ocldev/blob/master/ocldev/oclcsvtojsonconverter.py#L20) or compose import scripts in JSON, which support all OCL features.
 
-Multiple resource types, owners, and repositories can be mixed in a single CSV file. Columns are designed to reuse the same columns across resource types where possible. Columns that are not applicable to a particular resource type are ignored. Optional columns are omitted if blank.
+Resources are imported in the order that they appear in the bulk import script. Multiple resource types, owners, and repositories can be mixed in a single CSV file. Columns are designed to reuse the same columns across resource types where possible. Columns that are not applicable to a particular resource type are ignored. Optional columns are omitted if blank.
 
 ## Running the CSV import using a Python script
 
 The following code snippet is an example of how to use the `ocldev` package to load a CSV file, convert to JSON, validate, and submit via the OCL bulk import API.
 
 ```python
+"""
+Load an OCL-formatted CSV file, convert to JSON, validate and submit to OCL via
+the bulk import API.
+"""
 from ocldev import oclresourcelist
 from ocldev import oclfleximporter
 import json
 
-'''
-Config Settings
-'''
+# Config Settings
 csv_filename = 'Simple CSV Import example.csv'
 ocl_env_url = 'https://api.staging.aws.openconceptlab.org'
 ocl_api_token = 'my-token-here'
 
-'''
-Load CSV file 
-'''
+# Load CSV file 
 csv_resource_list = oclresourcelist.OclCsvResourceList.load_from_file(csv_filename)
 
-'''
-Convert CSV resources to JSON 
-'''
+# Convert CSV resources to JSON 
 json_resource_list = csv_resource_list.convert_to_ocl_formatted_json()
 
-'''
-Print the converted JSON resources
-'''
+# Print the converted JSON resources
 json_data = ''
 for line in json_resource_list:
     json_data += json.dumps(line,indent=1) + '\n'
 print(json_data)
 
-'''
-Validate the converted JSON resources
-'''
+# Validate the converted JSON resources
 json_resource_list.validate()
 
-'''
-Send request using Bulk import and print the status endpoint. 
-To check the status of import using the endpoint URL send a 
-request header "Authorization" with value "Token my-server-token"
-'''
+# Send request using Bulk import and print the status endpoint. 
+# To check the status of import using the endpoint URL send a 
+# request header "Authorization" with value "Token my-server-token"
 import_response = oclfleximporter.OclBulkImporter.post(
     input_list=json_resource_list, api_url_root=ocl_env_url, api_token=ocl_api_token)
 import_response.raise_for_status()
@@ -59,8 +51,6 @@ bulk_import_status_url = '%s/manage/bulkimport/?task=%s' % (ocl_env_url, bulk_im
 
 print('Bulk Import Task ID: %s' % bulk_import_task_id)
 print('Bulk Import Status URL: %s' % bulk_import_status_url)
-
-
 ```
 
 ### Use case 1: Simple use case of adding concepts/mappings to existing source
