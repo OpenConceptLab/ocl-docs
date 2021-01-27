@@ -1,39 +1,78 @@
 # CSV Import
 
-### Overview
+## Overview
+
 OCL provides APIs for importing CSV files and converting CSV files to JSON. CSV files submitted to the API must be compatible with the standard CSV template, which is designed to support the most common import scenarios. For scenarios not supported by the standard CSV template, you may work directly with [ocldev.oclcsvtojsonconverter](https://github.com/OpenConceptLab/ocldev/blob/master/ocldev/oclcsvtojsonconverter.py#L20) or compose import scripts in JSON, which support all OCL features.
 
 Multiple resource types, owners, and repositories can be mixed in a single CSV file. Columns are designed to reuse the same columns across resource types where possible. Columns that are not applicable to a particular resource type are ignored. Optional columns are omitted if blank.
 
-### Example:
+## Running the CSV import using a Python script
 
-The following code snippet uses the `ocldev` package to load a CSV file, convert to JSON, validate, and submit via the OCL bulk import API.
-
-[Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing)
+The following code snippet is an example of how to use the `ocldev` package to load a CSV file, convert to JSON, validate, and submit via the OCL bulk import API.
 
 ```python
 from ocldev import oclresourcelist
 from ocldev import oclfleximporter
 import json
 
-csv_filename = 'CSV Import Example.csv'
+'''
+Config Settings
+'''
+csv_filename = 'Simple CSV Import example.csv'
 ocl_env_url = 'https://api.staging.aws.openconceptlab.org'
-ocl_api_token = 'mytoken'
+ocl_api_token = '27ee9d42d863a90c1b7c825a5a4dc72116f97353'
 
+'''
+Load CSV file 
+'''
 csv_resource_list = oclresourcelist.OclCsvResourceList.load_from_file(csv_filename)
+
+'''
+Convert CSV resources to JSON 
+'''
 json_resource_list = csv_resource_list.convert_to_ocl_formatted_json()
+
+'''
+Print the converted JSON resources
+'''
+json_data = ''
+for line in json_resource_list:
+    json_data += json.dumps(line,indent=1) + '\n'
+print(json_data)
+
+'''
+Validate the converted JSON resources
+'''
 json_resource_list.validate()
 
+'''
+Send request using Bulk import and print the status endpoint. To check the status of import using the endpoint URL send a request header "Authorization" with value "Token my-server-token"
+'''
 import_response = oclfleximporter.OclBulkImporter.post(
     input_list=json_resource_list, api_url_root=ocl_env_url, api_token=ocl_api_token)
 import_response.raise_for_status()
 import_response_json = import_response.json()
 bulk_import_task_id = import_response_json['task']
-
 bulk_import_status_url = '%s/manage/bulkimport/?task=%s' % (ocl_env_url, bulk_import_task_id)
+
 print('Bulk Import Task ID: %s' % bulk_import_task_id)
 print('Bulk Import Status URL: %s' % bulk_import_status_url)
+
+
 ```
+
+### Use case 1: Simple use case of adding concepts/mappings to existing source
+
+Organize the CSV to make sure the order of metadata is `Concepts>Mappings`
+
+This [Simple Example CSV Import file](https://docs.google.com/spreadsheets/d/1Ih1LXEVyu3PDb262zVpQlyCPIrwu-H02Oay2eKwrIXE/edit?usp=sharing) is the general use case of loading new concepts and mappings for an existing Organization and source and Collections that are already loaded in OCL.
+
+### Use case 2: Advanced use case — loading a complete set of starter content
+
+Organize the CSV to make sure the order of metadata is `Organizations>Sources>Concepts>Mappings`
+
+This [Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing) has a complete set of starter content which can be used as a template to load an Organization, Sources, Collections, Concepts and Mappings.
+
 
 ### CSV Columns
 #### Organization
