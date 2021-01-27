@@ -46,7 +46,9 @@ Validate the converted JSON resources
 json_resource_list.validate()
 
 '''
-Send request using Bulk import and print the status endpoint. To check the status of import using the endpoint URL send a request header "Authorization" with value "Token my-server-token"
+Send request using Bulk import and print the status endpoint. 
+To check the status of import using the endpoint URL send a 
+request header "Authorization" with value "Token my-server-token"
 '''
 import_response = oclfleximporter.OclBulkImporter.post(
     input_list=json_resource_list, api_url_root=ocl_env_url, api_token=ocl_api_token)
