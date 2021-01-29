@@ -2,9 +2,51 @@
 
 ## Overview
 
-OCL provides APIs for importing CSV files and converting CSV files to JSON. CSV files submitted to the API must be compatible with the standard CSV template, which is designed to support the most common import scenarios. For scenarios not supported by the standard CSV template, you may work directly with [ocldev.oclcsvtojsonconverter](https://github.com/OpenConceptLab/ocldev/blob/master/ocldev/oclcsvtojsonconverter.py#L20) or compose import scripts in JSON, which support all OCL features.
+OCL provides python scripts and an API endpoint for bulk importing directly from a CSV file. An OCL bulk import CSV file must be compatible with the standard CSV bulk import template, which is described here. The CSV format is often a simpler format to work in than JSON, and allows users to more easily collaborate on creating a bulk import script in a spreadsheet. However, the CSV format does not support all OCL API features. For features not supported by the standard CSV template, you may compose bulk import scripts in JSON, which supports all OCL features. For advanced use cases, you may also implement a custom CSV to JSON converter using [ocldev.oclcsvtojsonconverter](https://github.com/OpenConceptLab/ocldev/blob/master/ocldev/oclcsvtojsonconverter.py#L20).
 
-Resources are imported in the order that they appear in the bulk import script. Multiple resource types, owners, and repositories can be mixed in a single CSV file. Columns are designed to reuse the same columns across resource types where possible. Columns that are not applicable to a particular resource type are ignored. Optional columns are omitted if blank.
+A few notes:
+* **Resource types:** Multiple resource types (eg. concepts, mappings, organizations, sources, and collections) can be mixed in a single CSV bulk import file.
+* **Order matters:** Resources are imported in the order that they appear in a bulk import script. Mappings, collection references, and source/collection versions must come after any resource that they refer to, or those resources must already exist in the target OCL environment.
+* Columns are designed to reuse the same columns across resource types where possible.
+* Columns that are not applicable to a particular resource type are ignored. Optional columns are omitted if blank.
+
+## Example 1: Simple of adding concepts & mappings to existing source
+
+This [OCL_CSV_Bulk_Import_Example_01](https://docs.google.com/spreadsheets/d/1Ih1LXEVyu3PDb262zVpQlyCPIrwu-H02Oay2eKwrIXE/edit?usp=sharing) is a basic example of loading new concepts and mappings for an existing Organization and source that are already loaded in OCL.
+
+Organize the CSV to make sure the order of metadata is `Concepts>Mappings`
+
+| resource_type | owner_id | source | id | name | concept_class | datatype | description | attr:test | map_source[dsme1] | map_to_concept_owner_id[dsme1] | map_to_concept_source[dsme1] | map_to_concept_id[dsme1] | extmap_to_concept_owner_id[loinc1] | extmap_to_concept_source[loinc1] | extmap_to_concept_id[loinc1] | extmap_to_concept_name[loinc1] | map_target | map_type | map_from_concept_url | map_from_concept_owner_id | map_from_concept_source | map_from_concept_id | map_to_concept_owner_id | map_to_concept_source | map_to_concept_id | map_to_concept_name |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Concept | Example-Country-A | Example-Country-A | 5835 | ID | Question | Text | ID | TRUE |  |  |  |  | Regenstrief | LOINC | 103948 | ID |  |  |  |  |  |  |  |  |  |  |
+| Concept | Example-Country-A | Example-Country-A | 5150 | Informed Code | Question | Text | Informed Code | FALSE | Mapping-Example-Country-A-to-CDD | DSME-CDD | CDD | CC01 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Concept | Example-Country-A | Example-Country-A | 8686 | Informed Name | Question | Text | Informed Name | TRUE | Mapping-Example-Country-A-to-CDD | DSME-CDD | CDD | CC02 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Concept | Example-Country-A | Example-Country-A | 3530 | Total Resident | Question | Numeric | Total Resident | FALSE |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Mapping | Example-Country-A | Example-Country-A |  |  |  |  |  | hey |  |  |  |  |  |  |  |  |  | kind of thinking about | /orgs/PaperPie/sources/StinkYfeet/concepts/L-big-toe/ | spspdp |  | ji | idjeifkdkdididfjdkdkf | idj | idj | here's a to concept name |
+| Mapping | Example-Country-A | Example-Country-A |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | PurplePie | SmellySocks | LeftFoot |  |  | 9jd9 | 9dj9-name |
+| Mapping | Example-Country-A | Example-Country-A |  |  |  |  |  |  |  |  |  |  |  |  |  |  | External |  |  | testowner | testsource | testcid | test-to-concept-owner | test-to-concept-sourc | test-to-concept-id | test-to-concept-name |
+
+<details>
+    <summary>Expand to view raw CSV for this example</summary>
+    
+```csv
+resource_type,owner_id,source,id,name,concept_class,datatype,description,attr:test,map_source[dsme1],map_to_concept_owner_id[dsme1],map_to_concept_source[dsme1],map_to_concept_id[dsme1],extmap_to_concept_owner_id[loinc1],extmap_to_concept_source[loinc1],extmap_to_concept_id[loinc1],extmap_to_concept_name[loinc1],map_target,map_type,map_from_concept_url,map_from_concept_owner_id,map_from_concept_source,map_from_concept_id,map_to_concept_owner_id,map_to_concept_source,map_to_concept_id,map_to_concept_name
+Concept,Example-Country-A,Example-Country-A,5835,ID,Question,Text,ID,TRUE,,,,,Regenstrief,LOINC,103948,ID,,,,,,,,,,
+Concept,Example-Country-A,Example-Country-A,5150,Informed Code,Question,Text,Informed Code,FALSE,Mapping-Example-Country-A-to-CDD,DSME-CDD,CDD,CC01,,,,,,,,,,,,,,
+Concept,Example-Country-A,Example-Country-A,8686,Informed Name,Question,Text,Informed Name,TRUE,Mapping-Example-Country-A-to-CDD,DSME-CDD,CDD,CC02,,,,,,,,,,,,,,
+Concept,Example-Country-A,Example-Country-A,3530,Total Resident,Question,Numeric,Total Resident,FALSE,,,,,,,,,,,,,,,,,,
+Mapping,Example-Country-A,Example-Country-A,,,,,,hey,,,,,,,,,,kind of thinking about,/orgs/PaperPie/sources/StinkYfeet/concepts/L-big-toe/,spspdp,,ji,idjeifkdkdididfjdkdkf,idj,idj,here's a to concept name
+Mapping,Example-Country-A,Example-Country-A,,,,,,,,,,,,,,,,,,PurplePie,SmellySocks,LeftFoot,,,9jd9,9dj9-name
+Mapping,Example-Country-A,Example-Country-A,,,,,,,,,,,,,,,External,,,testowner,testsource,testcid,test-to-concept-owner,test-to-concept-sourc,test-to-concept-id,test-to-concept-name
+```
+</details>
+
+### Use case 2: Advanced use case — loading a complete set of starter content
+
+Organize the CSV to make sure the order of metadata is `Organizations>Sources>Concepts>Mappings`
+
+This [Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing) has a complete set of starter content which can be used as a template to load an Organization, Sources, Collections, Concepts and Mappings.
+
 
 ## Running the CSV import using a Python script
 
@@ -52,19 +94,6 @@ bulk_import_status_url = '%s/manage/bulkimport/?task=%s' % (ocl_env_url, bulk_im
 print('Bulk Import Task ID: %s' % bulk_import_task_id)
 print('Bulk Import Status URL: %s' % bulk_import_status_url)
 ```
-
-### Use case 1: Simple use case of adding concepts/mappings to existing source
-
-Organize the CSV to make sure the order of metadata is `Concepts>Mappings`
-
-This [Simple Example CSV Import file](https://docs.google.com/spreadsheets/d/1Ih1LXEVyu3PDb262zVpQlyCPIrwu-H02Oay2eKwrIXE/edit?usp=sharing) is the general use case of loading new concepts and mappings for an existing Organization and source and Collections that are already loaded in OCL.
-
-### Use case 2: Advanced use case — loading a complete set of starter content
-
-Organize the CSV to make sure the order of metadata is `Organizations>Sources>Concepts>Mappings`
-
-This [Example CSV Import file](https://docs.google.com/spreadsheets/d/1pM3XlcFw5f3UJggPjIm43RkKpdsnBGhoOclTlWSI5Y8/edit?usp=sharing) has a complete set of starter content which can be used as a template to load an Organization, Sources, Collections, Concepts and Mappings.
-
 
 ### CSV Import Reference (Columns)
 #### Organization
