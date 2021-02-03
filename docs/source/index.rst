@@ -1,7 +1,3 @@
-OCL documentation
-==================
-
-
 What is OCL?
 ------------
 OCL is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
