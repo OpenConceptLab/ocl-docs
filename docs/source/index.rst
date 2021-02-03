@@ -1,36 +1,40 @@
 OCL documentation
 ==================
 
-OCL Documentation is used to provide information to users on the use, operation, maintenance, and design of OCL tools
 
-Technical Documentation
------------------------
+What is OCL?
+------------
+OCL is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
 
-* **Terminology Service**
+.. image:: OCL_overview.png
+  :width: 800
+  :alt: Ocl Overview
 
-  OCL maintains a public metadata clearinghouse with a host of tools for making it easy for entities to store and retrieve their metadata data. This is possible through the OCL Terminology service which acts as the engine of all the services and makes it possible through a list of API endpoints. But, if an entity would like to host their own data, OCL makes it possible through the Open Source code and installation steps to setup their own instance of Terminology service.
+OCL Overview
+-------------
 
-  * Getting Started guide to setup and contribute to terminology service or:
-    :doc:`OCL API </oclapi/developer/gettingstarted>`
-  * Learn about recent changes, enhancements and bug fixes in OCL API:
-    :doc:`Release Notes </oclapi/releases>`
+Learn more about OCL, its tools and the core features.
 
-* **Interface layer**
-
-  .. note::
-    Currently Interface layer only supports PEPFAR usecases through OpenHIM mediators.
-
-  Sometimes it is useful to interact with OCL using custom information models, rather than using traditional terminology information models. The OCL Interface Layer exposes a set of APIs for some of these custom models
-
-  * Learn how to interact with OCL through: `Interface layer API <https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest>`_
-
-* **CIEL Integration**
-
-  When a new version of CIEL is released it needs to be updated in OCL to make it available for CIEL subscribers like OpenMRS. Importing into CIEL documents the steps and people involved to make the new CIEL version available in OCL.
-
-  * Process for `importing into CIEL <https://docs.google.com/document/d/1YyGeCvKDuxG7ceQK0KZahPjNEj2N4EdJ01p67bIgMJk>`_
+* **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` 
+* **OCL roadmaps:** :doc:`OCL Roadmap 2021 </roadmaps/2021/roadmap>` |  :doc:`OCL Roadmap 2020 </roadmaps/2020/roadmap>`
+* **OCL releases:** :doc:`Release Notes </oclapi/releases>` 
 
 
+Getting Started with OCL
+-------------------------
+Dive deeper into OCL features and how you can get started interacting with OCL. 
+
+* **As a user:** :doc:`API Reference of OCL</oclapi/user/index>`
+* **As a developer:** :doc:`Getting Started as a Developer</oclapi/developer/gettingstarted>` | :doc:`Developers Guide</oclapi/developer/developersguide>`
+
+
+Advanced Features of OCL
+--------------------------
+
+OCL offers many advanced features. Learn more about these integrations and how you can interact with OCL.
+
+* **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/technical/bulkimporting>` | :doc:`Importing a CSV file </oclapi/technical/csvimport>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
+* **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW6xo8hn?version=latest>`_
 
 
 .. toctree::
