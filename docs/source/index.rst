@@ -2,6 +2,8 @@ What is OCL?
 ------------
 OCL is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
 
+Here are the main use cases for adopting OCL.
+
 .. image:: OCL_overview.png
   :width: 800
   :alt: Ocl Overview
