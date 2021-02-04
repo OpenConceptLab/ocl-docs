@@ -1,17 +1,4 @@
 # Export API
-## Table of Contents
-**Overview**
-* [Overview](Export-API#overview)
-
-**Exports**
-* [Get an export of a repository version](Export-API#get-an-export-of-a-repository-version)
-* [Create an export of a repository version](Export-API#create-an-export-of-a-repository-version)
-* [Delete an export file](Export-API#delete-an-export-file)
-
-**Other**
-* [Useful HTTPie commands](Export-API#useful-httpie-commands)
-* [Full Example](Export-API#full-example)
-
 
 ## Overview
 The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of HEAD request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `303` if the export is ready for download, or `204` if it is still processing. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repost version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export to S3 is a much faster operation.

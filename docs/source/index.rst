@@ -13,7 +13,7 @@ OCL Overview
 
 Learn more about OCL, its tools and the core features.
 
-* **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` 
+* **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` | :doc:`API Reference of OCL</oclapi/apireference/index>`
 * **OCL roadmaps:** :doc:`OCL Roadmap 2021 </roadmaps/2021/roadmap>` |  :doc:`OCL Roadmap 2020 </roadmaps/2020/roadmap>`
 * **OCL releases:** :doc:`Release Notes </oclapi/releases>` 
 
@@ -22,16 +22,14 @@ Getting Started with OCL
 -------------------------
 Dive deeper into OCL features and how you can get started interacting with OCL. 
 
-* **As a user:** :doc:`API Reference of OCL</oclapi/user/index>`
 * **As a developer:** :doc:`Getting Started as a Developer</oclapi/developer/gettingstarted>` | :doc:`Developers Guide</oclapi/developer/developersguide>`
-
 
 Advanced Features of OCL
 --------------------------
 
 OCL offers many advanced features. Learn more about these integrations and how you can interact with OCL.
 
-* **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/technical/bulkimporting>` | :doc:`Importing a CSV file </oclapi/technical/csvimport>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
+* **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/apireference/bulkimporting>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
 * **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW6xo8hn?version=latest>`_
 
 
@@ -41,10 +39,9 @@ OCL offers many advanced features. Learn more about these integrations and how y
    :caption: OCL API
    
    oclapi/overview
-   oclapi/user/index
+   oclapi/apireference/index
    oclapi/developer/index
    oclapi/admin/index
-   oclapi/technical/index
    oclapi/releases
 
 .. toctree::
