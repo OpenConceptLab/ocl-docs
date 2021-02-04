@@ -141,15 +141,15 @@ DELETE /orgs/CIEL/sources/CIEL/v2.2/export/
 ```
 
 ### Response
-* If the file exists, it is deleted with 200
+* If the file exists, it is deleted with 204
 ```
-Status: 200 Success
+Status: 204 Success
 ```
 * If the file does NOT exist
 ```
-Status: 204 No Content
+Status: 404 No Content
 ```
-* If the URL or request is otherwise invalid - return the appropriate error code
+* If the request is otherwise invalid - return the appropriate error code
 
 
 ## Full Example
