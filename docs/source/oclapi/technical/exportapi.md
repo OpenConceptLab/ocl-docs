@@ -73,17 +73,21 @@ GET /orgs/CIEL/collections/StarterSet/v1.2/export/
 ```
 
 ### Response
-* If the export file exists:
+* If the export file exists, follow the redirect to the `Location` response header:
 ```
 Status: 303 See Other
 Response Header:
 Location: https://ocl-source-export-production.s3.amazonaws.com/CIEL/CIEL_55572f688a86f24b48d935be.20150516122820.tgz?Signature=fmBSI6hL9IhN4mu4W5x%2FPFs5uxw%3D&Expires=1431864368&AWSAccessKeyId=...
 ```
-* If the export file does not exist:
+* If the URL is valid but the export file does not exist:
 ```
 Status: 204 No Content
 Response Header:
 Location:
+```
+* If the URL is valid but the export file is still being processed:
+```
+Status: 208 Already Reported
 ```
 * If the URL is non-existent
 ```
