@@ -15,6 +15,6 @@ This section explains how to interact with OCL using REST APIs.
     permissionssummary
     sources
     users
-    archive/index
+    other/index
     
 
