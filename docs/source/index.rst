@@ -30,7 +30,7 @@ Advanced Features of OCL
 OCL offers many advanced features. Learn more about these integrations and how you can interact with OCL.
 
 * **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/apireference/bulkimporting>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
-* **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW6xo8hn?version=latest>`_
+* **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
 
 
 .. toctree::
