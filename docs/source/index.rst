@@ -33,6 +33,54 @@ OCL offers many advanced features. Learn more about these integrations and how y
 * **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
 
 
+OCL Servers
+------------
+
+.. list-table:: Title
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Server
+     - URL
+     - Description
+   * - AWS Production API
+     - https://api.aws.openconceptlab.org/ 
+     - OCL API v2 Production server 
+   * - AWS Production APP
+     - https://app.aws.openconceptlab.org
+     - OCL Web v2 Production server 
+   * - AWS Staging API
+     - https://api.staging.aws.openconceptlab.org/ 
+     - OCL API v2 Staging server 
+   * - AWS Staging APP
+     - https://app.staging.aws.openconceptlab.org
+     - OCL Web v2 Staging server 
+   * - AWS QA API
+     - https://api.qa.aws.openconceptlab.org/ 
+     - OCL API v2 QA server 
+   * - AWS QA APP
+     - https://app.qa.aws.openconceptlab.org
+     - OCL Web v2 QA server 
+   * - Production API
+     - https://api.openconceptlab.org/ 
+     - OCL API v1 Production server 
+   * - Production APP
+     - https://openconceptlab.org
+     - OCL Web v1 Production server 
+   * - Staging API
+     - https://api.staging.openconceptlab.org/ 
+     - OCL API v1 Staging server 
+   * - AWS Staging APP
+     - https://staging.openconceptlab.org
+     - OCL Web v1 Staging server 
+   * - QA API
+     - https://api.qa.openconceptlab.org/
+     - OCL API v1 QA server 
+   * - QA APP
+     - https://qa.openconceptlab.org/
+     - OCL Web v1 QA server 
+
+
 .. toctree::
    :maxdepth: 4
    :hidden:
