@@ -62,6 +62,8 @@ GET /manage/bulkimport/
   * Root user only:
     * **username** - optionally filter by username; for root, bulk imports for all users are returned by default
 
+NOTE: Returns an empty list `[]` if no recent or active bulk imports are queued
+
 ## Get a list of active and recent bulk imports for a user in a specified queue
 ```
 GET /manage/bulkimport/:queue/
@@ -69,6 +71,8 @@ GET /manage/bulkimport/:queue/
 * GET Request Parameters:
   * Root user only:
     * **username** - optionally filter by username; for root, bulk imports for all users are returned by default
+
+NOTE: Returns an empty list `[]` if no recent or active bulk imports are queued
 
 ## Get the status or results of a previously submitted bulk import
 ```
