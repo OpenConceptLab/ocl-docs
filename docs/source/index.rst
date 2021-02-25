@@ -100,6 +100,7 @@ OCL Servers
    oclfhir/overview
    oclfhir/codesystem
    oclfhir/valueset
+   oclfhir/conceptmap
 
 .. toctree::
    :maxdepth: 2

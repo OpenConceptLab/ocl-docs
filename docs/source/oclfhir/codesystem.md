@@ -33,7 +33,7 @@ The version-less request for the code system returns `most recent released versi
 
 #### Example Request
 
-`GET /fhir/CodeSystem/?url=https://www.state.gov/pepfar`
+`GET /fhir/CodeSystem/?url=https://datim.org/CodeSystem/MER`
 
 `GET /orgs/PEPFAR/CodeSystem/MER`
 
@@ -52,7 +52,7 @@ The version-less request for the code system returns `most recent released versi
     "link": [
         {
             "relation": "self",
-            "url": "http://localhost:8080/fhir/CodeSystem/?_format=json&url=https://www.state.gov/pepfar"
+            "url": "http://localhost:8080/fhir/CodeSystem/?_format=json&url=https://datim.org/CodeSystem/MER"
         }
     ],
     "entry": [
@@ -61,7 +61,7 @@ The version-less request for the code system returns `most recent released versi
                 "resourceType": "CodeSystem",
                 "id": "MER",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar",
+                "url": "https://datim.org/CodeSystem/MER",
                 "identifier": [
                     {
                         "use": "usual",
@@ -210,7 +210,7 @@ By default, first `100` concepts are returned for a code system. If user wants t
 
 #### Example Request
 
-`GET /fhir/CodeSystem/?url=https://www.state.gov/pepfar&version=v1.0`
+`GET /fhir/CodeSystem/?url=https://datim.org/CodeSystem/MER&version=v1.0`
 
 `GET /orgs/:org/CodeSystem/MER/version/v1.0`
 
@@ -229,7 +229,7 @@ By default, first `100` concepts are returned for a code system. If user wants t
     "link": [
         {
             "relation": "self",
-            "url": "http://localhost:8080/fhir/CodeSystem/?_format=json&url=https://www.state.gov/pepfar"
+            "url": "http://localhost:8080/fhir/CodeSystem/?_format=json&url=https://datim.org/CodeSystem/MER"
         }
     ],
     "entry": [
@@ -238,7 +238,7 @@ By default, first `100` concepts are returned for a code system. If user wants t
                 "resourceType": "CodeSystem",
                 "id": "MER",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar",
+                "url": "https://datim.org/CodeSystem/MER",
                 "identifier": [
                     {
                         "use": "usual",
@@ -387,7 +387,7 @@ This request returns all `released` versions for a given code system. Note that 
 
 #### Example Request
 
-`GET /fhir/CodeSystem/?url=https://www.state.gov/pepfar&version=*`
+`GET /fhir/CodeSystem/?url=https://datim.org/CodeSystem/MER&version=*`
 
 `GET /orgs/PEPFAR/CodeSystem/MER/version`
 
@@ -417,7 +417,7 @@ This request returns all `released` versions for a given code system. Note that 
                 "resourceType": "CodeSystem",
                 "id": "MER",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar",
+                "url": "https://datim.org/CodeSystem/MER",
                 "identifier": [
                     {
                         "type": {
@@ -499,7 +499,7 @@ This request returns all `released` versions for a given code system. Note that 
                 "resourceType": "CodeSystem",
                 "id": "MER",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar",
+                "url": "https://datim.org/CodeSystem/MER",
                 "identifier": [
                     {
                         "type": {
@@ -598,7 +598,7 @@ This request returns most recent released versions of all code systems.
                 "resourceType": "CodeSystem",
                 "id": "MER1",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar1",
+                "url": "https://datim.org/CodeSystem/MER1",
                 "identifier": [
                     {
                         "type": {
@@ -680,7 +680,7 @@ This request returns most recent released versions of all code systems.
                 "resourceType": "CodeSystem",
                 "id": "MER2",
                 "language": "en",
-                "url": "https://www.state.gov/pepfar2",
+                "url": "https://datim.org/CodeSystem/MER2",
                 "identifier": [
                     {
                         "type": {
@@ -1124,9 +1124,9 @@ As per mSVCM profile, following FHIR operations are supported for a code system:
 
 #### Example request
 
-`GET /fhir/CodeSystem/$lookup/?system=https://www.state.gov/pepfar&code=vpvjaSZxlaA`
+`GET /fhir/CodeSystem/$lookup/?system=https://datim.org/CodeSystem/MER&code=vpvjaSZxlaA`
 
-`GET /orgs/PEPFAR/CodeSystem/$lookup/?system=https://www.state.gov/pepfar&code=vpvjaSZxlaA`
+`GET /orgs/PEPFAR/CodeSystem/$lookup/?system=https://datim.org/CodeSystem/MER&code=vpvjaSZxlaA`
 
 <details>
 <summary><b>Example response</summary>
@@ -1286,14 +1286,14 @@ As per mSVCM profile, following FHIR operations are supported for a code system:
 
 **NOTE:**
 1. displayLanguage is ignored when display is not provided or empty
-2. If coding is provided then system,code,version,display values should be provided in coding itself.
-   In this case values of system,code,version,display provided outside of coding will be ignored.
+2. If coding is provided then system_url, code and system_version values are overridden with the values of
+  coding.system, coding.code and coding.version respectively.
 
 #### Example Request
 
-`GET /fhir/CodeSystem/$validate-code/?url=https://www.state.gov/pepfar&code=vpvjaSZxlaA`
+`GET /fhir/CodeSystem/$validate-code/?url=https://datim.org/CodeSystem/MER&code=vpvjaSZxlaA`
 
-`GET /orgs/:org/CodeSystem/$validate-code/?url=https://www.state.gov/pepfar&code=vpvjaSZxlaA`
+`GET /orgs/:org/CodeSystem/$validate-code/?url=https://datim.org/CodeSystem/MER&code=vpvjaSZxlaA`
 
 <details>
 <summary><b>Example response</summary>
@@ -1310,7 +1310,8 @@ As per mSVCM profile, following FHIR operations are supported for a code system:
 }
 ```
 </details>
-
+<br />
+<br />
 
 
 

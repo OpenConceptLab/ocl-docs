@@ -1209,8 +1209,8 @@ As per mSVCM profile, following FHIR operations are supported for a valueset:
 
 **NOTE:**
 1. displayLanguage is ignored when display is not provided or empty
-2. If coding is provided then system,code,systemVersion,display values should be provided in coding itself.
-   In this case values of system,code,systemVersion,display provided outside of coding will be ignored.
+2. If coding is provided then system_url, code, system_version and display values are overridden with the values of
+  coding.system, coding.code, coding.version and coding.display respectively.
 
 
 ### Example Request
@@ -1411,4 +1411,9 @@ As per mSVCM profile, following FHIR operations are supported for a valueset:
 }
 ```
 </details>
+<br />
+<br />
+
+
+
 
