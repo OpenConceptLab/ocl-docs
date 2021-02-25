@@ -36,49 +36,29 @@ OCL offers many advanced features. Learn more about these integrations and how y
 OCL Servers
 ------------
 
-.. list-table:: Title
-   :widths: 25 25 50
+.. list-table::
+   :widths: 50 50
    :header-rows: 1
 
-   * - Server
-     - URL
-     - Description
-   * - AWS Production API
-     - https://api.aws.openconceptlab.org/ 
-     - OCL API v2 Production server 
-   * - AWS Production APP
-     - https://app.aws.openconceptlab.org
-     - OCL Web v2 Production server 
-   * - AWS Staging API
-     - https://api.staging.aws.openconceptlab.org/ 
-     - OCL API v2 Staging server 
-   * - AWS Staging APP
-     - https://app.staging.aws.openconceptlab.org
-     - OCL Web v2 Staging server 
-   * - AWS QA API
-     - https://api.qa.aws.openconceptlab.org/ 
-     - OCL API v2 QA server 
-   * - AWS QA APP
-     - https://app.qa.aws.openconceptlab.org
-     - OCL Web v2 QA server 
-   * - Production API
-     - https://api.openconceptlab.org/ 
-     - OCL API v1 Production server 
-   * - Production APP
-     - https://openconceptlab.org
-     - OCL Web v1 Production server 
-   * - Staging API
-     - https://api.staging.openconceptlab.org/ 
-     - OCL API v1 Staging server 
-   * - AWS Staging APP
-     - https://staging.openconceptlab.org
-     - OCL Web v1 Staging server 
-   * - QA API
-     - https://api.qa.openconceptlab.org/
-     - OCL API v1 QA server 
-   * - QA APP
-     - https://qa.openconceptlab.org/
-     - OCL Web v1 QA server 
+   * - Environment
+     - Servers
+   * - Production
+     - -  `API v2 <https://api.aws.openconceptlab.org/>`_ 
+       - `Web v2 <https://app.aws.openconceptlab.org>`_ 
+       -  `API v1 <https://api.openconceptlab.org/>`_ 
+       - `Web v1 <https://openconceptlab.org>`_ 
+       - `Docs <https://docs.openconceptlab.org>`_
+       - `Community Website <https://aws.openconceptlab.org/>`_
+   * - Staging
+     - -  `API v2 <https://api.staging.aws.openconceptlab.org/>`_ 
+       - `Web v2 <https://app.staging.aws.openconceptlab.org>`_ 
+       -  `API v1 <https://api.staging.openconceptlab.org/>`_ 
+       - `Web v1 <https://staging.openconceptlab.org>`_ 
+   * - QA
+     - -  `API v2 <https://api.qa.aws.openconceptlab.org/>`_ 
+       - `Web v2 <https://app.qa.aws.openconceptlab.org>`_ 
+       -  `API v1 <https://api.qa.openconceptlab.org/>`_ 
+       - `Web v1 <https://qa.openconceptlab.org>`_ 
 
 
 .. toctree::
