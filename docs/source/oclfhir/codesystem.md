@@ -75,8 +75,8 @@ The version-less request for the code system returns `most recent released versi
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/v2.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/version/v2.0/"
                     }
                 ],
                 "version": "v2.0",
@@ -187,7 +187,7 @@ The version-less request for the code system returns `most recent released versi
 
 ```
 </details>
-
+<br />
 
 By default, first `100` concepts are returned for a code system. If user wants to get more concepts, OCL FHIR service provides pagination support for a resource. The default page value is `page=1` and this number can be incremented to retrieve more concepts.
 
@@ -252,8 +252,8 @@ By default, first `100` concepts are returned for a code system. If user wants t
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/v1.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/version/v1.0/"
                     }
                 ],
                 "version": "v1.0",
@@ -363,6 +363,7 @@ By default, first `100` concepts are returned for a code system. If user wants t
 }
 ```
 </details>
+<br />
 
 ## Get list of CodeSystem versions
 
@@ -429,8 +430,8 @@ This request returns all `released` versions for a given code system. Note that 
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/v2.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/version/v2.0/"
                     }
                 ],
                 "version": "v2.0",
@@ -511,8 +512,8 @@ This request returns all `released` versions for a given code system. Note that 
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/v1.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER/version/v1.0/"
                     }
                 ],
                 "version": "v1.0",
@@ -548,6 +549,7 @@ This request returns all `released` versions for a given code system. Note that 
 ```
 
 </details>
+<br />
 
 
 ## Get a list of codesystems
@@ -609,8 +611,8 @@ This request returns most recent released versions of all code systems.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER1/v1.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER1/version/v1.0/"
                     }
                 ],
                 "version": "v1.0",
@@ -691,8 +693,8 @@ This request returns most recent released versions of all code systems.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER2/v2.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/CodeSystem/MER2/version/v2.0/"
                     }
                 ],
                 "version": "v2.0",
@@ -759,10 +761,11 @@ This request returns most recent released versions of all code systems.
 }
 ```
 </details>
+<br />
 
 ## Create CodeSystem
 
-The CodeSystem can be created in two ways either using global namespace or owner namespace. The server returns HTTP "201 Created" on succussful operation. 
+The CodeSystem can be created in two ways either using global namespace or owner namespace. The server returns HTTP `201 Created` on succussful operation. 
 
 <b>Create Accession identifier</b>
 
@@ -781,14 +784,21 @@ The CodeSystem can be created in two ways either using global namespace or owner
     "system": "<HOSTED FHIR SERVER ADDRESS>",
     "value": "<RESOURCE URI>"
 }
+
+# Accepted values for system based on environment:
+- https://fhir.aws.openconceptlab.org
+- https://fhir.qa.aws.openconceptlab.org
+- https://fhir.staging.aws.openconceptlab.org
+- https://fhir.demo.aws.openconceptlab.org
+
 ```
 
-<b>NOTES</b>:
-1. The CodeSystem.url is mandatory field.
-2. If version is not provided either in "accession identifier" or in "version" field, then CodeSystem of default version "0.1" will be created.
-3. The version value in "accession identifier" takes precedence in case version is provided in both "accession identifier" and "version" field.
-4. If CodeSystem.language is empty then "en" languages is assumed.
-5. If CodeSystem.status is empty then "draft" status is assumed.
+**NOTE:**
+1. The `CodeSystem.url` is mandatory field.
+2. If version is not provided either in `accession identifier` or in `version` field, then CodeSystem of `default version 0.1` will be created.
+3. The version value in `accession identifier` takes precedence in case version is provided in both `accession identifier` and `version` field.
+4. If `CodeSystem.language` is empty then `en` languages is assumed.
+5. If `CodeSystem.status` is empty then `draft` status is assumed.
 6. In Global namespace, the CodeSystem.identifier (accession) is required and the CodeSystem.Id is ignored.
 7. In Owner namespace, either CodeSystem.identifier (accession) or CodeSystem.Id is required. Both can not be empty.
 
@@ -889,6 +899,7 @@ The CodeSystem can be created in two ways either using global namespace or owner
 
 ```
 </details>
+<br />
 
 #### Using owner namespace
 
@@ -972,6 +983,90 @@ The CodeSystem can be created in two ways either using global namespace or owner
 
 ```
 </details>
+<br />
+
+## Update CodeSystem
+The CodeSystem can only be updated using Gloabl Namespace. The server returns HTTP `200 Ok` on succussful operation.
+
+**NOTE:**
+1. In order to add `new` concept in CodeSystem, user needs to populate the `CodeSystem.concept.*`. If the concept included is already exist in CodeSystem then it will be ignored. In order to update existing concept, user should delete the concept first and then add new concept with updated information.
+2. The Both CodeSystem.id and CodeSystem.version is required to successfully update CodeSystem.
+#### Request url
+
+`PUT /orgs/:org/CodeSystem/:id/version/:version`
+
+`PUT /users/:user/CodeSystem/:id/version/:version`
+
+<details>
+<summary><b>Example request</summary>
+
+```json
+{
+    "resourceType": "CodeSystem",
+    "language": "es",
+    "name": "updated name",
+    "status": "active",
+    "content": "example",
+    "concept": [
+        {
+            "code": "zuM0sUhtxTn",
+            "display": "HTS_TST (N, DSD, IndexMod, Yield)",
+            "designation": [
+                {
+                    "language": "en",
+                    "use": {
+                        "code": "Short"
+                    },
+                    "value": "HTS_TST (N, DSD, IndexMod, Yield)"
+                },
+                {
+                    "language": "en",
+                    "use": {
+                        "code": "Fully Specified"
+                    },
+                    "value": "HTS_TST (N, DSD, IndexMod, Yield)"
+                }
+            ],
+            "property": [
+                {
+                    "code": "conceptclass",
+                    "valueString": "Indicator"
+                },
+                {
+                    "code": "datatype",
+                    "valueString": "Percentage"
+                },
+                {
+                    "code": "inactive",
+                    "valueBoolean": false
+                }
+            ]
+        }
+    ]
+}
+
+
+```
+</details>
+<br />
+
+## Delete CodeSystem
+The CodeSystem can only be deleted using Gloabl Namespace. The server returns HTTP `204 No Content` on succussful operation.
+
+#### Request url
+
+`DELETE /orgs/:org/CodeSystem/:id/version/:version`
+
+`DELETE /users/:user/CodeSystem/:id/version/:version`
+
+## Delete Concept from CodeSystem
+The CodeSystem's concept can only be deleted using Global Namespace. The server returns HTTP `204 No Content` on succussful operation.
+
+#### Request url
+
+`DELETE /orgs/:org/CodeSystem/:id/version/:version/concepts/:concept-code`
+
+`DELETE /users/:user/CodeSystem/:id/version/:version/concepts/:concept-code`
 
 ## FHIR Operations
 
@@ -1113,6 +1208,7 @@ As per mSVCM profile, following FHIR operations are supported for a code system:
 }
 ```
 </details>
+<br />
 
 ### $validate-code
 
