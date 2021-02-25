@@ -73,8 +73,8 @@ The version-less request for the valueset returns `most recent released version`
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -306,6 +306,7 @@ The version-less request for the valueset returns `most recent released version`
 }
 ```
 </details>
+<br />
 
 By default, first `100` concepts are returned for a value set. If user wants to get more concepts, OCL FHIR service provides pagination support for a resource. The default page value is `page=1` and this number can be incremented to retrieve more concepts.
 
@@ -368,8 +369,8 @@ By default, first `100` concepts are returned for a value set. If user wants to 
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/v11.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/version/v11.0/"
                     }
                 ],
                 "version": "v11.0",
@@ -569,6 +570,7 @@ By default, first `100` concepts are returned for a value set. If user wants to 
 }
 ```
 </details>
+<br />
 
 
 ## Get list of ValueSet versions
@@ -636,8 +638,8 @@ This request returns all `released` versions for a given valueset. Note that thi
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/v11.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/version/v11.0/"
                     }
                 ],
                 "version": "v11.0",
@@ -664,8 +666,8 @@ This request returns all `released` versions for a given valueset. Note that thi
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -712,6 +714,7 @@ This request returns all `released` versions for a given valueset. Note that thi
 ```
 
 </details>
+<br />
 
 ## Get a list of valuesets
 
@@ -771,8 +774,8 @@ This request returns most recent released versions of all valuesets.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY17/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY17/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -799,8 +802,8 @@ This request returns most recent released versions of all valuesets.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY18/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY18/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -827,8 +830,8 @@ This request returns most recent released versions of all valuesets.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY19/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -887,8 +890,8 @@ This request returns most recent released versions of all valuesets.
                             ],
                             "text": "Accession ID"
                         },
-                        "system": "http://fhir.openconceptlab.org",
-                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY20/v12.0/"
+                        "system": "https://fhir.qa.aws.openconceptlab.org",
+                        "value": "/orgs/PEPFAR-Test8/ValueSet/MER_REFERENCE_INDICATORS_FY20/version/v12.0/"
                     }
                 ],
                 "version": "v12.0",
@@ -903,6 +906,206 @@ This request returns most recent released versions of all valuesets.
 ```
 
 </details>
+<br />
+
+## Create ValueSet
+
+The ValueSet can be created in two ways either using global namespace or owner namespace. The server returns HTTP `201 Created` on succussful operation. 
+
+<b>Create Accession identifier</b>
+
+```
+{
+    "type": {
+        "coding": [
+            {
+                "system": "http://hl7.org/fhir/v2/0203",
+                "code": "ACSN",
+                "display": "Accession ID"
+            }
+        ],
+        "text": "Accession ID"
+    },
+    "system": "<HOSTED FHIR SERVER ADDRESS>",
+    "value": "<RESOURCE URI>"
+}
+
+# Accepted values for system based on environment:
+- https://fhir.aws.openconceptlab.org
+- https://fhir.qa.aws.openconceptlab.org
+- https://fhir.staging.aws.openconceptlab.org
+- https://fhir.demo.aws.openconceptlab.org
+
+```
+
+**NOTE:**
+1. The `ValueSet.url` is mandatory field.
+2. If version is not provided either in `accession identifier` or in `version` field, then ValueSet of `default version 0.1` will be created.
+3. The version value in `accession identifier` takes precedence in case version is provided in both `accession identifier` and `version` field.
+4. If `ValueSet.language` is empty then `en` languages is assumed.
+5. If `ValueSet.status` is empty then `draft` status is assumed.
+6. In Global namespace, the ValueSet.identifier (accession) is required and the ValueSet.Id is ignored.
+7. In Owner namespace, either ValueSet.identifier (accession) or ValueSet.Id is required. Both can not be empty.
+8. The ValueSet.compose.include.system is mandatory field.
+9. All of the CodeSystems included in ValueSet.compose.include.system should be canonical url of CodeSystem and known to OCL.
+10. The concept codes provided in ValueSet.compose.include.concept.code should exist in respective CodeSystem and only valid codes will be added in ValueSet.
+
+#### Using global namespace
+
+#### Request url
+
+`POST /fhir/ValueSet/`
+
+<details>
+<summary><b>Example request</summary>
+
+```json
+{
+    "resourceType": "ValueSet",
+    "id": "Test1",
+    "url": "https://ocl.org/ValueSet/test1",
+    "identifier": [
+        {
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://hl7.org/fhir/v2/0203",
+                        "code": "ACSN",
+                        "display": "Accession ID"
+                    }
+                ],
+                "text": "Accession ID"
+            },
+            "system": "https://fhir.qa.aws.openconceptlab.org",
+            "value": "/users/testuser/ValueSet/Test1/"
+        }
+    ],
+    "version": "v5.0",
+    "contact": [
+        {
+            "name": "Jon Doe 1",
+            "telecom": [
+                {
+                    "system": "email",
+                    "value": "jondoe1@gmail.com",
+                    "use": "work",
+                    "rank": 1,
+                    "period": {
+                        "start": "2020-10-29T10:26:15-04:00",
+                        "end": "2025-10-29T10:26:15-04:00"
+                    }
+                }
+            ]
+        }
+    ],
+    "jurisdiction": [
+        {
+            "coding": [
+                {
+                    "system": "http://unstats.un.org/unsd/methods/m49/m49.htm",
+                    "code": "USA",
+                    "display": "United States of America"
+                }
+            ]
+        }
+    ],
+    "compose": {
+        "include": [
+            {
+                "system": "https://ocl.org/CodeSystem/test1",
+                "version": "v2.0",
+                "concept": [
+                    {
+                        "code": "AGYW_PREV"
+                    },
+                    {
+                        "code": "CXCA_SCRN"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+```
+</details>
+<br />
+
+#### Using owner namespace
+
+#### Request url
+
+`POST /orgs/:org/ValueSet/`
+
+`POST /users/:user/ValueSet/`
+
+<details>
+<summary><b>Example request</summary>
+
+```json
+{
+    "resourceType": "ValueSet",
+    "id": "Test1",
+    "url": "https://ocl.org/ValueSet/test1",
+    "version": "v5.0",
+    "contact": [
+        {
+            "name": "Jon Doe 1",
+            "telecom": [
+                {
+                    "system": "email",
+                    "value": "jondoe1@gmail.com",
+                    "use": "work",
+                    "rank": 1,
+                    "period": {
+                        "start": "2020-10-29T10:26:15-04:00",
+                        "end": "2025-10-29T10:26:15-04:00"
+                    }
+                }
+            ]
+        }
+    ],
+    "jurisdiction": [
+        {
+            "coding": [
+                {
+                    "system": "http://unstats.un.org/unsd/methods/m49/m49.htm",
+                    "code": "USA",
+                    "display": "United States of America"
+                }
+            ]
+        }
+    ],
+    "compose": {
+        "include": [
+            {
+                "system": "https://ocl.org/CodeSystem/test1",
+                "version": "v2.0",
+                "concept": [
+                    {
+                        "code": "AGYW_PREV"
+                    },
+                    {
+                        "code": "CXCA_SCRN"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+```
+</details>
+<br />
+
+## Delete ValueSet
+The ValueSet can only be deleted using Gloabl Namespace. The server returns HTTP `204 No Content` on succussful operation.
+
+#### Request url
+
+`DELETE /orgs/:org/ValueSet/:id/version/:version`
+
+`DELETE /users/:user/ValueSet/:id/version/:version`
 
 ## FHIR Operations
 
