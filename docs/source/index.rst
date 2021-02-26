@@ -63,13 +63,17 @@ OCL Servers
 
 OCL Infrastructure
 ------------
-OCL is running on AWS infrastructure. Our services are currently deployed in the us-east2 AWS region. All our services are replicated in two separate data centers within the region, thus we can survive a failure of a service, a server instance or the whole data center without any downtime.
+OCL service is scalable, fault tolerant and highly-available.
+
+OCL is running on AWS infrastructure. Our services are currently deployed in the us-east2 AWS region. All our services are replicated in two separate data centers within the region providing fast responses and high-availability. All our services are behind a load balancer, which constantly monitors and instantly redirects traffic if anything goes wrong. We can survive a failure of a service, a server instance or the whole data center without any downtime.
 
 The entire content is being backed up every 24 hours.
 
 We have rolling upgrades in place so most upgrades do not cause any downtime. We will let you know in advance, if a major upgrade is required, which may cause even small downtime.
 
 The whole infrastructure is being managed via code with Terraform, which alows us to apply upgrades and track or revert changes if needed. We are also in position to restore the entire infrastructure from scratch in any other AWS region when the whole region goes down.
+
+We scrupulously gather logs to troubleshoot any issues you report us.
 
 
 .. toctree::
