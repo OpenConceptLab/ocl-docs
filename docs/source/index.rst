@@ -43,21 +43,21 @@ OCL Servers
    * - Environment
      - Servers
    * - Production
-     - -  `API v2 <https://api.aws.openconceptlab.org/>`_ 
+     - - `API v2 <https://api.aws.openconceptlab.org/>`_ 
        - `Web v2 <https://app.aws.openconceptlab.org>`_ 
-       -  `API v1 <https://api.openconceptlab.org/>`_ 
+       - `API v1 <https://api.openconceptlab.org/>`_ 
        - `Web v1 <https://openconceptlab.org>`_ 
        - `Docs <https://docs.openconceptlab.org>`_
        - `Community Website <https://aws.openconceptlab.org/>`_
    * - Staging
-     - -  `API v2 <https://api.staging.aws.openconceptlab.org/>`_ 
+     - - `API v2 <https://api.staging.aws.openconceptlab.org/>`_ 
        - `Web v2 <https://app.staging.aws.openconceptlab.org>`_ 
-       -  `API v1 <https://api.staging.openconceptlab.org/>`_ 
+       - `API v1 <https://api.staging.openconceptlab.org/>`_ 
        - `Web v1 <https://staging.openconceptlab.org>`_ 
    * - QA
-     - -  `API v2 <https://api.qa.aws.openconceptlab.org/>`_ 
+     - - `API v2 <https://api.qa.aws.openconceptlab.org/>`_ 
        - `Web v2 <https://app.qa.aws.openconceptlab.org>`_ 
-       -  `API v1 <https://api.qa.openconceptlab.org/>`_ 
+       - `API v1 <https://api.qa.openconceptlab.org/>`_ 
        - `Web v1 <https://qa.openconceptlab.org>`_ 
 
 
@@ -86,6 +86,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    oclapi/developer/index
    oclapi/admin/index
    oclapi/releases
+   oclapi/openmrsvalidationschema
 
 .. toctree::
    :maxdepth: 2
