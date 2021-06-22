@@ -5,6 +5,14 @@ Updated 2021-06-22
 
 **Maintainer:** [Joe](https://github.com/jamlung-ri/)
 
+# To Do
+* Add links to this documentation
+* Add pictures to GitHub
+* Add pictures to this documentation
+* Make Table of Contents entry in GitHub
+* Add Configuration example files to GitHub
+
+________________________
 OCL’s TermBrowser visualizes content in the OCL Terminology Service and allows end users to interact with the service. A focus of this product is to facilitate terminology adoption by allowing users to browse and use terminology content. However, there might be better ways to view content than OCL’s default views. This is where TermBrowser user interface (UI) configuration comes into play.
 
 The TermBrowser features quick configuration of content views, so a content administrator can quickly change what tabs and columns appear, and more. This alters how OCL displays content without the need for UI development. This allows administrators to optimize how content is displayed so that users can understand and adopt it easier.
@@ -70,8 +78,20 @@ When viewing the JSON configuration file for a view, there are many options avai
 
 #### Text Tabs
 
+While the “About” tab type will display the content in the organization’s “About” attribute, “Text” tabs allow the configurer to combine HTML text and attribute values for an organization, source, or collection.
 
-Documentation Link: https://docs.google.com/document/d/1wIEj48Kx4WllTQl_Zk5qPrnjvNdQ04U9M9VUaFzIAvU/edit
+Similar to “About” tabs, these tabs require the configurer to specify the tab’s type and label. Additionally, a “fields” attribute can be specified with a list of one or more text objects to display. Static lines of text can also be formatted using HTML. Formats and examples of these are listed here:
+| Text Type           | Description                                                                                                                  | Expected Input                                       | Example                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
+| Static Line of Text | Simple text that is defined by the configurer. This text can optionally be formatted with HTML syntax to change its look.    | {value: ‘<HTML format>\[Input text\]</HTML format>’} | {value: '<h1>Main Title</h1>'}                   |
+| OCL Attribute       | Text that is populated by an attribute from OCL. A configurer can specify the OCL attribute to use, optionally with a label. | { id: '\[OCL attribute\]', label: '\[Label\]' }      | { id: 'collections\_url', label: 'Description' } |
+
+Note that multiple lines of text can be combined in a single text tab. Examples of a text tab can be found in Appendix 1.
+
+## Appendix 1
+
+
+Documentation Source Link: https://docs.google.com/document/d/1wIEj48Kx4WllTQl_Zk5qPrnjvNdQ04U9M9VUaFzIAvU/edit
 
 
 
