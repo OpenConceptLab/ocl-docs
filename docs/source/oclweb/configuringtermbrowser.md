@@ -26,12 +26,15 @@ https://app.[:environment.].openconceptlab.org/#/orgs/[:org]/collections/[collec
 
 ### Getting Started
 
-<img align="right" src="image8.png">
+![Image8](image8.png)
+
 On this page, an orange button should appear with the name of the current configuration. Clicking the large button on the left shows the available views and enables the creation or modification of view configurations. Click on the small button on the right to see a view that is already configured.  
 
-<img align="right" src="image4.png">
+![Image4](image4.png)
+
 When viewing available views, a configuration menu will appear at the side, offering multiple options for interaction with the views for that resource (organization, source, etc.). In particular, the Select dropdown is used to select any configured view, view templates that are made available by OCL, and start a new configuration. The New Configuration option will create a blank configuration that can be edited by the administrator, using the configuration options defined below.
-<img align="right" src="TermBrowser UI Configuration Documentation.png">
+
+![Image](https://github.com/OpenConceptLab/ocl-docs/blob/main/docs/source/oclweb/TermBrowser%20UI%20Configuration%20Documentation.png)
 
 
 ### Creating a View from an OCL Template
