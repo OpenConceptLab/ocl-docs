@@ -1,5 +1,5 @@
 # Configuring TermBrowser Views
-Updated 2021-06-22
+Updated 2021-06-24
 
 **Owner:** [Joe](https://github.com/jamlung-ri/)
 
@@ -14,15 +14,11 @@ With the proper permissions, the TermBrowser allows administrators to select and
 To get started with configuration, navigate to the organization to be configured in the OCL TermBrowser. If using a specific OCL environment, such as QA or Staging, that environment should be a part of the URL. The “configs=true” parameter will allow for configuration, given that the correct administrative privileges are in place.
 
 ### Configuration URLs:
-Organization:     https://app.[:environment.]openconceptlab.org/#/orgs/[:org]/?configs=true 
+Organization:     app.[:environment.]openconceptlab.org/#/orgs/[:org]/?configs=true 
 
-Source:     https://app.[:environment.].openconceptlab.org/#/users/[:user]/sources/[source]/?configs=true 
--OR- 
-https://app.[:environment.].openconceptlab.org/#/orgs/[:org]/sources/test/?configs=true 
+Source:     app.[:environment.].openconceptlab.org/#/users/[:user]/sources/[source]/?configs=true 
 
-Collection:     https://app.[:environment.].openconceptlab.org/#/users/[:user]/collections/test/?configs=true
--OR-
-https://app.[:environment.].openconceptlab.org/#/orgs/[:org]/collections/[collection]/?configs=true
+Collection:     app.[:environment.].openconceptlab.org/#/orgs/[:org]/collections/[collection]/?configs=true
 
 ### Getting Started
 
@@ -108,5 +104,6 @@ Note that multiple lines of text can be combined in a single text tab. Examples 
 ![Image1](image1.png)
 [Configuration](https://github.com/OpenConceptLab/ocl-docs/blob/main/docs/source/oclweb/Source%20Config%20Example%201.txt)
 
-Documentation Source Link: https://docs.google.com/document/d/1wIEj48Kx4WllTQl_Zk5qPrnjvNdQ04U9M9VUaFzIAvU/edit
+[Documentation Source Link](https://docs.google.com/document/d/1wIEj48Kx4WllTQl_Zk5qPrnjvNdQ04U9M9VUaFzIAvU/edit)
+
 
