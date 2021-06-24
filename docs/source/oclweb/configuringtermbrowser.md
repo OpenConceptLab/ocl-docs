@@ -7,8 +7,6 @@ Updated 2021-06-22
 
 # To Do
 * Add links to this documentation
-* Add pictures to GitHub
-* Add pictures to this documentation
 * Make Table of Contents entry in GitHub
 * Add Configuration example files to GitHub
 
@@ -90,9 +88,9 @@ Similar to “About” tabs, these tabs require the configurer to specify the ta
 | Static Line of Text | Simple text that is defined by the configurer. This text can optionally be formatted with HTML syntax to change its look.    | {value: ‘<HTML format>\[Input text\]</HTML format>’} | {value: '<h1>Main Title</h1>'}                   |
 | OCL Attribute       | Text that is populated by an attribute from OCL. A configurer can specify the OCL attribute to use, optionally with a label. | { id: '\[OCL attribute\]', label: '\[Label\]' }      | { id: 'collections\_url', label: 'Description' } |
 
-Note that multiple lines of text can be combined in a single text tab. Examples of a text tab can be found in Appendix 1.
+Note that multiple lines of text can be combined in a single text tab. Examples of a text tab can be found below.
 
-## Appendix 1
+## TermBrowser Configuration Examples
 **OCL Default JSON**
 ![Image2](image2.png)
 
@@ -114,6 +112,4 @@ Note that multiple lines of text can be combined in a single text tab. Examples 
 [Configuration](https://github.com/OpenConceptLab/ocl-docs/blob/main/docs/source/oclweb/Source%20Config%20Example%201.txt)
 
 Documentation Source Link: https://docs.google.com/document/d/1wIEj48Kx4WllTQl_Zk5qPrnjvNdQ04U9M9VUaFzIAvU/edit
-
-
 
