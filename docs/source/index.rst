@@ -103,7 +103,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :hidden:
    :caption: OCL TermBrowser
    
-   oclweb/View Configuration
+   oclweb/configuringtermbrowser
    
 .. toctree::
    :maxdepth: 2
