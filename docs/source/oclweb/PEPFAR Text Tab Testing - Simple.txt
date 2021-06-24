@@ -1,0 +1,32 @@
+{
+  tabs: [
+    {
+      type: 'text',
+      label: 'Testing Text Tab',
+      fields: [
+        {
+          value: '<h1>Main Title</h1>'
+        },
+        {
+          value: '<h2>SubTitle</h3>'
+        },
+        {
+          id: 'collections_url',
+          label: 'Description'
+        },
+        {
+          id: 'location',
+          label: 'Location'
+        },
+        {
+          id: 'text',
+          label: 'About'
+        },
+        {
+          value: 'Absolutely plain text, there has never been plainer text than this right here, the plainest of plain text to ever have plained'
+        }
+      ],
+      default: true
+    }
+  ]
+}

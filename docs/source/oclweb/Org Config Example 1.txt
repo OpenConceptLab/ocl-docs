@@ -1,0 +1,35 @@
+{
+  tabs: [
+    {
+      uri: '/orgs/PEPFAR-Test10b/sources/MER/',
+      type: 'concepts',
+      label: 'Testing Ref Inds Here',
+      fields: [
+        {
+          display_name: 'Name'
+        },
+        {
+          'extras.Guidance Version': 'Version'
+        }
+      ],
+      layout: 'list',
+      default: true,
+      filters: {
+        concept_class: 'reference indicator',
+        'extras.Reporting frequency': {
+          name: 'Reporting Frequency',
+          options: [
+            'Quarterly',
+            'Semi-Annually',
+            'Annually',
+            'Other'
+          ]
+        }
+      },
+      page_size: 100,
+      query_params: {
+        includeExtras: true
+      }
+    }
+  ]
+}

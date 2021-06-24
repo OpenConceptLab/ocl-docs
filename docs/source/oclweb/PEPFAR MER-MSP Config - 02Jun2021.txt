@@ -1,0 +1,179 @@
+{
+  name: 'MSP',
+  tabs: [
+    {
+      type: 'about',
+      label: 'Home',
+      default: true
+    },
+    {
+      type: 'concepts',
+      label: 'Reference Indicators',
+      fields: [
+        {
+          display_name: 'Name'
+        },
+        {
+          'extras.Guidance Version': 'Version'
+        }
+      ],
+      layout: 'list',
+      default: false,
+      filters: {
+        concept_class: 'reference indicator',
+        'extras.Reporting frequency': {
+            name: 'Reporting Frequency',
+            options: [
+              'Quarterly',
+              'Semi-Annually',
+              'Annually',
+              'Other'
+            ]
+          },
+        'extras.Period': {
+        name: 'Period',
+        default: 'FY21',
+        options: [
+            'FY16',
+            'FY17',
+            'FY18',
+            'FY19',
+            'FY20',
+            'FY21'
+            ]
+        }
+      },
+      page_size: 100,
+      query_params: {
+        includeExtras: true
+      }
+    },
+    {
+      type: 'concepts',
+      label: 'Data Elements',
+      fields: [
+        {
+          display_name: 'Name'
+        },
+        {
+          id: 'UID'
+        },
+        {
+          'extras.source': 'Source'
+        },
+        {
+          concept_class: 'Type'
+        }
+      ],
+      layout: 'list',
+      default: false,
+      filters: {
+        concept_class: 'data element',
+        'extras.source': {
+          name: 'Source',
+          options: [
+              'DATIM',
+              'iHUB'
+              ]
+          },
+        'extras.Applicable Periods': {
+        name: 'Period',
+        options: [
+            'FY16',
+            'FY17',
+            'FY18',
+            'FY19',
+            'FY20',
+            'FY21'
+            ]
+        },
+        'extras.resultTarget': {
+          name: 'Type',
+          options: [
+            'Result',
+            'Target'
+          ]
+        },
+        'extras.Reporting frequency': {
+            name: 'Reporting Frequency',
+            options: [
+              'Quarterly',
+              'Semi-Annually',
+              'Annually',
+              'Other'
+            ]
+          },
+        'extras.pepfarSupportType': {
+          name: 'PEPFAR Support Type',
+          options: [
+            'Direct Service Delivery',
+            'Technical Assistance',
+            'Central Support'
+          ]
+        },
+        'extras.numeratorDenominator': {
+          name: 'Numerator/Denominator',
+          options: [
+            'Numerator',
+            'Denominator'
+          ]
+        }
+      },
+      page_size: 25,
+      query_params: {
+        includeExtras: true
+      }
+    },
+    {
+      type: 'concepts',
+      label: 'DATIM Indicators',
+      fields: [
+        {
+          display_name: 'Name'
+        },
+        {
+          id: 'UID'
+        },
+        {
+          concept_class: 'Type'
+        }
+      ],
+      layout: 'list',
+      default: false,
+      filters: {
+        concept_class: 'indicator',
+        'extras.Applicable Periods': {
+          name: 'Period',
+          options: [
+              'FY16',
+              'FY17',
+              'FY18',
+              'FY19',
+              'FY20',
+              'FY21'
+              ]
+          },
+          'extras.datatype': {
+            name: 'Data Type',
+            options: [
+                'Number',
+                'Ratio',
+                'Percentage'
+                ]
+            },
+            'extras.resultTarget': {
+              name: 'Type',
+              options: [
+                'Result',
+                'Target'
+              ]
+            }
+      },
+      page_size: 25,
+      query_params: {
+        includeExtras: true
+      }
+    }
+  ],
+  description: 'This is the early concept for PEPFARs MSP in the new OCL TermBrowser'
+}

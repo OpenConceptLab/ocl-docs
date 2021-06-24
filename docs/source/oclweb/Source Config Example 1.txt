@@ -1,0 +1,40 @@
+{
+  tabs: [
+    {
+        type: 'collections',
+        uri: '/orgs/PEPFAR-Test10b/',
+        label: 'Code Lists',
+        fields: [
+          {
+            full_name: 'Name'
+          },
+          {
+            'extras.resultTarget': 'Result/Target'
+          }
+        ],
+        layout: 'list',
+        filters: {
+          collection_type: 'Code List',
+          'extras.resultTarget': {
+            name: 'Type',
+            options: [
+              'Result',
+              'Target'
+            ]
+          },
+          'extras.Applicable Periods': {
+            name: 'Period',
+            options: [
+              'FY16',
+              'FY17',
+              'FY18',
+              'FY19',
+              'FY20',
+              'FY21'
+            ]
+          }
+        },
+        page_size: 25
+      }
+  ]
+}
