@@ -5,12 +5,6 @@ Updated 2021-06-22
 
 **Maintainer:** [Joe](https://github.com/jamlung-ri/)
 
-# To Do
-* Add links to this documentation
-* Make Table of Contents entry in GitHub
-* Add Configuration example files to GitHub
-
-________________________
 OCL’s TermBrowser visualizes content in the OCL Terminology Service and allows end users to interact with the service. A focus of this product is to facilitate terminology adoption by allowing users to browse and use terminology content. However, there might be better ways to view content than OCL’s default views. This is where TermBrowser user interface (UI) configuration comes into play.
 
 The TermBrowser features quick configuration of content views, so a content administrator can quickly change what tabs and columns appear, and more. This alters how OCL displays content without the need for UI development. This allows administrators to optimize how content is displayed so that users can understand and adopt it easier.
