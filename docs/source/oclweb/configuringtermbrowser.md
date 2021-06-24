@@ -75,9 +75,10 @@ When viewing the JSON configuration file for a view, there are many options avai
 While the “About” tab type will display the content in the organization’s “About” attribute, “Text” tabs allow the configurer to combine HTML text and attribute values for an organization, source, or collection.
 
 Similar to “About” tabs, these tabs require the configurer to specify the tab’s type and label. Additionally, a “fields” attribute can be specified with a list of one or more text objects to display. Static lines of text can also be formatted using HTML. Formats and examples of these are listed here:
+
 | Text Type           | Description                                                                                                                  | Expected Input                                       | Example                                          |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
-| Static Line of Text | Simple text that is defined by the configurer. This text can optionally be formatted with HTML syntax to change its look.    | {value: ‘<HTML format>\[Input text\]</HTML format>’} | {value: '<h1>Main Title</h1>'}                   |
+| Static Line of Text | Simple text that is defined by the configurer. This text can optionally be formatted with HTML syntax to change its look.    | {value: ‘[HTML format][Input text][/HTML format]’} | {value: 'Main Title'}                   |
 | OCL Attribute       | Text that is populated by an attribute from OCL. A configurer can specify the OCL attribute to use, optionally with a label. | { id: '\[OCL attribute\]', label: '\[Label\]' }      | { id: 'collections\_url', label: 'Description' } |
 
 Note that multiple lines of text can be combined in a single text tab. Examples of a text tab can be found below.
