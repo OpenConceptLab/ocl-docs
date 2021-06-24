@@ -101,6 +101,13 @@ We scrupulously gather logs to troubleshoot any issues you report us.
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :caption: OCL TermBrowser
+   
+   oclweb/View Configuration
+   
+.. toctree::
+   :maxdepth: 2
+   :hidden:
    :caption: OCL for OpenMRS
    
    oclomrs/openmrstooclmapping
