@@ -34,7 +34,7 @@ On this page, an orange button should appear with the name of the current config
 
 When viewing available views, a configuration menu will appear at the side, offering multiple options for interaction with the views for that resource (organization, source, etc.). In particular, the Select dropdown is used to select any configured view, view templates that are made available by OCL, and start a new configuration. The New Configuration option will create a blank configuration that can be edited by the administrator, using the configuration options defined below.
 
-![Image](https://github.com/OpenConceptLab/ocl-docs/blob/main/docs/source/oclweb/TermBrowser%20UI%20Configuration%20Documentation.png)
+![Image](uiconfig.png)
 
 
 ### Creating a View from an OCL Template
