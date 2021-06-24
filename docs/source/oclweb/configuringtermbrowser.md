@@ -34,8 +34,6 @@ When viewing available views, a configuration menu will appear at the side, offe
 <img align="right" src="TermBrowser UI Configuration Documentation.png">
 
 
-# add pics here
-
 ### Creating a View from an OCL Template
 
 Some configuration templates have already been created by the OCL team and are available for adaptation in other organizations, sources, etc. To get started using a template, select the template using the Select dropdown. This will show what your content will look like if it used this template as is. 
