@@ -33,6 +33,13 @@ OCL offers many advanced features. Learn more about these integrations and how y
 * **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
 
 
+OCL Releases
+------------
+
+OCL software releases are being published to `Dockerhub (tagged binaries)<https://hub.docker.com/u/openconceptlab>` and to `GitHub (tagged source code)<https://github.com/OpenConceptLab>`. We follow `semantic release versioning<https://semver.org/>`. Releases of oclapi2, oclweb2 and oclfhir are coordinated to maintain compatibility within the same minor version. We append a shortened Git SHA (8 characters) to each version so it is easier to track specific commit used for that particular release. Release notes are available on GitHub for `oclapi2<https://github.com/OpenConceptLab/oclapi2/releases>`, `oclweb2<https://github.com/OpenConceptLab/oclweb2/releases>` and `oclfhir<https://github.com/OpenConceptLab/oclfhir/releases>`.
+
+The user can check the version of software in the oclweb2 footer as well as in 'x-ocl-api-version' and 'x-ocl-fhir-version' response headers from API and FHIR REST services.
+
 OCL Servers
 ------------
 
