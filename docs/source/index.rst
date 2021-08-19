@@ -126,7 +126,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :hidden:
    :caption: OCL Online
 
-   oclonline
+   oclonline/publicationplan
 
 .. toctree::
    :maxdepth: 2
