@@ -1,4 +1,4 @@
-# 2021 OCL Roadmap: DRAFT
+# 2021 Jan-May OCL Roadmap
 ## Overview
 ## What is the OCL Open-source Technical Roadmap?
 The Open Concept Lab Open-source Product Roadmap is a set of milestones for our major products and community-sponsored tools that help us meet the needs of our community of users.
@@ -14,7 +14,7 @@ The OCL community develops and supports these tools as open-source software that
 
 OCL also supports the **Metadata Clearinghouse**, which is a shared instance of all OCL's open source tools hosted at www.openconceptlab.org. The Metadata Clearinghouse aims to be a central location for organizations to access and publish terminology and related metadata important to low- and middle-income countries.
 
-## 2021 OCL Roadmap
+## Roadmap
 ### Summary of Goals
 - Launch “generation 2” of the OCL toolkit and infrastructure using a modern, scalable tech stack
 - Implement FHIR v4.0.1 terminology services support
@@ -34,7 +34,7 @@ OCL also supports the **Metadata Clearinghouse**, which is a shared instance of 
 |  Launch OCL Infrastructure v2 | Jan 2021   | AWS FedRamp-compliant host with scalability improvements, incl. clustering, load balancing, service redundancy, etc. <br> More details here: [OCL API Upgrade Sep-2020](https://docs.google.com/presentation/d/12aWBZhCzNigDHWUhDdPCeW4ZQCnFc-4_vqsSRTf-TVA/edit?usp=sharing) |
 |  SVCM and FHIR v4.0.1 Support | Mar/Apr 2021   | Implementation of FHIR CodeSystem, ValueSet, and ConceptMap resources and operations, terminology services as specified by the Sharing Valuesets and Concept Maps (mSVCM) IHE Profile |
 
-#### Product: OCL Metadata Browser
+#### Product: OCL Metadata Browser (renamed to OCL TermBrowser)
 
 | Milestone     | Target    | Description     |
 | ------------- | ---------- | ----------- |
@@ -43,23 +43,24 @@ OCL also supports the **Metadata Clearinghouse**, which is a shared instance of 
 | SVCM/FHIR-TS Connector | May 2021   | Support for the Metadata Browser to connect directly to an SVCM-compliant system to browse terminology resources.|
 | Custom Views for Computable Guidance | May 2021   | Customizable templates for viewing metadata associated with emerging computable guidelines. Examples include the WHO Smart Guidelines and the PEPFAR Data Aggregation Service for Health initiatives.|
 
-#### Product: OCL Metadata Clearinghouse
+#### Product: OCL Metadata Clearinghouse (renamed to OCL Online)
 
 | Milestone     | Target    | Description     |
 | ------------- | ---------- | ----------- |
 |  Launch OCL Community Site | Jan 2021   | New WordPress site that provides a one-stop shop for all things related to OCL. Replaces existing static pages at openconceptlab.org and wikis currently available on GitHub. |
 |  Publish ICD10 and HL7 | May 2021   | In addition to currently published content, publish ICD-10 and HL7 terminologies to make them available in the central implementation of OCL’s tools. |
 
-#### Product: OCL Authoring Interface
+#### Product: OCL Authoring Interface (merged into OCL TermBrowser)
 
 | Milestone     | Target    | Description     |
 | ------------- | ---------- | ----------- |
+| n/a |  |  |
 
-
-#### Product: OCL for OpenMRS Authoring Interface
+#### Product: OCL for OpenMRS Authoring Interface (renamed to OCL Dictionary Manager)
 
 | Milestone     | Target    | Description     |
 | ------------- | ---------- | ----------- |
+| n/a |  |  |
 
 
 

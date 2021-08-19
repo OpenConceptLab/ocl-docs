@@ -2,7 +2,7 @@ What is OCL?
 ------------
 OCL is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
 
-Here are the main use cases for adopting OCL
+Here are the main use cases for adopting OCL:
 
 .. image:: OCL_overview.png
   :width: 800
@@ -11,7 +11,7 @@ Here are the main use cases for adopting OCL
 OCL Overview
 -------------
 
-Learn more about OCL, its tools and the core features.
+Learn more about OCL, its tools and its core features:
 
 * **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` | :doc:`API Reference of OCL</oclapi/apireference/index>`
 * **OCL roadmaps:** :doc:`OCL Roadmap 2021 </roadmaps/2021/roadmap>` |  :doc:`OCL Roadmap 2020 </roadmaps/2020/roadmap>`
@@ -20,17 +20,17 @@ Learn more about OCL, its tools and the core features.
 
 Getting Started with OCL
 -------------------------
-Dive deeper into OCL features and how you can get started interacting with OCL. 
+Learn how to start contributing to OCL as a developer:
 
 * **As a developer:** :doc:`Getting Started as a Developer</oclapi/developer/gettingstarted>` | :doc:`Developers Guide</oclapi/developer/developersguide>`
 
 Advanced Features of OCL
 --------------------------
 
-OCL offers many advanced features. Learn more about these integrations and how you can interact with OCL.
+Learn more about these integrations and how you can interact with OCL.
 
 * **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/apireference/bulkimporting>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
-* **Integration layer:** Interface layer is a set of API endpoints to supports PEPFAR usecases through OpenHIM mediators. `Interface layer API <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
+* **Interface layer:** The interface layer is a set of API endpoints customized to support PEPFAR use cases through OpenHIM mediators. `Interface layer API Documentation <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
 
 
 OCL Releases
@@ -50,22 +50,23 @@ OCL Servers
    * - Environment
      - Servers
    * - Production
-     - - `API v2 <https://api.aws.openconceptlab.org/>`_ 
-       - `Web v2 <https://app.aws.openconceptlab.org>`_ 
-       - `API v1 <https://api.openconceptlab.org/>`_ 
-       - `Web v1 <https://openconceptlab.org>`_ 
+     - - `Community Website <https://openconceptlab.org/>`_
        - `Docs <https://docs.openconceptlab.org>`_
-       - `Community Website <https://aws.openconceptlab.org/>`_
+       - `API v2 <https://api.openconceptlab.org/>`_ 
+       - `Web v2 <https://app.openconceptlab.org>`_ 
+       - `FHIR <https://fhir.openconceptlab.org>`_
    * - Staging
-     - - `API v2 <https://api.staging.aws.openconceptlab.org/>`_ 
-       - `Web v2 <https://app.staging.aws.openconceptlab.org>`_ 
-       - `API v1 <https://api.staging.openconceptlab.org/>`_ 
-       - `Web v1 <https://staging.openconceptlab.org>`_ 
+       - `Web v2 <https://app.staging.openconceptlab.org>`_ 
+     - - `API v2 <https://api.staging.openconceptlab.org/>`_ 
+       - `FHIR <https://fhir.staging.openconceptlab.org>`_
+   * - Demo
+       - `Web v2 <https://app.demo.openconceptlab.org>`_ 
+     - - `API v2 <https://api.demo.openconceptlab.org/>`_ 
+       - `FHIR <https://fhir.demo.openconceptlab.org>`_
    * - QA
-     - - `API v2 <https://api.qa.aws.openconceptlab.org/>`_ 
-       - `Web v2 <https://app.qa.aws.openconceptlab.org>`_ 
-       - `API v1 <https://api.qa.openconceptlab.org/>`_ 
-       - `Web v1 <https://qa.openconceptlab.org>`_ 
+       - `Web v2 <https://app.qa.openconceptlab.org>`_ 
+     - - `API v2 <https://api.qa.openconceptlab.org/>`_ 
+       - `FHIR <https://fhir.qa.openconceptlab.org>`_
 
 
 OCL Infrastructure
@@ -98,7 +99,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OCL on FHIR
+   :caption: OCL FHIR
    
    oclfhir/overview
    oclfhir/codesystem
@@ -115,7 +116,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OCL for OpenMRS
+   :caption: OpenMRS Dictionary Manager
    
    oclomrs/openmrstooclmapping
    oclomrs/importingciel
@@ -123,14 +124,21 @@ We scrupulously gather logs to troubleshoot any issues you report us.
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: General OCL
+   :caption: OCL Online
+
+   oclonline/publicationplan
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Other
 
    ocl/branding
 
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OCL Roadmaps
+   :caption: Archived OCL Roadmaps
 
    roadmaps/2021/roadmap
    roadmaps/2020/roadmap

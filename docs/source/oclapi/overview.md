@@ -1,7 +1,7 @@
-OCL API v1.0 Overview
+OCL API Overview
 =======================
 ## Overview
-The **OCL-API v1.0** is an open definition for collaborative management of data dictionaries using a RESTful API. Data dictionaries consist of data definitions, terminology or indicators, which are collectively referred to as `concepts`. Relationships between concepts are defined in OCL as `mappings`. The API supports searching and editing concepts and mappings, building `sources` (a.k.a. data dictionaries), and logically grouping concepts and mappings into `collections`. Social features such as sharing, following, etc. are planned for subsequent phases. This is the Technical Documentation for the **OCL-API v1.0**.
+The **OCL-API v2.0** is an open definition for collaborative management of data dictionaries using a RESTful API. Data dictionaries consist of data definitions, terminology or indicators, which are collectively referred to as `concepts`. Relationships between concepts are defined in OCL as `mappings`. The API supports searching and editing concepts and mappings, building `sources` (a.k.a. data dictionaries), and logically grouping concepts and mappings into `collections`. Social features such as sharing, following, etc. are planned for subsequent phases. This is the Technical Documentation for the **OCL-API v1.0**.
 
 A cloud-based instance of OCL is available at <https://openconceptlab.org>. The OCL User Documentation is available at <https://github.com/OpenConceptLab/ocl_web/wiki/>.
 
