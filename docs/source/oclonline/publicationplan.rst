@@ -35,6 +35,7 @@ Scope of Content Publication
 How do we validate content when we publish it in OCL?
 ----------------------------------
 To ensure that the content loads into OCL as expected, there are several validation steps taken for each set of content to check for accuracy between what should show in OCL versus what is actually appearing in OCL.
+
 1. Spot Checks: Looking at 5 or more exemplary concepts in depth, we check that the concept appears in OCL and that all the expected attributes are present. If applicable, we check that these concepts are correctly placed in their hierarchy.
 
 2. Hierarchy Check: If the content is hierarchical, we look down its tree, particularly looking for concepts that should but do not have a parent concept.
