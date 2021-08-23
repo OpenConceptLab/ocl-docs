@@ -41,6 +41,7 @@ To ensure that the content loads into OCL as expected, there are several validat
 2. Hierarchy Check: If the content is hierarchical, we look down its tree, particularly looking for concepts that should but do not have a parent concept.
 
 3. Automated Script: A python script uses two files, the bulk import file and the export file created within OCL, for a set of content to check for multiple potential errors:
+
     - Missing concepts and mappings that are not present in OCL
     - Extra concepts and mappings that are present in OCL but should not have been loaded in
     - Checks for duplicate concept or mapping IDs in the export file
