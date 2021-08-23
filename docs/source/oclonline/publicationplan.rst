@@ -32,6 +32,18 @@ Scope of Content Publication
        - PEPFAR MER and MOH Alignment
        - Partners in Health (PIH) OpenMRS Concept Dictionary
 
+How do we validate content when we publish it in OCL?
+----------------------------------
+To ensure that the content loads into OCL as expected, there are several validation steps taken for each set of content to check for accuracy between what should show in OCL versus what is actually appearing in OCL.
+1. Spot Checks: Looking at 5 or more exemplary concepts in depth, we check that the concept appears in OCL and that all the expected attributes are present. If applicable, we check that these concepts are correctly placed in their hierarchy.
+1. Hierarchy Check: If the content is hierarchical, we look down its tree, particularly looking for concepts that should but do not have a parent concept.
+1. Automated Script: A python script uses two files, the bulk import file and the export file created within OCL, for a set of content to check for multiple potential errors:
+    * Missing concepts and mappings that are not present in OCL
+    * Extra concepts and mappings that are present in OCL but should not have been loaded in
+    * Checks for duplicate concept or mapping IDs in the export file
+    * Compares concept attributes to ensure these attributes are similar between the import and the export files
+
+
 How do we keep content up-to-date?
 ----------------------------------
 Each terminology has its own process and schedule for releasing updates. OCL and its partners, Apelon and the Regenstrief Institute,
