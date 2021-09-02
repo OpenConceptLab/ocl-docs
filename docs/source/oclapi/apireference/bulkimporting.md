@@ -8,19 +8,23 @@ Note that OCL also provides two Django management commands for running imports d
 ## Bulk Import Scripts
 ### Syntax
 A bulk import script is a JSON lines file, where each line is an OCL-formatted JSON resource. The syntax of each resource is the same as described elsewhere in the OCL documentation, with three modifications:
-* Each resource must include a `type` attribute specifying a valid resource type, eg `Concept`, `Source`, `Organization`
-* For all resources other than orgs and users, each resource must define an owner and, if applicable, a repository. These are defined using one or more of these attributes: `owner`, `owner_type`, `source`, `collection`.
+* Each resource must include a `type` attribute specifying any of OCL's valid resource types, eg: `Organization`, `Source`, `Collection`, `Source Version`, `Collection Version`, `Concept`, `Mapping`, or `Reference`. 
+* For all resources other than orgs and users, each resource must define an owner and, if applicable, a repository. These are defined using one or more of these attributes:
+    * `owner` - Either a username or an organization mnemonic, based on the value of `owner_type`
+    * `owner_type` - Either `Organization` or `User`
+    * `source` - Mnemonic of a source, for a `Source Version`, `Concept`, `Mapping` or other relevant resource
+    * `collection` - Mnemonic of a collection, for a `Collection Version`, `Reference` or other relevant resource
 * Each resource may optionally provide processing directives. Currently supported processing directives are:
     * `__action`: There are 4 action types supported:
         * `CREATE_OR_UPDATE` (default) - By default, the bulk importer will attempt to update a resource if it already exists; otherwise it will try to create a new resource.
         * `CREATE` - The bulk importer will attempt to create a new resource regardless of whether it already exists
         * `UPDATE` - The bulk importer will attempt to update a resource regardless of whether it exists
-        * `DELETE` - The bulk importer will attempt to delete a resource
+        * `DELETE` - The bulk importer will attempt to delete a resource. Note that `DELETE` requests in a bulk import script occur synchronously. 
         * _`SKIP`_ (not currently implemented) - The bulk importer will skip the resource
         * _`DELETE_IF_EXISTS`_ (not currently implemented) - The bulk importer will attempt to delete a resource if it confirms that it exists
     * `__cascade`: For resources of type `Reference`, it is possible to specify whether and how mappings are cascaded:
-        * `None` (default) - No cascading will occur. Only the
-        * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added
+        * `None` (default) - No cascading will occur.
+        * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added. Note that the `to_concept` for each mapping is not added.
 
 ### Bulk Import Script Example
 The following bulk import script would create an organization, a source, and a concept:
@@ -29,6 +33,12 @@ The following bulk import script would create an organization, a source, and a c
 {"type": "Source", "id": "MyTestSource", "short_code": "MyTestSource", "name": "My Test Source", "full_name": "My Test Source", "owner": "MyOrg", "owner_type": "Organization", "description": "Using this source just for testing purposes", "source_type": "Dictionary", "public_access": "View", "default_locale": "en", "supported_locales": "en", "custom_validation_schema": "None"}
 {"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Disaggregate", "source": "MyTestSource", "extras": null, "descriptions": null, "owner": "MyOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "HSpL3hSBx6F", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "50+, Male, Negative", "name_type": "Fully Specified"}]}
 ```
+
+## Parallel vs Inline Processing
+By default, OCL attempts to process bulk imports in parallel using multiple workers where it can, providing a significant performance improvement. OCL will process a sequential list of resources of the same type, eg `Concept` or `Mapping`, in parallel, pausing before moving onto a resource of a different type. For example, if a bulk import script contains 5 concepts and 5 mappings, in that order, the 5 concepts would be processed in parallel and then the 5 mappings would be processed in parallel after the concepts had all been processed.
+
+Note that any `DELETE` action will occur in sequence and finish processing before moving to the next resource.
+
 
 ## Bulk Import Permissions
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
