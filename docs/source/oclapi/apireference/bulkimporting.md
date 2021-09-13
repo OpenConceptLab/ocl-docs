@@ -108,11 +108,11 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
    * **name_type** (Optional) - default=”Fully Specified”
    * **name_external_id** (Optional) -
 * Additional names:
-   * **name[<index>]** -
-   * **name_locale[<index>]** (Optional) - default=”en”
-   * **name_locale_preferred[<index>]** (Optional) - default=False
-   * **name_type[<index>]** (Optional) -
-   * **name_external_id[<index>]** (Optional) -
+   * **name[index]** -
+   * **name_locale[index]** (Optional) - default=”en”
+   * **name_locale_preferred[index]** (Optional) - default=False
+   * **name_type[index]** (Optional) -
+   * **name_external_id[index]** (Optional) -
 * Initial Description:
    * **description** -
    * **description_locale** (Optional) - default=”en”
@@ -120,42 +120,42 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
    * **description_type** (Optional) -
    * **description_external_id** (Optional) -
 * Additional Descriptions:
-   * **description[<index>]** -
-   * **description_locale[<index>]** (Optional) - default=”en”
-   * **description_locale_preferred[<index>]** (Optional) - default=False
-   * **description_type[<index>]** (Optional) -
-   * **description_external_id[<index>]** (Optional) -
+   * **description[index]** -
+   * **description_locale[index]** (Optional) - default=”en”
+   * **description_locale_preferred[index]** (Optional) - default=False
+   * **description_type[index]** (Optional) -
+   * **description_external_id[index]** (Optional) -
 * Custom Attributes: 
    * CSV Syntax:
-      * **attr:<custom-attribute-key>** (Optional) - custom attributes
-      * **attr_value[<index>], attr_key[<index>]** (Optional) - custom attributes
+      * **attr:[custom-attribute-key]** (Optional) - custom attributes
+      * **attr_value[index], attr_key[index]** (Optional) - custom attributes
    * JSON Syntax:
-      * **"extras"**:{"<attr_key>":"attr_value", … }
+      * **"extras"**:{"[attr_key]":"attr_value", … }
 * Internal Concept Mappings: (Where the concept defined in the row is the `from_concept`)
    * **map_target** - default=”Internal”
    * **map_owner_id** - Automatically set to the concept `owner_id` if omitted
    * **map_owner_type** - Automatically set to the concept `owner_type` if omitted
    * **map_source** - Automatically set to the concept `source` if omitted
-   * **map_type[<index>]** - default=”Same As”
+   * **map_type[index]** - default=”Same As”
    * to_concept must provide a minimum set of fields to resolve to a `to_concept_url`
-      * **map_to_concept_url[<index>]**
-      * **map_to_concept_id[<index>]**
-      * **map_to_concept_name[<index>]**
-      * **map_to_concept_owner_id[<index>]**
-      * **map_to_concept_owner_type[<index>]** - default=”Organization”
-      * **map_to_concept_source[<index>]**
+      * **map_to_concept_url[index]**
+      * **map_to_concept_id[index]**
+      * **map_to_concept_name[index]**
+      * **map_to_concept_owner_id[index]**
+      * **map_to_concept_owner_type[index]** - default=”Organization”
+      * **map_to_concept_source[index]**
 * External Concept Mappings: (Where the concept defined in the row is the `from_concept`)
    * **extmap_target** (Optional) - default=”External”
    * **extmap_owner_id** (Optional) - Automatically set to the concept `owner_id` if omitted
    * **extmap_owner_type** (Optional) - Automatically set to the concept `owner_type` if omitted
    * **extmap_source** (Optional) - Automatically set to the concept `source` if omitted
-   * **extmap_type[<index>]** (Optional) - default=”Same As”
+   * **extmap_type[index]** (Optional) - default=”Same As”
    * to_concept must provide a minimum set of fields to resolve to a to_concept_url
-      * **extmap_to_concept_id[<index>]**
-      * **extmap_to_concept_name[<index>]** (Optional)
-      * **extmap_to_concept_owner_id[<index>]**
-      * **extmap_to_concept_owner_type[<index>]** (Optional) - default=”Organization”
-      * **extmap_to_concept_source[<index>]**
+      * **extmap_to_concept_id[index]**
+      * **extmap_to_concept_name[index]** (Optional)
+      * **extmap_to_concept_owner_id[index]**
+      * **extmap_to_concept_owner_type[index]** (Optional) - default=”Organization”
+      * **extmap_to_concept_source[index]**
 * **parent_concept_url** - If a hierarchical concept, the OCL-formatted URL for this concept’s parent concept.
 ### Standalone Mappings (Internal or External)
 **Required**
