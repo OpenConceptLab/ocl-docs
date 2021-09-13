@@ -35,10 +35,12 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
       * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added
 ## Required and Optional Bulk Import Fields
 ### Organization
+
 **Required**
 * **resource_type** - “Organization”
 * **id** - OCL resource identifier for the organization
 * **name** - Name of the organization
+
 **Optional**
 * **company** - Group or organization that owns the organization resource
 * **website** - URL of the organization’s main website
@@ -96,6 +98,7 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
 * **source** - OCL resource identifier of the source in which this concept will be defined
 * **id** - OCL resource identifier
 * **concept_class** - Type of concept, which can vary across and within sources and collections. 
+
 **Optional**
 * **owner_type** - “Organization” or “User”; default=”Organization”
 * **retired** - default=False
@@ -175,6 +178,7 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
    * **map_to_concept_owner_id** (Optional)
    * **map_to_concept_owner_type** (Optional) - default=”Organization”
    * **map_to_concept_source** (Optional)
+
 **Optional**
 * **owner_type** - “Organization” or “User”; default=”Organization”
 * **map_type** - default=”Same As”
