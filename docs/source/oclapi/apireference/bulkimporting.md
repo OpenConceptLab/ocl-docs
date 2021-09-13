@@ -36,174 +36,174 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
 ## Required and Optional Bulk Import Fields
 ### Organization
 **Required**
-* resource_type - “Organization”
-* id - OCL resource identifier for the organization
-* name - Name of the organization
-Optional
-* company - Group or organization that owns the organization resource
-* website - URL of the organization’s main website
-* location - State, country, etc. of the organization
-* public_access - Allows users outside of the organization to “View” or “Edit” the Organization and its resources, or the organization can be hidden from unauthorized users by setting this to “None” (default=”View”) 
-* Extra attributes - custom attributes that are outside of OCL’s model
-* logo_url - URL of logo image for this organization
-* description - Description of organization
-* text - “About” text for organization
+* **resource_type** - “Organization”
+* **id** - OCL resource identifier for the organization
+* **name** - Name of the organization
+**Optional**
+* **company** - Group or organization that owns the organization resource
+* **website** - URL of the organization’s main website
+* **location** - State, country, etc. of the organization
+* **public_access** - Allows users outside of the organization to “View” or “Edit” the Organization and its resources, or the organization can be hidden from unauthorized users by setting this to “None” (default=”View”) 
+* **Extra attributes** - custom attributes that are outside of OCL’s model
+* **logo_url** - URL of logo image for this organization
+* **description** - Description of organization
+* **text** - “About” text for organization
 ### Repositories (Sources and Collections)
 **Required**
-* resource_type - “Source” or “Collection”
-* owner_id - OCL resource identifier of the OCL user or organization that will own this object
-* id - OCL resource identifier
-* name - Primary name of the repository
+* **resource_type** - “Source” or “Collection”
+* **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
+* **id** - OCL resource identifier
+* **name** - Primary name of the repository
 
 
 **Optional**
-* owner_type - “Organization” or “User”; default=”Organization”
-* short_code - Automatically set to id if omitted
-* full_name - Automatically set to name if omitted
-* description - Description of the repository
-* external_id - Optional external identifier for the repository
-* source_type or collection_type - eg. “Dictionary”, “Interface Terminology”, “Indicator Registry”, “Code List”, “Subset”, etc.
-* default_locale - default=”en”
-* supported_locales - default=”en”
-* website - URL of the main website for the source
-* custom_validation_schema - 
-* public_access - Allows users outside of the organization to “View” or “Edit” the Organization and its resources, or the organization can be hidden from unauthorized users by setting this to “None” (default=”View”)
-* Extra attributes - custom attributes that are outside of OCL’s model
-* canonical_url - (FHIR Attribute) Identifying URL for the source (i.e. the CodeSystem in FHIR) or collection (i.e. the ValueSet in FHIR) 
-* publisher - (FHIR Attribute) The name of the organization or individual that published the resource
-* jurisdiction - (FHIR Attribute) A legal or geographic region in which the resource is intended to be used.
-* purpose - (FHIR Attribute) Explanation of why this resource is needed and why it has been designed as it has.
-* copyright - (FHIR Attribute) A copyright statement relating to the resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the resource.
-* meta - 
-* identifier - (FHIR Attribute) A formal identifier that is used to identify this code system when it is represented in other formats, or referenced in a specification, model, design or an instance.
-* contact - (FHIR Attribute) Contact details to assist a user in finding and communicating with the publisher.
-* content_type - (FHIR Attribute) The extent of the content of the resource (the concepts and codes it defines) are represented in this resource instance.
-* revision_date - (FHIR Attribute) The date (and optionally time) when the resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the code system changes.
-* logo_url - URL of logo image for this resource
-* text - “About” text for resource
-* experimental - (FHIR Attribute) A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-* case_sensitive (Source only) - (FHIR Attribute) If code comparison is case sensitive when codes within this resource are compared to each other.
-* collection_reference - 
-* hierarchy_meaning (Source only) - (FHIR Attribute) The meaning of the hierarchy of concepts as represented in this resource.
-* compositional (Source only) - (FHIR Attribute) The resource defines a compositional (post-coordination) grammar.
-* version_needed (Source only) - (FHIR Attribute) This flag is used to signify that the resource does not commit to concept permanence across versions. If true, a version must be specified when referencing this resource.
-* hierarchy_root_url (Source only) - For hierarchical sources, the OCL-style URL of the highest level concept allows for viewing of hierarchical concepts within the source
-* immutable (Collection only) - (FHIR Attribute) If this is set to 'true', then no new versions of the content logical definition can be created. Note: Other metadata might still change.
+* **owner_type** - “Organization” or “User”; default=”Organization”
+* **short_code** - Automatically set to id if omitted
+* **full_name** - Automatically set to name if omitted
+* **description** - Description of the repository
+* **external_id** - Optional external identifier for the repository
+* **source_type** or **collection_type** - eg. “Dictionary”, “Interface Terminology”, “Indicator Registry”, “Code List”, “Subset”, etc.
+* **default_locale** - default=”en”
+* **supported_locales** - default=”en”
+* **website** - URL of the main website for the source
+* **custom_validation_schema** - 
+* **public_access** - Allows users outside of the organization to “View” or “Edit” the Organization and its resources, or the organization can be hidden from unauthorized users by setting this to “None” (default=”View”)
+* **Extra attributes** - custom attributes that are outside of OCL’s model
+* **canonical_url** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.url)) Identifying URL for the source (i.e. the CodeSystem in FHIR) or collection (i.e. the ValueSet in FHIR) 
+* **publisher** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.publisher)) The name of the organization or individual that published the resource
+* **jurisdiction** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.jurisdiction)) A legal or geographic region in which the resource is intended to be used.
+* **purpose** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.purpose)) Explanation of why this resource is needed and why it has been designed as it has.
+* **copyright** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.copyright)) A copyright statement relating to the resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the resource.
+* **meta** - 
+* **identifier** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.identifier)) A formal identifier that is used to identify this code system when it is represented in other formats, or referenced in a specification, model, design or an instance.
+* **contact** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.contact)) Contact details to assist a user in finding and communicating with the publisher.
+* **content_type** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.content)) The extent of the content of the resource (the concepts and codes it defines) are represented in this resource instance.
+* **revision_date** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.date)) The date (and optionally time) when the resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the code system changes.
+* **logo_url** - URL of logo image for this resource
+* **text** - “About” text for resource
+* **experimental** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.experimental)) A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+* **case_sensitive (Source only)** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.caseSensitive)) If code comparison is case sensitive when codes within this resource are compared to each other.
+* **collection_reference** - 
+* **hierarchy_meaning (Source only)** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.hierarchyMeaning)) The meaning of the hierarchy of concepts as represented in this resource.
+* **compositional (Source only)** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.compositional)) The resource defines a compositional (post-coordination) grammar.
+* **version_needed (Source only)** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.versionNeeded)) This flag is used to signify that the resource does not commit to concept permanence across versions. If true, a version must be specified when referencing this resource.
+* **hierarchy_root_url (Source only)** - For hierarchical sources, the OCL-style URL of the highest level concept allows for viewing of hierarchical concepts within the source
+* **immutable (Collection only)** - ([FHIR Attribute](https://www.hl7.org/fhir/valueset-definitions.html#ValueSet.immutable)) If this is set to 'true', then no new versions of the content logical definition can be created. Note: Other metadata might still change.
 ### Concepts
 **Required**
-* resource_type - “Concept”
-* owner_id - OCL resource identifier of the OCL user or organization that will own this object
-* source - OCL resource identifier of the source in which this concept will be defined
-* id - OCL resource identifier
-* concept_class - Type of concept, which can vary across and within sources and collections. 
-Optional
-* owner_type - “Organization” or “User”; default=”Organization”
-* retired - default=False
-* external_id -
-* datatype - default=”None”
+* **resource_type** - “Concept”
+* **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
+* **source** - OCL resource identifier of the source in which this concept will be defined
+* **id** - OCL resource identifier
+* **concept_class** - Type of concept, which can vary across and within sources and collections. 
+**Optional**
+* **owner_type** - “Organization” or “User”; default=”Organization”
+* **retired** - default=False
+* **external_id** -
+* **datatype** - default=”None”
 * Initial Name:
-   * name -
-   * name_locale (Optional) - default=”en”
-   * name_locale_preferred (Optional) - default=True
-   * name_type (Optional) - default=”Fully Specified”
-   * name_external_id (Optional) -
+   * **name** -
+   * **name_locale** (Optional) - default=”en”
+   * **name_locale_preferred** (Optional) - default=True
+   * **name_type** (Optional) - default=”Fully Specified”
+   * **name_external_id** (Optional) -
 * Additional names:
-   * name[<index>] -
-   * name_locale[<index>] (Optional) - default=”en”
-   * name_locale_preferred[<index>] (Optional) - default=False
-   * name_type[<index>] (Optional) -
-   * name_external_id[<index>] (Optional) -
+   * **name[<index>]** -
+   * **name_locale[<index>]** (Optional) - default=”en”
+   * **name_locale_preferred[<index>]** (Optional) - default=False
+   * **name_type[<index>]** (Optional) -
+   * **name_external_id[<index>]** (Optional) -
 * Initial Description:
-   * description -
-   * description_locale (Optional) - default=”en”
-   * description_locale_preferred (Optional) - default=False
-   * description_type (Optional) -
-   * description_external_id (Optional) -
+   * **description** -
+   * **description_locale** (Optional) - default=”en”
+   * **description_locale_preferred** (Optional) - default=False
+   * **description_type** (Optional) -
+   * **description_external_id** (Optional) -
 * Additional Descriptions:
-   * description[<index>] -
-   * description_locale[<index>] (Optional) - default=”en”
-   * description_locale_preferred[<index>] (Optional) - default=False
-   * description_type[<index>] (Optional) -
-   * description_external_id[<index>] (Optional) -
+   * **description[<index>]** -
+   * **description_locale[<index>]** (Optional) - default=”en”
+   * **description_locale_preferred[<index>]** (Optional) - default=False
+   * **description_type[<index>]** (Optional) -
+   * **description_external_id[<index>]** (Optional) -
 * Custom Attributes: 
    * CSV Syntax:
-      * attr:<custom-attribute-key> (Optional) - custom attributes
-      * attr_value[<index>], attr_key[<index>] (Optional) - custom attributes
+      * **attr:<custom-attribute-key>** (Optional) - custom attributes
+      * **attr_value[<index>], attr_key[<index>]** (Optional) - custom attributes
    * JSON Syntax:
-      * "extras":{"<attr_key>":"attr_value", … }
+      * **"extras"**:{"<attr_key>":"attr_value", … }
 * Internal Concept Mappings: (Where the concept defined in the row is the `from_concept`)
-   * map_target - default=”Internal”
-   * map_owner_id - Automatically set to the concept `owner_id` if omitted
-   * map_owner_type - Automatically set to the concept `owner_type` if omitted
-   * map_source - Automatically set to the concept `source` if omitted
-   * map_type[<index>] - default=”Same As”
+   * **map_target** - default=”Internal”
+   * **map_owner_id** - Automatically set to the concept `owner_id` if omitted
+   * **map_owner_type** - Automatically set to the concept `owner_type` if omitted
+   * **map_source** - Automatically set to the concept `source` if omitted
+   * **map_type[<index>]** - default=”Same As”
    * to_concept must provide a minimum set of fields to resolve to a `to_concept_url`
-      * map_to_concept_url[<index>]
-      * map_to_concept_id[<index>]
-      * map_to_concept_name[<index>]
-      * map_to_concept_owner_id[<index>]
-      * map_to_concept_owner_type[<index>] - default=”Organization”
-      * map_to_concept_source[<index>]
+      * **map_to_concept_url[<index>]**
+      * **map_to_concept_id[<index>]**
+      * **map_to_concept_name[<index>]**
+      * **map_to_concept_owner_id[<index>]**
+      * **map_to_concept_owner_type[<index>]** - default=”Organization”
+      * **map_to_concept_source[<index>]**
 * External Concept Mappings: (Where the concept defined in the row is the `from_concept`)
-   * extmap_target (Optional) - default=”External”
-   * extmap_owner_id (Optional) - Automatically set to the concept `owner_id` if omitted
-   * extmap_owner_type (Optional) - Automatically set to the concept `owner_type` if omitted
-   * extmap_source (Optional) - Automatically set to the concept `source` if omitted
-   * extmap_type[<index>] (Optional) - default=”Same As”
+   * **extmap_target** (Optional) - default=”External”
+   * **extmap_owner_id** (Optional) - Automatically set to the concept `owner_id` if omitted
+   * **extmap_owner_type** (Optional) - Automatically set to the concept `owner_type` if omitted
+   * **extmap_source** (Optional) - Automatically set to the concept `source` if omitted
+   * **extmap_type[<index>]** (Optional) - default=”Same As”
    * to_concept must provide a minimum set of fields to resolve to a to_concept_url
-      * extmap_to_concept_id[<index>]
-      * extmap_to_concept_name[<index>] (Optional)
-      * extmap_to_concept_owner_id[<index>]
-      * extmap_to_concept_owner_type[<index>] (Optional) - default=”Organization”
-      * extmap_to_concept_source[<index>]
-* parent_concept_url - If a hierarchical concept, the OCL-formatted URL for this concept’s parent concept.
+      * **extmap_to_concept_id[<index>]**
+      * **extmap_to_concept_name[<index>]** (Optional)
+      * **extmap_to_concept_owner_id[<index>]**
+      * **extmap_to_concept_owner_type[<index>]** (Optional) - default=”Organization”
+      * **extmap_to_concept_source[<index>]**
+* **parent_concept_url** - If a hierarchical concept, the OCL-formatted URL for this concept’s parent concept.
 ### Standalone Mappings (Internal or External)
 **Required**
-* resource_type - “Mapping” or “External Mapping”
-* owner_id - OCL resource identifier of the OCL user or organization that will own this object
-* source - OCL resource identifier of the source in which this concept will be defined
+* **resource_type** - “Mapping” or “External Mapping”
+* **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
+* **source** - OCL resource identifier of the source in which this concept will be defined
 * from_concept must provide a minimum set of fields to resolve to a `from_concept_url`
-   * map_from_concept_url (Optional)
-   * map_from_concept_id (Optional)
-   * map_from_concept_owner_id (Optional)
-   * map_from_concept_owner_type (Optional) - default=”Organization”
-   * map_from_concept_source (Optional)
+   * **map_from_concept_url** (Optional)
+   * **map_from_concept_id** (Optional)
+   * **map_from_concept_owner_id** (Optional)
+   * **map_from_concept_owner_type** (Optional) - default=”Organization”
+   * **map_from_concept_source** (Optional)
 * to_concept must provide a minimum set of fields to resolve to a `to_concept_url`
-   * map_to_concept_url (Optional)
-   * map_to_concept_id (Optional)
-   * map_to_concept_name (Optional)
-   * map_to_concept_owner_id (Optional)
-   * map_to_concept_owner_type (Optional) - default=”Organization”
-   * map_to_concept_source (Optional)
+   * **map_to_concept_url** (Optional)
+   * **map_to_concept_id** (Optional)
+   * **map_to_concept_name** (Optional)
+   * **map_to_concept_owner_id** (Optional)
+   * **map_to_concept_owner_type** (Optional) - default=”Organization”
+   * **map_to_concept_source** (Optional)
 **Optional**
-* owner_type - “Organization” or “User”; default=”Organization”
-* map_type - default=”Same As”
+* **owner_type** - “Organization” or “User”; default=”Organization”
+* **map_type** - default=”Same As”
 
 
 ### References (Add concepts to a collection)
 **Required**
-* resource_type - “Reference”
-* collection_url - OCL-formatted URL of the collection to which the reference(s) will be added
-* data/expressions - List of references to be added to the collection, each of which is in the OCL-formatted concept URL. Note that any URL string can be used here, even if the concept is not stored in OCL itself. If the URL cannot be resolved within OCL, then it will appear in the collection’s References tab but not in its Concepts tab in OCL’s web interface.
+* **resource_type** - “Reference”
+* **collection_url** - OCL-formatted URL of the collection to which the reference(s) will be added
+* **data/expressions** - List of references to be added to the collection, each of which is in the OCL-formatted concept URL. Note that any URL string can be used here, even if the concept is not stored in OCL itself. If the URL cannot be resolved within OCL, then it will appear in the collection’s References tab but not in its Concepts tab in OCL’s web interface.
 
 
 ### Repository Versions (Sources or Collections)
 **Required**
-* resource_type - “Source Version” or “Collection Version”
-* owner_id - OCL resource identifier of the OCL user or organization that will own this object
-* source OR collection - identifier of the source or collection for the new repository version
-* id - Identifier for the repository version (e.g. “v1.0”)
-* description - Description of the repository version
+* **resource_type** - “Source Version” or “Collection Version”
+* **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
+* **source** OR **collection** - identifier of the source or collection for the new repository version
+* **id** - Identifier for the repository version (e.g. “v1.0”)
+* **description** - Description of the repository version
 
 
 **Optional**
-* owner_type - “Organization” or “User”; default=”Organization”
-* released - default=False
-* retired - default=False
-Reference
+* **owner_type** - “Organization” or “User”; default=”Organization”
+* **released** - default=False
+* **retired** - default=False
+  
 # OCL Bulk Import Formats
 ## JSON Format Example
-Link: https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing 
+Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing](https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing) 
 
 ```
 {"type": "Organization", "id": "DemoOrg", "name": "My Demo Organization", "company": "DemoLand Inc.", "website": "www.demoland.fake", "location": "DemoLand", "public_access": "View", "logo_url": "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg", "description": "Generic Demo description text", "text": "This organization is demo-tastic!", "extras": {"Ex_Num":"6", "extra_names": [{"name": "Demotastic Name", "short_name": "demo"}, {"name": "Out-of-Date Demo Name", "short_name": "old"}]}}
@@ -223,7 +223,7 @@ Link: https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp
 ## CSV Format Example
 
 
-Link to example: https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing 
+Link to example: [https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing](https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing) 
 
 ```
 resource_type,id,name,company,website,location,public_access,logo_url,description,text,attr:Ex_Num,attr:ex_name,full_name,owner_id,owner_type,source_type,default_locale,supported_locales,custom_validation_schema,external_id,canonical_url,hierarchy_meaning,hierarchy_root_url,internal_reference_id,meta,collection_reference,publisher,purpose,copyright,revision_date,experimental,jurisdiction,content_type,case_sensitive,compositional,version_needed,external_id ,retired,datatype,concept_class,source,description[1],description[2],name[1],name_type[1],parent_concept_urls[0],map_type[0],map_from_concept_id[0],map_to_concept_id[0],map_type,to_concept_url,from_concept_url,attr:extra_names,collection_type,immutable,jurisdiction[1],jurisdiction[2],collection_url,data:expressions
@@ -247,7 +247,7 @@ Note that this example is in progress and will be updated to meet the latest OCL
 
 # OCL Bulk Importing 
 ## Bulk Import via API
-API calls for bulk importing can be found in OCL’s Swagger page under the `importers` section. Inline importing can be performed using POST /importers/bulk-import-inline/ , while parallel importing can be performed using POST /importers/bulk-import-parallel-inline/ .
+API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. Inline importing can be performed using POST /importers/bulk-import-inline/ , while parallel importing can be performed using POST /importers/bulk-import-parallel-inline/ .
 
 
 Using parallel importing allows the specification of a number of parallel threads, which speed up the import process but consume more of OCL’s resources. By default, 5 workers are used for a bulk import, but this number can be anywhere between 2 and 10.
@@ -406,7 +406,7 @@ DELETE /importers/bulkimport/?task_id=2344a457-cfdf-4985-ae0f-b2797d33a1a2&signa
 
 Parameters:
 * task_id (required) - ID of the task to be deleted
-* signal - default=SIGKILL ; Other signals available here
+* signal - default=SIGKILL ; Other signals available [here](https://man7.org/linux/man-pages/man7/signal.7.html)
 
 
 ## Bulk Import via OCL’s TermBrowser
