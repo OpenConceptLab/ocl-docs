@@ -1,5 +1,5 @@
 # Configuring TermBrowser Views
-Updated 2021-06-24
+Updated 2021-10-01
 
 **Owner:** [Joe](https://github.com/jamlung-ri/)
 
@@ -98,6 +98,24 @@ For example, if the goal is to get concepts from a source UNLESS the Period filt
 
 To do this, specify a URI value that includes a placeholder for the filter. Example: `uri: '/orgs/PEPFAR-Test10b/collections/MER_REFERENCE_INDICATORS_[:period]/'` Then specify a default URI in case the Period filter is not set. Example: `defaultURI: '/orgs/PEPFAR-Test10b/sources/MER/concepts/'`. Finally, when configuring the filter, specify that it will be a part of the URI (using url: true) and which URI parameter it should replace (using 'key'). Example: `'extras.Period': {key: 'period',url: true,name: 'Period',default: 'FY21',options: ['FY16','FY17','FY18','FY19','FY20','FY21']`
 
+### Configuration of Page Header Appearance
+
+To make an Organization in the TermBrowser have a customized appearance and color set, certain configurations can be specified to change how the Organization page appears, separate from the tab configuration.
+
+#### Color Changes
+* **Background Color/Image** - Specify an image (e.g. `image: 'https://www.kindpng.com/picc/m/63-630429_png-images-for-banner-transparent-png.png'`) or a background color (e.g. `backgroundColor: 'red'`), along with whether or not to overlay the image (e.g. `imageOverlay: true`).
+* **Foreground Word Colors** - Specify a color for tab icons and text (e.g. `color: 'red'`), the title (e.g. `titleColor: 'blue'`), or the description (e.g. `descriptionColor: 'white'`).
+
+#### Change Attributes or Screen Interactions
+* **Show Specific Attributes** - Specify which attributes to display in the header and what their types/labels are (e.g. `attributes: [{label: 'Company',value: 'company',type: 'text'}]`).
+* **Hide Signatures** - Hide smaller, less prominent attributes (e.g. `signatures: false`) 
+* **Hide Controls** - Hide source controls such as Copy URL, Edit Source, and Download (e.g. `controls: false`) 
+
+
+#### Other Behaviors
+*  **Auto-Collapse Header** - Collapse the header upon entering the page, but still allows a user to expand it (e.g. `shrink: true`).
+*  **Header Height** - Specify a number of pixels for the height of the header (e.g. `height: 500` for a 500px tall header)
+*  **Hide Logo** - Hide the organization's logo (e.g. `logo: false`)
 
 
 ## TermBrowser Configuration Examples
