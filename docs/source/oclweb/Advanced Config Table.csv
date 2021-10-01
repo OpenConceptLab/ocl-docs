@@ -12,3 +12,4 @@ default,Specifies which tab should be the first one opened when a user navigates
 sortAsc,"Sorts the list in Ascending order, using the value specified in the configuration. The default value is Score, which sorts based on the provided search term, if given.",Optional,"Select one: Name, Score",1
 sortDesc,"Sorts the list in Descending order, using the value specified in the configuration. The default value is Score, which sorts based on the provided search term, if given.",Optional,"Select one: Name, Score",1
 shrinkHeader,Specifies whether the page header should be collapsed by default. “shrinkHeader = True” means that the header will be collapsed when the page is first accessed. The default value is false. Note that any user can expand or collapse the header using a button on the page.,Optional,True or False,1
+icon,Selects an icon to be displayed for the tab,Optional,Name of one [Material Icon](https://material-ui.com/components/material-icons/),1
