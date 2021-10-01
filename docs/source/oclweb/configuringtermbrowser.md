@@ -87,6 +87,19 @@ Similar to “About” tabs, these tabs require the configurer to specify the ta
 
 Note that multiple lines of text can be combined in a single text tab. Examples of a text tab can be found below.
 
+#### Combining Custom Filters with a Tab's URI
+For more complex behavior for a tab, configurations can be made to incorporate a filter value directly into the URI for a tab, rather than the default behavior of adding the filter value as a query parameter.
+
+For example, if the goal is to get concepts from a source UNLESS the Period filter has a defined value, in which case the concepts should come from a collection, the tab's URI can be adjusted to do this. See the example queries below:
+
+* No value in Period filter: /orgs/PEPFAR-Test10b/sources/MER/concepts/
+* Value "FY20" in Period filter: /orgs/PEPFAR-Test10b/collections/MER_REFERENCE_INDICATORS_FY20
+* Value "FY18" in Period filter: /orgs/PEPFAR-Test10b/collections/MER_REFERENCE_INDICATORS_FY18
+
+To do this, specify a URI value that includes a placeholder for the filter. Example: `uri: '/orgs/PEPFAR-Test10b/collections/MER_REFERENCE_INDICATORS_[:period]/'` Then specify a default URI in case the Period filter is not set. Example: `defaultURI: '/orgs/PEPFAR-Test10b/sources/MER/concepts/'`. Finally, when configuring the filter, specify that it will be a part of the URI (using url: true) and which URI parameter it should replace (using 'key'). Example: `'extras.Period': {key: 'period',url: true,name: 'Period',default: 'FY21',options: ['FY16','FY17','FY18','FY19','FY20','FY21']`
+
+
+
 ## TermBrowser Configuration Examples
 **OCL Default JSON**
 ![Image2](image2.png)
