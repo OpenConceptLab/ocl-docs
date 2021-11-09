@@ -59,10 +59,7 @@ The OCL team works in partnership with Apelon, Inc., which normalizes and publis
       * Spot check individual concepts, along with counts of concepts and mappings if desired.
 
 
-
-
-
-How do we validate content when we publish it in OCL?
+How do we validate content when we load it in OCL?
 ----------------------------------
 To ensure that the content loads into OCL as expected, there are several validation steps taken for each set of content to check for accuracy between what should show in OCL versus what is actually appearing in OCL.
 
@@ -76,6 +73,18 @@ To ensure that the content loads into OCL as expected, there are several validat
     - Extra concepts and mappings that are present in OCL but should not have been loaded in
     - Checks for duplicate concept or mapping IDs in the export file
     - Compares concept attributes to ensure these attributes are similar between the import and the export files
+
+When will content be published in OCL for public use?
+-------------------------------------------------------
+
+Content is eligible for publication in OCL Online's production environment if they meet the following criteria:
+
+* This version of the content has been successfully test loaded and validated in a QA or Staging environment
+
+* The content employs a license that allows distribution by other entities -OR- a distribution license was obtained by OCL to publish the terminology content
+
+
+Until these criteria are met, content will remain in private repositories in OCL's test environments. They may undergo updates and model iterations as needed during this time.
 
 
 How do we keep content up-to-date?
