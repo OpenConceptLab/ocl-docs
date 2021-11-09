@@ -79,9 +79,9 @@ When will content be published in OCL for public use?
 
 Content is eligible for publication in OCL Online's production environment if they meet the following criteria:
 
-* This version of the content has been successfully test loaded and validated in a QA or Staging environment
+   * This version of the content has been successfully test loaded and validated in a QA or Staging environment
 
-* The content employs a license that allows distribution by other entities -OR- a distribution license was obtained by OCL to publish the terminology content
+   * The content employs a license that allows distribution by other entities -OR- a distribution license was obtained by OCL to publish the terminology content
 
 
 Until these criteria are met, content will remain in private repositories in OCL's test environments. They may undergo updates and model iterations as needed during this time.
