@@ -19,39 +19,39 @@ These are example queries that the TermBrowser uses to retrieve OCL's FHIR resou
 
 Filters currently supported by OCL FHIR:
 
-* Status
-* content-mode
-* Publisher
+ * Status
+ * content-mode
+ * Publisher
 
-**CodeSystem:**
+#### CodeSystem
 
-- Global List: https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
-- Search by Status: https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&status=active&_sort=_id 
-- Search by content-mode: https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&content-mode=foo&_sort=_id 
-- Search by Publisher: https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&publisher=foo&_sort=_id 
-- Expand a row for a CodeSystem: https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/Baobab/version/ 
-- View individual CodeSystem and its codes: https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/Baobab?page=1 
-- View all CodeSystems from an organization: https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Global List:** https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Search by Status:** https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&status=active&_sort=_id 
+- **Search by content-mode:** https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&content-mode=foo&_sort=_id 
+- **Search by Publisher:** https://fhir.staging.openconceptlab.org/fhir/CodeSystem/?_total=accurate&page=1&publisher=foo&_sort=_id 
+- **Expand a row for a CodeSystem:** https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/Baobab/version/ 
+- **View individual CodeSystem and its codes:** https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/Baobab?page=1 
+- **View all CodeSystems from an organization:** https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/CodeSystem/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
 
-**ValueSet:**
+#### ValueSet
 
-- Global List: https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
-- Search by Status: https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&status=active&_sort=_id
-- Search by content-mode: https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&content-mode=foo&_sort=_id
-- Search by Publisher: https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&publisher=foobar&_sort=_id 
-- Expand a row for a ValueSet: https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/BA-test/version/ 
-- View individual ValueSet and its codes: https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/BA-test?page=1 
-- View all ValueSets from an organization: https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Global List:** https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Search by Status:** https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&status=active&_sort=_id
+- **Search by content-mode:** https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&content-mode=foo&_sort=_id
+- **Search by Publisher:** https://fhir.staging.openconceptlab.org/fhir/ValueSet/?_total=accurate&page=1&publisher=foobar&_sort=_id 
+- **Expand a row for a ValueSet:** https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/BA-test/version/ 
+- **View individual ValueSet and its codes:** https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/BA-test?page=1 
+- **View all ValueSets from an organization:** https://fhir.staging.openconceptlab.org/orgs/MSFOCP/ValueSet/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
 
-**ConceptMap:**
+#### ConceptMap
 
-- Global List: https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
-- Search by Status: https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&status=active&_sort=_id 
-- Search by content-mode: https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&content-mode=foobar&_sort=_id 
-- Search by Publisher: https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&publisher=foo&_sort=_id 
-- Expand a row for a ConceptMap: https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/ConceptMap/Baobab/version/ 
-- View individual ConceptMap and its groups: https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/ConceptMap/Baobab?page=1 
-- View all ConceptMaps from an organization: https://fhir.staging.openconceptlab.org/orgs/PEPFAR/ConceptMap/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Global List:** https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
+- **Search by Status:** https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&status=active&_sort=_id 
+- **Search by content-mode:** https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&content-mode=foobar&_sort=_id 
+- **Search by Publisher:** https://fhir.staging.openconceptlab.org/fhir/ConceptMap/?_total=accurate&page=1&publisher=foo&_sort=_id 
+- **Expand a row for a ConceptMap:** https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/ConceptMap/Baobab/version/ 
+- **View individual ConceptMap and its groups:** https://fhir.staging.openconceptlab.org/orgs/Malawi-Demo/ConceptMap/Baobab?page=1 
+- **View all ConceptMaps from an organization:** https://fhir.staging.openconceptlab.org/orgs/PEPFAR/ConceptMap/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
 
 
 
