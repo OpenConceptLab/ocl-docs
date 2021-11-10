@@ -112,6 +112,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :caption: OCL TermBrowser
    
    oclweb/configuringtermbrowser
+   oclweb/FHIRconnectors
    
 .. toctree::
    :maxdepth: 2
