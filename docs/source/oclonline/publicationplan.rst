@@ -60,7 +60,7 @@ The OCL team works in partnership with Apelon, Inc., which normalizes and publis
 
 
 How do we validate content when we load it in OCL?
-----------------------------------
+-----------------------------------------------------
 To ensure that the content loads into OCL as expected, there are several validation steps taken for each set of content to check for accuracy between what should show in OCL versus what is actually appearing in OCL.
 
 1. Spot Checks: Looking at 5 or more exemplary concepts in depth, we check that the concept appears in OCL and that all the expected attributes are present. If applicable, we check that these concepts are correctly placed in their hierarchy.
