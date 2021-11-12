@@ -1,11 +1,15 @@
-# (Beta) FHIR Connectors in OCL TermBrowser
+# (Beta) FHIR Connector in OCL TermBrowser
 Updated 2021-11-10
 
 **Owner:** [Joe](https://github.com/jamlung-ri/)
 
 **Maintainer:** [Joe](https://github.com/jamlung-ri/)
 
-A system administrator may configure the OCL TermBrowser to connect to one or more OCL Terminology Servers or SVCM-compatible FHIR servers, such as HAPI FHIR. This allows authorized users to "switch servers" to redirect the TermBrowser to another server to search and browse terminology resources. The TermBrowser implements a basic FHIR Connector that can be adapted to as needed to optimize searching and browsing of FHIR Code Systems, Value Sets and Concept Maps.
+A system administrator may configure the OCL TermBrowser to connect to one or more terminology servers using OCL's generic Connector framework. A `Connector` provides instructions to the TermBrowser on how to build API queries to browse and search terminology resources. Authorized users may "switch servers" to redirect the TermBrowser to search and browse terminology resources on their selected server. Currently, the OCL TermBrowser implements these connectors:
+* **OCL Connector** - Connects to an OCL Terminology Server; provides access to all OCL functionality, including searching/browsing and updating content
+* **FHIR Connector** - Connects to an SVCM-compatible FHIR server, such as HAPI FHIR, to browse FHIR Code Systems, Value Sets and Concept Maps
+
+A `Connector` can be adapted or a new `Connector` can be created (requires coding in ReactJS) to optimize searching and browsing behavior or to expose advanced features of a server.
 
 ### FHIR Server Configuration
 Directing the TermBrowser to a FHIR terminology server currently requires initial configuration by pointing the TermBrowser to the FHIR server of interest. For example, connecting to HAPI FHIR's server requires the following server URL: http://hapi.fhir.org/baseR4 with this capability statement: http://hapi.fhir.org/baseR4/metadata 
