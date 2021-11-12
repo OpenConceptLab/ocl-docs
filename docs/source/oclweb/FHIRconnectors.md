@@ -45,7 +45,7 @@ The following queries are used by the FHIR Connector. Note that the base FHIR Co
 - **View all ConceptMaps from an organization:** https://fhir.staging.openconceptlab.org/orgs/PEPFAR/ConceptMap/?_total=accurate&page=1&_getpagesoffset=0&_count=10&_sort=_id 
 
 ####
-Filters currently supported by OCL FHIR:
+Filters currently supported by the FHIR Connector:
  * Status
  * content-mode
  * Publisher
