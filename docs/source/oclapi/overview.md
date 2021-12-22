@@ -23,8 +23,8 @@ These slides provide a useful technical overview of OCL and will be updated regu
 ## API Collections
 These collections allow you to get up and running with the API within these clients.
 ### Postman  
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/677ae58a3995c38e63af#?env%5BOpenMRS%20QA%5D=W3sia2V5IjoiVVJMIiwidmFsdWUiOiJodHRwczovL2FwaS5xYS5vcGVuY29uY2VwdGxhYi5vcmciLCJlbmFibGVkIjp0cnVlfV0=)  
-This collection includes a `pre-request` script that sets a token before every request to save you from having to manually include this. Note, however, that this is set after any of your headers, so setting the `Authorization` header will be overridden by it. You can remove or adjust the token in this script under the collection `Pre-Request` Scripts tab.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/oclmediators/workspace/ocl-openapi/collection/9998242-1ef8d595-b142-473f-b48f-209cdcd90686)  
+This Postman collection was created from [OCL's OpenAPI](https://api.openconceptlab.org/swagger/?format=openapi), which is also available in [Swagger](https://api.openconceptlab.org/swagger/). 
 
 
 ## Authentication and Authorization
