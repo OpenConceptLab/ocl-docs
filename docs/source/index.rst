@@ -29,6 +29,7 @@ Advanced Features of OCL
 
 Learn more about these integrations and how you can interact with OCL.
 
+* **Retrieving Content from OCL's API** : Visit our `Swagger page <https://api.openconceptlab.org/swagger/>`_ for information about OCL's API endpoints and examples for retrieving terminology content  
 * **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/apireference/bulkimporting>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
 * **Interface layer:** The interface layer is a set of API endpoints customized to support PEPFAR use cases through OpenHIM mediators. `Interface layer API Documentation <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
 
