@@ -24,4 +24,4 @@ In order to startup the FHIR service in development mode run: `SERVER_PORT=9000 
 To run in production run: `SERVER_PORT=9000 docker-compose -f docker-compose.yml up`
 
 ## Testing
-Import `OCL FHIR Postman Collection <https://www.postman.com/collections/e7ff349688c4c10f474a>`_ into yourr postman client to test the OCL FHIR endpoints 
+Import [OCL FHIR Postman Collection] (https://www.postman.com/collections/e7ff349688c4c10f474a) into your postman client to test the OCL FHIR endpoints 
