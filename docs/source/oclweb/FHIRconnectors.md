@@ -5,9 +5,12 @@ Updated 2021-11-10
 
 **Maintainer:** [Joe](https://github.com/jamlung-ri/)
 
-A system administrator may configure the OCL TermBrowser to connect to one or more terminology servers using OCL's generic Connector framework. A `Connector` provides instructions to the TermBrowser on how to build API queries to browse and search terminology resources. Authorized users may "switch servers" to redirect the TermBrowser to search and browse terminology resources on their selected server. Currently, the OCL TermBrowser implements these connectors:
-* **OCL Connector** - Connects to an OCL Terminology Server; provides access to all OCL functionality, including searching/browsing and updating content
+A system administrator may configure the OCL TermBrowser to connect to one or more terminology servers using OCL's generic Connector framework. A `Connector` provides instructions to the TermBrowser on how to build API queries to browse and search terminology resources. Connectors are reusable, in that they are packaged with the OCL TermBrowser and multiple servers can be configured for each type of connector.
+
+In the current implementation of OCL's connectors, authorized users may "switch servers" to redirect the TermBrowser to search and browse terminology resources on their selected server. Currently, the OCL TermBrowser implements these connectors:
+* **OCL Connector** - OCL’s primary connector provides access to all OCL features using OCL’s native API, including searching/browsing and updating content
 * **FHIR Connector** - Connects to an SVCM-compatible FHIR server, such as HAPI FHIR, to browse FHIR Code Systems, Value Sets and Concept Maps
+* **WHO ICD-11 Connector** (under development) - A slightly customized version of the FHIR SVCM Connector that integrates directly with the WHO ICD-11 FHIR service
 
 A `Connector` can be adapted or a new `Connector` can be created (requires coding in ReactJS) to optimize searching and browsing behavior or to expose advanced features of a server.
 
