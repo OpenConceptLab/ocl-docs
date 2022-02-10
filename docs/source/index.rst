@@ -142,5 +142,6 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :hidden:
    :caption: Archived OCL Roadmaps
 
+   roadmaps/2021/roadmap2
    roadmaps/2021/roadmap
    roadmaps/2020/roadmap
