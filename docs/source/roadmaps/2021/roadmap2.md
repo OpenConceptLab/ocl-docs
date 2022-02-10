@@ -16,7 +16,7 @@ The OCL community develops and supports these tools as open-source software that
 
 **OCL Online**, hosted at [openconceptlab.org](https://openconceptlab.org/), is where you can use OCL’s open-source tools in the cloud along with the global community and is pre-loaded with key terminologies.
 
-![OCL Jun-Dec](OCL Jun-Dec.png)
+![OCL Jun-Dec](OCL%20Jun-Dec.png)
 
 ## Roadmap
 #### _High-level direction setting markers that represent the OCL Community’s priorities and that inform the work that we do._
