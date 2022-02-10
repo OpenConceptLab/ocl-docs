@@ -1,4 +1,4 @@
-# OCL Technical Roadmap: June-December 2021
+# 2021 Jun-Dec OCL Roadmap
 
 ## Overview
 ### What is the OCL Open-source Technical Roadmap?
@@ -15,6 +15,8 @@ The OCL community develops and supports these tools as open-source software that
 - **OpenMRS Dictionary Manager**: Specialized tool for managing clinical concept dictionaries
 
 **OCL Online**, hosted at [openconceptlab.org](https://openconceptlab.org/), is where you can use OCL’s open-source tools in the cloud along with the global community and is pre-loaded with key terminologies.
+
+![OCL21 Jun-Dec Timeline](OCL Diagram Jun-Dec 2021.webp)
 
 ## Roadmap
 #### _High-level direction setting markers that represent the OCL Community’s priorities and that inform the work that we do._
