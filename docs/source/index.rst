@@ -14,7 +14,9 @@ OCL Overview
 Learn more about OCL, its tools and its core features:
 
 * **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` | :doc:`API Reference of OCL</oclapi/apireference/index>`
-* **OCL roadmaps:** :doc:`OCL Roadmap 2021 </roadmaps/2021/roadmap>` |  :doc:`OCL Roadmap 2020 </roadmaps/2020/roadmap>`
+* **OCL roadmaps:** 
+    * Current Roadmap:  `OCL Roadmap 2022 <https://openconceptlab.org/technical-roadmap/>`_
+    * Previous Roadmaps: :doc:`OCL Roadmap 2021 </roadmaps/2021/roadmap2>`
 * **OCL releases:** :doc:`Release Notes </oclapi/releases>` 
 
 
