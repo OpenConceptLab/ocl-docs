@@ -623,7 +623,10 @@ PUT /user/collections/:collection/references/
     * **mappings** (optional) lists of strings - URLs of the mappings to add or `*` when used with `uri` to add all mappings from the collection/ source
     * **search_term** (optional) - Used with `uri` to filter concepts/ mappings to add by search term
 * Query Parameters
-    * **cascade** (optional) (default=none) string - It takes `none` or `sourcemappings` as a value.
+    * **cascade** (optional) (default=none) string - It takes `none`, `sourcemappings`, or `sourcetoconcepts` as a value
+      * `none` (default): Do not cascade to any mappings or concepts
+      * `sourecemappings`: Cascade to mappings in the same source, where the concept currently being processed is the `from-concept` of the mapping
+      * `sourcetoconcepts`: Cascade to mappings and target concepts in the same source, where the concept currently being processed is the `from-concept` of the mapping
 
 ### Example
 * `PUT /orgs/KenyaMOH/collections/KenyaEMR/references/?cascade=sourcemappings`
@@ -667,7 +670,7 @@ DELETE /user/collections/:collection/references/
         * string array - Version URLs of the references to remove
         * `*` - Delete all references from the collection
 * Query Parameters
-    * **cascade** (optional) (default=none) string - It takes none or sourcemappings as a value.
+    * **cascade** (optional) (default=none) string - It takes `none`, `sourcemappings`, or `sourcetoconcepts` as a value.
 
 ### Example
 * `DELETE /orgs/KenyaMOH/collections/KenyaEMR/references/`
