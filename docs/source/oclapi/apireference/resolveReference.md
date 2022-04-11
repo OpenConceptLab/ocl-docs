@@ -128,3 +128,8 @@ Status: 200
   }
 ]
 ```
+
+
+## Additional Considerations
+* Add an internal switch in $resolveReference that is set to resolve version-less "relative URLs" to HEAD that we can change to latest when we're ready -- note that version-less "canonical URLs" should always resolve to latest
+* Add an optional "namespace" URL parameter that overrides whatever is in the body -- this would make it easier to see how references that have namespaces already set would behave if evaluated using an alternate namesapce

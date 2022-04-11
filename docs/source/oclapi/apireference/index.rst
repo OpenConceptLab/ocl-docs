@@ -13,6 +13,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     mappings
     orgs
     permissionssummary
+    resolveReference
     sources
     users
     other/index
