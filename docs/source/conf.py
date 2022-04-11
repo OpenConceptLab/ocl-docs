@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'ocl-docs'
-copyright = '2020, openconceptlab'
+copyright = '2022, openconceptlab'
 author = 'openconceptlab'
 
 # The full version, including alpha/beta/rc tags
