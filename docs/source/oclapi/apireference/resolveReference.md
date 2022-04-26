@@ -86,7 +86,7 @@ The following rules specify how OCL resolves a reference to a repository version
 4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
 
 ## $resolveReference Parameters
-* **old
+* **oldstyle** (optional) - default=false; set to True to evaluate version-less repository references to HEAD instead of to latest
 * **namespace** (optional) - default="Global"; the context in which to evaluate the references, e.g. a relative URL to an organization or user in OCL. This parameter allows a client to compare the results of evaluating the same reference(s) in multiple namespaces. When this operation is performed internally, namespace is typically set automatically based on the context of the request, i.e. the owner of the resource under consideration.
 
 ### $resolveReference Examples
