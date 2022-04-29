@@ -3,36 +3,78 @@
 ## Overview
 OCL exposes a method for submitting a bulk import file to the OCL API that is processed asynchronously on the server. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
 
-## Authorization
+### Authorization
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
 The header uses the following key/value:
 * Key: “Authorization”
 * Value: “Token [API token]”
 The API token can be received from OCL’s TermBrowser UI on your Profile page, once you have created and logged into an OCL account.
 
-## Parallel vs. Inline Processing
+### Parallel vs. Asynchronous Processing of Bulk Imports
 By default, OCL attempts to process bulk imports in parallel using multiple workers where it can, providing a significant performance improvement. OCL will process a sequential list of resources of the same type, eg `Concept` or `Mapping`, in parallel, pausing before moving onto a resource of a different type. For example, if a bulk import script contains 5 concepts and 5 mappings, in that order, the 5 concepts would be processed in parallel and then the 5 mappings would be processed in parallel after the concepts had all been processed.
 
 Note that any `DELETE` action will occur in sequence and finish processing before moving to the next resource.
 
-# Bulk Import Files
-Two types of Bulk Import files are currently supported for OCL: CSV and [JSON Lines](https://jsonlines.org/) files. Both file types support Bulk Importing of multiple resource types. In CSV files, each row represents an OCL resource, with columns representing the attribute. In JSON Lines files, each line is an OCL-formatted JSON resource.
-
+## Bulk Import File Formats
+Two types of Bulk Import files are currently supported for OCL: CSV and [JSON Lines](https://jsonlines.org/) files. Both file types support Bulk Importing of multiple resource types. In CSV files, each row represents an OCL resource, with columns representing the attributes. In JSON Lines files, each line is an OCL-formatted JSON resource.
 
 Regardless of format, when creating resources using Bulk Imports, each type of OCL resource has required and optional fields that can be used. The summary of required and optional fields is listed below, but here are some basic rules for Bulk Importing into OCL:
-* Each resource must include a `type` attribute specifying a valid resource type, e.g. `Concept`, `Source`, or `Organization`.
+* Each resource must specify a valid resource type, e.g. `Concept`, `Source`, or `Organization`. In CSV, this is specified with the `resource_type` attribute. In OCL-formatted JSON, use the `type` attribute.
 * For all resources other than orgs and users, each resource must define an owner and, if applicable, a repository. These are defined using one or more of these attributes: `owner`, `owner_type`, `source`, `collection`.
 * Each resource may optionally provide processing directives. Currently supported processing directives are:
    * `__action`: There are 4 action types supported:
       * `CREATE_OR_UPDATE` (default) - By default, the bulk importer will attempt to update a resource if it already exists; otherwise it will try to create a new resource.
-      * `CREATE` - The bulk importer will attempt to create a new resource regardless of whether it already exists
-      * `UPDATE` - The bulk importer will attempt to update a resource regardless of whether it exists
-      * `DELETE` - The bulk importer will attempt to delete a resource
+      * `CREATE` - The bulk importer will attempt to create a new resource without first checking if it already exists
+      * `UPDATE` - The bulk importer will attempt to update a resource without first checking if it already exists
+      * `DELETE` - The bulk importer will attempt to delete a resource without first checking if it already exists
       * `SKIP` (not currently implemented) - The bulk importer will skip the resource
       * `DELETE_IF_EXISTS` (not currently implemented) - The bulk importer will attempt to delete a resource if it confirms that it exists
    * `__cascade`: For resources of type `Reference`, it is possible to specify whether and how mappings are cascaded:
       * `None` (default) - No cascading will occur. Only the
       * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added
+
+### OCL-formatted JSON Format Example
+Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing](https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing) 
+
+```
+{"type": "Organization", "id": "DemoOrg", "name": "My Demo Organization", "company": "DemoLand Inc.", "website": "www.demoland.fake", "location": "DemoLand", "public_access": "View", "logo_url": "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg", "description": "Generic Demo description text", "text": "This organization is demo-tastic!", "extras": {"Ex_Num":"6", "extra_names": [{"name": "Demotastic Name", "short_name": "demo"}, {"name": "Out-of-Date Demo Name", "short_name": "old"}]}}
+{"type": "Source", "id": "MyDemoSource", "name": "My Test Source", "full_name": "My Demonstrative Test Source", "owner": "DemoOrg", "owner_type": "Organization", "description": "Using this source just for testing purposes", "source_type": "Dictionary", "public_access": "Edit", "default_locale": "en", "supported_locales": ["en","fk"], "custom_validation_schema": "None", "external_id ": "164531246546-IDK", "website": "www.demoland.fake/source", "extras": {"ex_name": "Source Name"}, "canonical_url": "https://demo.fake/CodeSystem/Source", "hierarchy_meaning": "is-a", "hierarchy_root_url": "/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/"}
+{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": [{"description":"Just one description","locale":"en"}], "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Act", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Active Demo Concept", "name_type": "Fully Specified"}]}
+{"type": "Concept", "retired": true, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": null, "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Ret", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Retired Demo Concept", "name_type": "Fully Specified"}]}
+{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": [{"description":"Main description","locale":"en","locale_preferred":true,"type":"IDK","external_id":"123456"},{"description":"Secondary description","locale":"en","locale_preferred":true,"type":"IDK","external_id":"234567"}], "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Child", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Child Demo Concept", "name_type": "Fully Specified"}], "parent_concept_urls":["/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/"]}
+{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": null, "owner": "DemoOrg", "owner_type": "Organization", "external_id": "asdkfjhasLKfjhsa", "id": "Child_of_child", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Child of the Child Demo Concept", "name_type": "Fully Specified"}], "parent_concept_urls":["/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/"],"mappings":[{"map_target":"Internal","map_type":"Child-Parent","to_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/"}]}
+{"type":"Mapping","map_type":"Parent-child","to_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/","from_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/","source":"MyDemoSource","owner_type":"Organization","owner":"DemoOrg"}
+{"type": "Collection", "id": "MyDemoCollection", "name": "My Test Collection", "full_name": "My Demonstrative Test Collection", "owner": "DemoOrg", "owner_type": "Organization", "description": "Using this collection just for testing purposes", "collection_type": "Value Set", "public_access": "Edit", "default_locale": "en", "supported_locales": ["en","fk"], "custom_validation_schema": "None", "external_id": "654246546-IDK", "website": "www.demoland.fake/source", "extras": {"ex_name": "Collection Name"}, "canonical_url": "https://demo.fake/ValueSet/Collection", "publisher": "DemoLand, Inc.", "purpose": "To demonstrate", "copyright": "Please don't use this for anything but test importing.", "immutable": false, "revision_date": "2021-07-09", "logo_url": "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg", "text": "Generic About entry", "experimental": true, "jurisdiction": ["DZA", "EGY"], "contact": [{"telecom" : [{"system" : "url", "value" : "http://demoland.fake/fhir"}]}], "identifier": [{"system" : "Fake System", "value" : "Fake Value"}]}
+{"type" : "Reference", "collection_url" : "/orgs/DemoOrg/collections/MyDemoCollection/", "data": {"expressions" : ["/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/","/orgs/DemoOrg/sources/MyDemoSource/concepts/Ret/","/orgs/DemoOrg/sources/MyDemoSource/concepts/Unresolved/"]}}
+```
+
+
+### CSV Format Example
+
+Link to example: [https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing](https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing) 
+
+```
+
+resource_type,id,name,company,website,location,public_access,logo_url,description,text,attr:Ex_Num,attr:ex_name,full_name,owner_id,owner_type,source_type,default_locale,supported_locales,custom_validation_schema,external_id,canonical_url,hierarchy_meaning,hierarchy_root_url,internal_reference_id,meta,collection_reference,publisher,purpose,copyright,revision_date,experimental,jurisdiction,content_type,case_sensitive,compositional,version_needed,external_id,retired,datatype,concept_class,source,description[1],description[2],name[1],name_type[1],attr:extra_names:list,attr:extra_bool:bool,attr:extra_float:float,attr:extra_int:int,parent_concept_urls[0],map_type[0],map_from_concept_id[0],map_to_concept_id[0],map_type,to_concept_url,from_concept_url,attr:extra_names,collection_type,immutable,jurisdiction[1],jurisdiction[2],collection_url,data:expressions
+Organization,DemoOrg,My Demo Organization,DemoLand Inc.,https://www.demoland.fake,DemoLand,View,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Generic Demo description text,This organization is demo-tastic!,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Source,MyDemoSource,My Test Source,,https://www.demoland.fake/source,,Edit,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Using this source just for testing purposes,,,Source Name,My Demonstrative Test Source,DemoOrg,Organization,Dictionary,en,"en,fk",None,164531246546-IDK,https://demo.fake/CodeSystem/Source,is-a,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,askjdhbas,IDK,/orgs/DemoOrg/collections/MyDemoCollection/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Source,MyFHIRSource,My FHIR Source,,https://www.demoland.fake/source,,Edit,,Using this source just for FHIR testing purposes,,,FHIR Source Name,My Demonstrative FHIR Test Source,DemoOrg,Organization,Dictionary,en,"en,fk",None,FHIR1641246546-IDK,https://demo.fake/CodeSystem/FHIRSource,,,,,,"DemoLand, Inc.",Only for testing,For testing only,2021-07-27,TRUE,[Record],example,TRUE,FALSE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Concept,Act,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,Just one description,,Active Demo Concept,Fully Specified,"[name1,name2]",TRUE,2.5,5,,,,,,,,,,,,,,
+Concept,Ret,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,TRUE,None,Misc,MyDemoSource,,,Retired Demo Concept,Fully Specified,,,,,,,,,,,,,,,,,,
+Concept,Child,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,,,Child Demo Concept,Fully Specified,,,,,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,,,,,,,,,,,,,
+Concept,Child_of_child,,,,,,,,,,,,DemoOrg,Organization,,,,,asdkfjhasLKfjhsa,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,Main description,Secondary description,Child of the Child Demo Concept,Fully Specified,,,,,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,Child-Parent,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child_of_child/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,,,,,,,,,,
+Mapping,,,,,,,,,,,,,DemoOrg,Organization,,,,,,,,,,,,,,,,,,,,,,,,,,MyDemoSource,,,,,,,,,,,,,Parent-child,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,,,,,,,
+Collection,MyDemoCollection,My Test Collection,,https://www.demoland.fake/source,,Edit,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Using this collection just for testing purposes,Generic About entry,,Collection Name,My Demonstrative Test Collection,DemoOrg,Organization,,en,"en,fk",None,654246546-IDK,https://demo.fake/ValueSet/Collection,,,,,,"DemoLand, Inc.",To demonstrate,Please don't use this for anything but test importing.,44386,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,,,Value Set,FALSE,DZA,EGY,,
+Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/
+Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Ret/
+Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Unresolved/
+
+```
+
+Note that this example is in progress and will be updated to meet the latest OCL bulk import syntax.
+
+
+
 ## Required and Optional Bulk Import Fields
 ### Organization
 
@@ -91,6 +133,7 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
 * **version_needed (Source only)** - ([FHIR Attribute](https://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.versionNeeded)) This flag is used to signify that the resource does not commit to concept permanence across versions. If true, a version must be specified when referencing this resource.
 * **hierarchy_root_url (Source only)** - For hierarchical sources, the OCL-style URL of the highest level concept allows for viewing of hierarchical concepts within the source
 * **immutable (Collection only)** - ([FHIR Attribute](https://www.hl7.org/fhir/valueset-definitions.html#ValueSet.immutable)) If this is set to 'true', then no new versions of the content logical definition can be created. Note: Other metadata might still change.
+
 ### Concepts
 **Required**
 * **resource_type** - “Concept”
@@ -209,71 +252,24 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
 * **released** - default=False
 * **retired** - default=False
   
-# OCL Bulk Import Formats
-## JSON Format Example
-Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing](https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing) 
 
-```
-{"type": "Organization", "id": "DemoOrg", "name": "My Demo Organization", "company": "DemoLand Inc.", "website": "www.demoland.fake", "location": "DemoLand", "public_access": "View", "logo_url": "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg", "description": "Generic Demo description text", "text": "This organization is demo-tastic!", "extras": {"Ex_Num":"6", "extra_names": [{"name": "Demotastic Name", "short_name": "demo"}, {"name": "Out-of-Date Demo Name", "short_name": "old"}]}}
-{"type": "Source", "id": "MyDemoSource", "name": "My Test Source", "full_name": "My Demonstrative Test Source", "owner": "DemoOrg", "owner_type": "Organization", "description": "Using this source just for testing purposes", "source_type": "Dictionary", "public_access": "Edit", "default_locale": "en", "supported_locales": ["en","fk"], "custom_validation_schema": "None", "external_id ": "164531246546-IDK", "website": "www.demoland.fake/source", "extras": {"ex_name": "Source Name"}, "canonical_url": "https://demo.fake/CodeSystem/Source", "hierarchy_meaning": "is-a", "hierarchy_root_url": "/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/"}
-{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": [{"description":"Just one description","locale":"en"}], "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Act", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Active Demo Concept", "name_type": "Fully Specified"}]}
-{"type": "Concept", "retired": true, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": null, "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Ret", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Retired Demo Concept", "name_type": "Fully Specified"}]}
-{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": [{"description":"Main description","locale":"en","locale_preferred":true,"type":"IDK","external_id":"123456"},{"description":"Secondary description","locale":"en","locale_preferred":true,"type":"IDK","external_id":"234567"}], "owner": "DemoOrg", "owner_type": "Organization", "external_id": "HSpL3hSBx6F", "id": "Child", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Child Demo Concept", "name_type": "Fully Specified"}], "parent_concept_urls":["/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/"]}
-{"type": "Concept", "retired": false, "datatype": "None", "concept_class": "Misc", "source": "MyDemoSource", "extras": null, "descriptions": null, "owner": "DemoOrg", "owner_type": "Organization", "external_id": "asdkfjhasLKfjhsa", "id": "Child_of_child", "names": [{"locale": "en", "locale_preferred": true, "external_id": null, "name": "Child of the Child Demo Concept", "name_type": "Fully Specified"}], "parent_concept_urls":["/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/"],"mappings":[{"map_target":"Internal","map_type":"Child-Parent","to_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/"}]}
-{"type":"Mapping","map_type":"Parent-child","to_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/","from_concept_url":"/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/","source":"MyDemoSource","owner_type":"Organization","owner":"DemoOrg"}
-{"type": "Collection", "id": "MyDemoCollection", "name": "My Test Collection", "full_name": "My Demonstrative Test Collection", "owner": "DemoOrg", "owner_type": "Organization", "description": "Using this collection just for testing purposes", "collection_type": "Value Set", "public_access": "Edit", "default_locale": "en", "supported_locales": ["en","fk"], "custom_validation_schema": "None", "external_id": "654246546-IDK", "website": "www.demoland.fake/source", "extras": {"ex_name": "Collection Name"}, "canonical_url": "https://demo.fake/ValueSet/Collection", "publisher": "DemoLand, Inc.", "purpose": "To demonstrate", "copyright": "Please don't use this for anything but test importing.", "immutable": false, "revision_date": "2021-07-09", "logo_url": "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg", "text": "Generic About entry", "experimental": true, "jurisdiction": ["DZA", "EGY"], "contact": [{"telecom" : [{"system" : "url", "value" : "http://demoland.fake/fhir"}]}], "identifier": [{"system" : "Fake System", "value" : "Fake Value"}]}
-{"type" : "Reference", "collection_url" : "/orgs/DemoOrg/collections/MyDemoCollection/", "data": {"expressions" : ["/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/","/orgs/DemoOrg/sources/MyDemoSource/concepts/Ret/","/orgs/DemoOrg/sources/MyDemoSource/concepts/Unresolved/"]}}
-```
-
-
-
-
-## CSV Format Example
-
-
-Link to example: [https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing](https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing) 
-
-```
-
-resource_type,id,name,company,website,location,public_access,logo_url,description,text,attr:Ex_Num,attr:ex_name,full_name,owner_id,owner_type,source_type,default_locale,supported_locales,custom_validation_schema,external_id,canonical_url,hierarchy_meaning,hierarchy_root_url,internal_reference_id,meta,collection_reference,publisher,purpose,copyright,revision_date,experimental,jurisdiction,content_type,case_sensitive,compositional,version_needed,external_id,retired,datatype,concept_class,source,description[1],description[2],name[1],name_type[1],attr:extra_names:list,attr:extra_bool:bool,attr:extra_float:float,attr:extra_int:int,parent_concept_urls[0],map_type[0],map_from_concept_id[0],map_to_concept_id[0],map_type,to_concept_url,from_concept_url,attr:extra_names,collection_type,immutable,jurisdiction[1],jurisdiction[2],collection_url,data:expressions
-Organization,DemoOrg,My Demo Organization,DemoLand Inc.,https://www.demoland.fake,DemoLand,View,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Generic Demo description text,This organization is demo-tastic!,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Source,MyDemoSource,My Test Source,,https://www.demoland.fake/source,,Edit,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Using this source just for testing purposes,,,Source Name,My Demonstrative Test Source,DemoOrg,Organization,Dictionary,en,"en,fk",None,164531246546-IDK,https://demo.fake/CodeSystem/Source,is-a,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,askjdhbas,IDK,/orgs/DemoOrg/collections/MyDemoCollection/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Source,MyFHIRSource,My FHIR Source,,https://www.demoland.fake/source,,Edit,,Using this source just for FHIR testing purposes,,,FHIR Source Name,My Demonstrative FHIR Test Source,DemoOrg,Organization,Dictionary,en,"en,fk",None,FHIR1641246546-IDK,https://demo.fake/CodeSystem/FHIRSource,,,,,,"DemoLand, Inc.",Only for testing,For testing only,2021-07-27,TRUE,[Record],example,TRUE,FALSE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Concept,Act,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,Just one description,,Active Demo Concept,Fully Specified,"[name1,name2]",TRUE,2.5,5,,,,,,,,,,,,,,
-Concept,Ret,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,TRUE,None,Misc,MyDemoSource,,,Retired Demo Concept,Fully Specified,,,,,,,,,,,,,,,,,,
-Concept,Child,,,,,,,,,,,,DemoOrg,Organization,,,,,HSpL3hSBx6F,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,,,Child Demo Concept,Fully Specified,,,,,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,,,,,,,,,,,,,
-Concept,Child_of_child,,,,,,,,,,,,DemoOrg,Organization,,,,,asdkfjhasLKfjhsa,,,,,,,,,,,,,,,,,,FALSE,None,Misc,MyDemoSource,Main description,Secondary description,Child of the Child Demo Concept,Fully Specified,,,,,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,Child-Parent,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child_of_child/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,,,,,,,,,,
-Mapping,,,,,,,,,,,,,DemoOrg,Organization,,,,,,,,,,,,,,,,,,,,,,,,,,MyDemoSource,,,,,,,,,,,,,Parent-child,/orgs/DemoOrg/sources/MyDemoSource/concepts/Child/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,,,,,,,
-Collection,MyDemoCollection,My Test Collection,,https://www.demoland.fake/source,,Edit,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Using this collection just for testing purposes,Generic About entry,,Collection Name,My Demonstrative Test Collection,DemoOrg,Organization,,en,"en,fk",None,654246546-IDK,https://demo.fake/ValueSet/Collection,,,,,,"DemoLand, Inc.",To demonstrate,Please don't use this for anything but test importing.,44386,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,,,Value Set,FALSE,DZA,EGY,,
-Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/
-Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Ret/
-Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Unresolved/
-
-```
-
-Note that this example is in progress and will be updated to meet the latest OCL bulk import syntax.
-
-
-# OCL Bulk Importing 
-## Bulk Import via API
-API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. Inline importing can be performed using POST /importers/bulk-import-inline/ , while parallel importing can be performed using POST /importers/bulk-import-parallel-inline/ .
-
+## OCL Bulk Importing 
+### Bulk Import via API
+API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. Inline importing can be performed using `POST /importers/bulk-import-inline/`, while parallel importing can be performed using `POST /importers/bulk-import-parallel-inline/`.
 
 Using parallel importing allows the specification of a number of parallel threads, which speed up the import process but consume more of OCL’s resources. By default, 5 workers are used for a bulk import, but this number can be anywhere between 2 and 10.
-## Bulk Import Queues
+
+### Bulk Import Queues
 Submitting to the Standard Queue
 Post a JSON bulk import file for asynchronous processing in the standard queue. The standard queue has multiple workers processing in parallel, and therefore bulk imports may not be processed in the order that they are submitted.
-
 
 ```
 POST /manage/bulkimport/:queue/
 ```
 
-
 * POST Request Parameters:
    * **test_mode** - default=`false`; set to `true` to only run a test import \<NOT CURRENTLY SUPPORTED!\>
-   *   **update_if_exists** - default=`true`; set to `false` to skip updating resources that already exist
-
+   * **update_if_exists** - default=`true`; set to `false` to skip updating resources that already exist
 
 Submitting to a User Assigned Queue
 Adds a JSON bulk import file for asynchronous processing in a user assigned queue. User assigned queues process bulk import files using only one worker, therefore guaranteeing that they will be processed in the order in which they are submitted.
@@ -282,7 +278,6 @@ Adds a JSON bulk import file for asynchronous processing in a user assigned queu
 ```
 POST /manage/bulkimport/:queue/
 ```
-
 
 * POST Request Parameters:
    * **test_mode** - default=`false`; set to `true` to only run a test import \<NOT CURRENTLY SUPPORTED!\>
@@ -300,7 +295,6 @@ GET /manage/bulkimport/:queue/
 *  GET Request Parameters:
    *  Root user only:
       *  **username** - optionally filter by username; for root, bulk imports for all users are returned by default
-
 
 NOTE: Returns an empty list `[]` if no recent or active bulk imports are queued
 
@@ -402,23 +396,18 @@ GET /manage/bulkimport/?task=2344a457-cfdf-4985-ae0f-b2797d33a1a2&result=json
 
 
 
-
-
-
-
-Cancelling a Bulk Import
+### Cancelling a Bulk Import
 Ongoing bulk imports can be cancelled before completion, although it will not undo what parts of the import have already been done.
 ```
 DELETE /importers/bulkimport/?task_id=2344a457-cfdf-4985-ae0f-b2797d33a1a2&signal=SIGKILL
 ```
-
 
 Parameters:
 * task_id (required) - ID of the task to be deleted
 * signal - default=SIGKILL ; Other signals available [here](https://man7.org/linux/man-pages/man7/signal.7.html)
 
 
-## Bulk Import via OCL’s TermBrowser
+### Bulk Import via the OCL TermBrowser Bulk Import Tool
 When logged into an OCL account, the Bulk Import interface in the TermBrowser is available in the App menu at the top right. This interface allows the use of the following bulk import features:
 * Content Load
    * Upload JSON or CSV file for loading
@@ -432,6 +421,3 @@ When logged into an OCL account, the Bulk Import interface in the TermBrowser is
    * View active and past import queues (for up to 3 days), with filters to find imports
    * View and download a report for completed imports, including runtime, results, etc.
 
-
-## Admin Features for Bulk Importing
-TBD

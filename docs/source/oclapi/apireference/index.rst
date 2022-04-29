@@ -12,8 +12,9 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     exportapi
     mappings
     orgs
-    permissionssummary
+    cascade
     resolveReference
+    permissionssummary
     sources
     users
     other/index
