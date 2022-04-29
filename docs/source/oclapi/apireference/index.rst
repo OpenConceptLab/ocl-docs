@@ -9,6 +9,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     bulkimporting
     concepts
     collections
+    expansions
     exportapi
     mappings
     orgs
