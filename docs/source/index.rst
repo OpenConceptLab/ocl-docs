@@ -1,6 +1,10 @@
+Welcome!
+--------
+**OCL Docs** is a community-maintained collection of documentation about our software and about our community. You can browse **OCL Docs** anonymously. Volunteers create documentation and maintain this site, and we invite you to help by improving content, filling gaps, and correcting errors. To contribute, request access to the `OpenConceptLab/ocl-docs<https://github.com/OpenConceptLab/ocl-docs>` repository on GitHub.
+
 What is OCL?
 ------------
-OCL is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
+The Open Concept Lab (OCL) is an open-source terminology management system to help you collaboratively manage, publish and use your metadata in the cloud alongside the global community.
 
 Here are the main use cases for adopting OCL:
 
