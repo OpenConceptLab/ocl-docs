@@ -1,6 +1,6 @@
 Welcome!
 --------
-**OCL Docs** is a community-maintained collection of documentation about our software and about our community. You can browse **OCL Docs** anonymously. Volunteers create documentation and maintain this site, and we invite you to help by improving content, filling gaps, and correcting errors. To contribute, request access to the `OpenConceptLab/ocl-docs <https://github.com/OpenConceptLab/ocl-docs>` repository on GitHub.
+**OCL Docs** is a community-maintained collection of documentation about our software and about our community. You can browse **OCL Docs** anonymously. Volunteers create documentation and maintain this site, and we invite you to help by improving content, filling gaps, and correcting errors. To contribute, request access to the `ocl-docs <https://github.com/OpenConceptLab/ocl-docs>` repository on GitHub.
 
 OCL Overview
 -------------
