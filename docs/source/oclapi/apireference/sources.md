@@ -5,9 +5,7 @@ The API exposes a representation of sources which are versioned repositories of 
 
 Examples of a `Source` include an OpenMRS concept dictionary (e.g. CIEL, AMPATH, PIH), a reference terminology or codeset (e.g. SNOMED CT, ICD-10), or indicator registry (e.g. WHO Indicator Registry). Custom dictionaries are also supported, which are useful for representing local or proprietary content or content that is still under development. A `Source` is owned by either a user or an organization.
 
-OCL supports internal and external sources. An internal source is one whose concepts and mappings are being managed on OCL. Its metadata as well as concepts, classes, datatypes, mappings, maptypes, etc. may all be edited by a user with sufficient privileges. An external source acts as placeholder for mappings to concepts that are not stored in OCL. For example, the SNOMED CT terminology is not hosted on OCL, but the IHTSDO organization and SNOMED CT source do exist as a placeholder to map to SNOMED CT terms.
-
-The public's access to a `Source` may be set to `Edit`, `View` or `None`. Typically sources are marked as `View`, which allows any authenticated user to view the content of the source but only users with additional permissions may edit the source. If a source is marked as `Edit`, then any authenticated OCL user may make changes to it, so this should be used only in rare situations. A private source is one that is marked as `None`-- only user's with explicitly shared access may search or perform actions on the concepts in a private source.
+OCL supports "internal" and "external" sources. An internal source is one whose concepts and mappings are being managed on OCL. Its metadata as well as concepts, classes, datatypes, mappings, maptypes, etc. may all be edited by a user with sufficient privileges. An external source acts as placeholder for mappings to concepts that are not stored in OCL. For example, the SNOMED CT terminology is not hosted on OCL, but the IHTSDO organization and SNOMED CT source do exist as a placeholder to map to SNOMED CT terms.
 
 Example uses:
 * `GET /orgs/WHO/sources/ICD-10-2010/` - Get an organization's source
@@ -19,6 +17,9 @@ Example uses:
 * Versions of a source are a frozen pointer to the state of the source's concepts, mappings, and metadata at a specific point in time, similar to "tags" in GitHub. The "frozen" data includes the source metadata (name, descriptions, etc.).
 * Source versions can be marked as "released" or "retired" to indicate to users how the contents of a source version are intended to be used. Any number of source versions may be marked as "released".
 * The `latest` source version is a magic keyword that automatically refers to the most recent released version of a source, e.g. `GET /user/sources/MySource/latest/`
+
+### Managing user permissions to a source
+The public's access to a `Source` may be set to `Edit`, `View` or `None`. Typically sources are marked as `View`, which allows any authenticated user to view the content of the source but only users with additional permissions may edit the source. If a source is marked as `Edit`, then any authenticated OCL user may make changes to it, so this should be used only in rare situations. A private source is one that is marked as `None`-- only user's with explicitly shared access may search or perform actions on the concepts in a private source.
 
 ## Get a single source
 * Get a public source owned by an oragnization or user
