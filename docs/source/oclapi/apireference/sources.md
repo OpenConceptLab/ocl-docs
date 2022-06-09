@@ -1,11 +1,13 @@
 # Sources
 
 ## Overview
-The API exposes a representation of sources which are versioned repositories of concepts (e.g. terms, measures, or indicators) and mappings. Sources are used to create and edit concepts and mappings. Examples of `sources` include an OpenMRS concept dictionary (e.g. CIEL, AMPATH, PIH), a reference terminology or codeset (e.g. SNOMED CT, ICD-10), or indicator registry (e.g. WHO Indicator Registry). Custom dictionaries are also supported, which are useful for representing local or proprietary content or content that is still under development. Each source is owned by either a user or an organization.
+The API exposes a representation of sources which are versioned repositories of concepts (or codes, terms, measures, metadata definitions) and mappings. A `Source` is used to create and edit concepts and mappings, whereas a `Collection` is used to build a set of concepts and mappings from one or more sources. A `Source` can be used to build a FHIR `CodeSystem` or a FHIR `ConceptMap` -- see [OCL FHIR Overview](https://docs.openconceptlab.org/en/latest/oclfhir/overview.html) for more information.
+
+Examples of a `Source` include an OpenMRS concept dictionary (e.g. CIEL, AMPATH, PIH), a reference terminology or codeset (e.g. SNOMED CT, ICD-10), or indicator registry (e.g. WHO Indicator Registry). Custom dictionaries are also supported, which are useful for representing local or proprietary content or content that is still under development. A `Source` is owned by either a user or an organization.
 
 OCL supports internal and external sources. An internal source is one whose concepts and mappings are being managed on OCL. Its metadata as well as concepts, classes, datatypes, mappings, maptypes, etc. may all be edited by a user with sufficient privileges. An external source acts as placeholder for mappings to concepts that are not stored in OCL. For example, the SNOMED CT terminology is not hosted on OCL, but the IHTSDO organization and SNOMED CT source do exist as a placeholder to map to SNOMED CT terms.
 
-The public's access to a `source` may be set to `Edit`, `View` or `None`. Typically sources are marked as `View`, which allows any authenticated user to view the content of the source but only users with additional permissions may edit the source. If a source is marked as `Edit`, then any authenticated OCL user may make changes to it, so this should be used only in rare situations. A private source is one that is marked as `None`-- only user's with explicitly shared access may search or perform actions on the concepts in a private source. In the future, more granular access control may be supported. Note that private sources are a premium feature and require a paid account.
+The public's access to a `Source` may be set to `Edit`, `View` or `None`. Typically sources are marked as `View`, which allows any authenticated user to view the content of the source but only users with additional permissions may edit the source. If a source is marked as `Edit`, then any authenticated OCL user may make changes to it, so this should be used only in rare situations. A private source is one that is marked as `None`-- only user's with explicitly shared access may search or perform actions on the concepts in a private source.
 
 Example uses:
 * `GET /orgs/WHO/sources/ICD-10-2010/` - Get an organization's source
@@ -13,21 +15,10 @@ Example uses:
 * `GET /user/sources/my-source/` - Get the authenticated user's source
 
 ### Versioning of sources
-* The current state of a source's metadata and all of its resources is referred to as its `HEAD`. All changes to a source's metadata and resources are made to the `HEAD` of the source, and prior source versions are not affected. The source `HEAD` is used when no source version is otherwise specified in a request. For example, `GET /user/sources/MySource/` will retrieve the `HEAD` whereas `GET /user/sources/MySource/v1.0/` will retrieve the source version with an ID of "v1.0".
+* The current state of a source's metadata and all of its resources is referred to as its `HEAD`. All changes to a source's metadata and resources are made to the `HEAD` of the source, and prior source versions are not affected. The source `HEAD` is used when no source version is otherwise specified in a request. For example, `GET /user/sources/MySource/HEAD/` and `GET /user/sources/MySource/` will retrieve the `HEAD` source version, whereas `GET /user/sources/MySource/v1.0/` will retrieve the source version with an ID of "v1.0".
 * Versions of a source are a frozen pointer to the state of the source's concepts, mappings, and metadata at a specific point in time, similar to "tags" in GitHub. The "frozen" data includes the source metadata (name, descriptions, etc.).
 * Source versions can be marked as "released" or "retired" to indicate to users how the contents of a source version are intended to be used. Any number of source versions may be marked as "released".
-
-### Future Considerations
-* Should a source version's `root_version_url` always point to `HEAD` or should it point to the first user-generated source version?
-* Use of `parent_version_url` in source versions is deprecated and support will be removed. `previous_version_url` and `root_version_url` will both be automatically populated.
-* Set maximum `limit=500` for all GET requests - error if limit is set to an amount above that - until performance issues are addressed - note that exports should be used in lieu of fetching all results
-* Paging needs to be supported for GET source details with `includeMappings` and `includeConcepts` set to true in case there are more than the maximum
-* Source versions- Add support for "released" URL parameter to filter source versions GET request (e.g. GET /orgs/CIEL/sources/CIEL/versions/?released=true); Add default sort of created_on descending for source versions; Goal is that a subscription client could get the most recent published source version using the following: GET /orgs/CIEL/sources/CIEL/versions/?limit=1&released=true
-* Allow editing of the "shortCode" field after creation? If "id" read-only, then it might make sense to force "shortCode" to be read-only as well
-* What about a "metrics" sub-resource (e.g. `GET /user/sources/:source/metrics`) that returned additional statistics about a source, such as the breakdown of versions, concepts, class types, data types, etc.
-* Sources should support multi-lingual names and descriptions in the future
-
-
+* The `latest` source version is a magic keyword that automatically refers to the most recent released version of a source, e.g. `GET /user/sources/MySource/latest/`
 
 ## Get a single source
 * Get a public source owned by an oragnization or user
