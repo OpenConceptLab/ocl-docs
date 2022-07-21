@@ -132,6 +132,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :hidden:
    :caption: Other
 
+   ocl/self-hosting
    ocl/branding
 
 .. toctree::
