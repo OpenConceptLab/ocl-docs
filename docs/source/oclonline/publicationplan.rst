@@ -21,11 +21,12 @@ Scope of Content Publication
      - Emerging Health Data Standards
    * - Available in OCL Production
      - - HL7 FHIR Terminologies
+       - WHO ICD-10
+       - LOINC
+       - SNOMED-GPS
      - - CIEL Interface Terminology
    * - Planned and In Progress
-     - - WHO ICD-10
-       - LOINC
-       - SNOMED-CT
+     - - SNOMED-CT
        - RxNorm
        - US ICD-10-CM
      - - WHO Smart Guidelines
