@@ -13,8 +13,9 @@ GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:
 ```
 
 **Parameters**
-* mapType (0..\*) - Comma-delimited list of map types to cascade. If set, map types not in this list are ignored.
-* excludeMapType (0..\*) - List of map types to exclude from the cascade. If set, all map types are cascaded except for those listed here. This parameter is ignored if `mapType` is set.
+* mapType (0..\*) - Comma-delimited list of map types used to process the cascade. If set, map types not in this list are ignored.
+* excludeMapType (0..\*) - Comma-delimited list of map types to exclude from processing the cascade. If set, all map types are cascaded except for those listed here. This parameter is ignored if `mapType` is set.
+* returnMapType (0..\*) - Comma-delimited list of map types to include in the resultset. If no value (the default), then this takes on the value of `mapTypes`. `*` returns all of a concept’s mappings; `false`/`0` will not include any mappings in the resultset.
 * method (0..1) - default=sourcetoconcepts; other option is `sourcemappings`. Controls cascade behavior via mappings, target concepts, or both. Note, to cascade everything (mappings, target concepts, and source hierarchy), use `method=sourceToConcepts` and `cascadeHierarchy=true`
   * sourceMappings: cascade only mappings and not target concepts and not source hierarchy
   * sourceToConcepts: cascades mappings and target concepts
