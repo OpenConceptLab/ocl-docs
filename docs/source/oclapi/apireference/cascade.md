@@ -1,30 +1,28 @@
 # Operation: $cascade
 
 ## Overview
-The API exposes a `$cascade` operation to retrieve a list of associated concepts and mappings initiated from a specific concept code for a source or collection version. Associations may be determined using both hierarchy and mappings and may be processed recursively. Note that a repository version is required in order to unambiguously navigate hierarchy and mappings – therefore, it is not possible to cascade interim resource versions
-Cascade a Concept within a Source Version
-
+The API exposes a `$cascade` operation to retrieve a list of associated concepts and mappings initiated from a specific concept code for a source or collection version. Associations may be determined using both hierarchy and mappings and may be processed recursively. Note that a repository version is required in order to unambiguously navigate hierarchy and mappings – therefore, it is not possible to cascade interim resource versions. `$cascade` can return a hierarchical response or a flattened response.
 
 ## Get a list of resources that are associated with a concept within a specific source or collection version
-If `:sourceVersion`/`:collectionVersion` is omitted, OCL defaults to the `latest` released repository version, or returns an error if that does not exist. Note that it is possible to cascade the `HEAD` version of a repository.
+If `:sourceVersion`/`:collectionVersion` is omitted, OCL defaults to the `latest` released repository version (not `HEAD`), or returns an error if that does not exist. Note that it is possible to cascade the `HEAD` version of a repository.
 ```
-GET /:ownerType/:ownerId/sources/:source/[:sourceVersion/]concepts/:concept/$cascade
-GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:concept/$cascade
+GET /:ownerType/:ownerId/sources/:source/[:sourceVersion/]concepts/:concept/$cascade/
+GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:concept/$cascade/
 ```
 
 **Parameters**
-* mapType (0..\*) - Comma-delimited list of map types used to process the cascade. If set, map types not in this list are ignored.
-* excludeMapType (0..\*) - Comma-delimited list of map types to exclude from processing the cascade. If set, all map types are cascaded except for those listed here. This parameter is ignored if `mapType` is set.
-* returnMapType (0..\*) - Comma-delimited list of map types to include in the resultset. If no value (the default), then this takes on the value of `mapTypes`. `*` returns all of a concept’s mappings; `false`/`0` will not include any mappings in the resultset.
-* method (0..1) - default=sourcetoconcepts; other option is `sourcemappings`. Controls cascade behavior via mappings, target concepts, or both. Note, to cascade everything (mappings, target concepts, and source hierarchy), use `method=sourceToConcepts` and `cascadeHierarchy=true`
-  * sourceMappings: cascade only mappings and not target concepts and not source hierarchy
-  * sourceToConcepts: cascades mappings and target concepts
-* cascadeHierarchy (optional; boolean) - default=true; if true (default), cascade a concept’s parent/child hierarchy relationships
-* cascadeMappings (optional; boolean) - default=true; if true (default), cascade a concept’s mappings
-* includeMappings (optional; boolean) - default=true; if true, all mappings that are cascaded are included in the response; set this to false to exclude the mappings from the response and only include the concepts
-* cascadeLevels (optional) - default="\*"; Set the number of levels of cascading to process from the starting concept. The number of levels of recursion for the cascade process, beginning from the requested root concept, where 0=no recursion, so only the root concept and its children/target concepts are processed. 1=one level of recursion, so the root concept, its children/targets, and their children/targets are included in the response. “\*”=infinite recursion, where the process recursively cascades until it is not possible to go further or until it has reached a hard limit (e.g. 1,000 resources, or as set by the system administrator). Note that the $cascade operator prevents infinite loops by not cascading a concept that has already been cascaded. Also note that each level of recursion applies the same “mapTypes” or “excludeMapTypes” filters.
-* reverse (optional; boolean) - default=false. By default, `$cascade` is processed from parent-to-child, from-concept-to-target-concept. Set `reverse=false` to process in the reverse direction, from child-to-parent and target-concept-to-from-concept.
-* view (string) - `flat` (default), `hierarchy`; Set to `“hierarchy”` to have entries returned inside each concept, beginning with the requested root concept. The default `“flat”` behavior simply returns a flat list of all concepts and mappings.
+* `mapTypes` (0..\*) - Comma-delimited list of map types used to process the cascade, e.g. `*` or `Q-AND-A,CONCEPT-SET`. If set, map types not in this list are ignored.
+* `excludeMapTypes` (0..\*) - Comma-delimited list of map types to exclude from processing the cascade. If set, all map types are cascaded except for those listed here. This parameter is ignored if `mapType` is set.
+* `returnMapTypes` (0..\*) - Comma-delimited list of map types to include in the resultset. If no value (the default), then this takes on the value of `mapTypes`. `*` returns all of a concept’s mappings; `false`/`0` will not include any mappings in the resultset.
+* `method` (0..1) - default=`sourcetoconcepts`; other option is `sourcemappings`. Controls cascade behavior via mappings, target concepts, or both. Note, to cascade everything (mappings, target concepts, and source hierarchy), use `method=sourceToConcepts` and `cascadeHierarchy=true`
+  * `sourceMappings`: Cascade only mappings and not target concepts and not source hierarchy
+  * `sourceToConcepts`: Cascades mappings and target concepts
+* `cascadeHierarchy` (optional; boolean) - default=true; if true (default), cascade a concept’s parent/child hierarchy relationships
+* `cascadeMappings` (optional; boolean) - default=true; if true (default), cascade a concept’s mappings
+* `includeMappings` (optional; boolean) - default=true; if true, all mappings that are cascaded are included in the response; set this to false to exclude the mappings from the response and only include the concepts
+* `cascadeLevels` (optional) - default="\*"; Set the number of levels of cascading to process from the starting concept. The number of levels of recursion for the cascade process, beginning from the requested root concept, where 0=no recursion, so only the root concept and its children/target concepts are processed. 1=one level of recursion, so the root concept, its children/targets, and their children/targets are included in the response. “\*”=infinite recursion, where the process recursively cascades until it is not possible to go further or until it has reached a hard limit (e.g. 1,000 resources, or as set by the system administrator). Note that the `$cascade` operator prevents infinite loops by not cascading a concept that has already been cascaded. Also note that each level of recursion applies the same “mapTypes” or “excludeMapTypes” filters.
+* `reverse` (optional; boolean) - default=false. By default, `$cascade` is processed from parent-to-child, from-concept-to-target-concept. Set `reverse=false` to process in the reverse direction, from child-to-parent and target-concept-to-from-concept.
+* `view` (string) - `flat` (default), `hierarchy`; Set to `“hierarchy”` to have entries returned inside each concept, beginning with the requested root concept. The default `“flat”` behavior simply returns a flat list of all concepts and mappings.
 
 
 Example Request
