@@ -95,13 +95,12 @@ Note that this example is in progress and will be updated to meet the latest OCL
 ### Repositories (Sources and Collections)
 **Required**
 * **resource_type** - “Source” or “Collection”
-* **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
+* **owner** - OCL resource identifier of the OCL user or organization that will own this object
 * **id** - OCL resource identifier
 * **name** - Primary name of the repository
-
+* **owner_type** - “Organization” or “User”
 
 **Optional**
-* **owner_type** - “Organization” or “User”; default=”Organization”
 * **short_code** - Automatically set to id if omitted
 * **full_name** - Automatically set to name if omitted
 * **description** - Description of the repository
