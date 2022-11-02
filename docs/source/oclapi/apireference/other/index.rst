@@ -6,7 +6,6 @@ This section is for technical documentation that needs to be updated or doesn’
 .. toctree::
     :maxdepth: 2
     
-    customattributefilters
     formattedcsvresponses
     subscriptions
     validationschemas
