@@ -74,9 +74,9 @@ DELETE /user/sources/:source/concepts/:concept/extras/:field_name/
 
 OCL exposes a method for filtering resources based on their custom attributes (ie `extras` field). Many resources in OCL support custom attributes, including: orgs, sources, collections, source/collection versions, concepts, and mappings.
 
-Work happening in these tickets: #39, #448, #471
 
-The query structure is a bit different in ES. Following are the examples:
+Below is an example of filtering a list of Sources to find a particular Source.
+
 Consider the following Source:
 ```
 {
