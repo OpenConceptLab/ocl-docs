@@ -10,7 +10,7 @@ GET /:ownerType/:ownerId/sources/:source/[:sourceVersion/]concepts/:concept/$cas
 GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:concept/$cascade/
 ```
 
-It is possible for a concept to appear in a result set more than once (i.e. multiple concepts have the same concept as a child). In a hierarchical response (`view=hierarchy`), only the first appearance of a concept will be cascaded. In a flattened response (`view=flat`), duplicates are removed so the concept will appear only once.
+It is possible for a concept to appear in a result set more than once (i.e. multiple concepts have the same concept as a child). In a hierarchical response (`view=hierarchy`), the same concept may appear more than once, but only the first appearance of a concept will be cascaded. In a flattened response (`view=flat`), duplicates are removed so the concept will appear only once.
 
 **Input Parameters**
 * `mapTypes` (0..\*) - Comma-delimited list of map types used to process the cascade, e.g. `*` or `Q-AND-A,CONCEPT-SET`. If set, map types not in this list are ignored.
