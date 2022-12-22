@@ -48,8 +48,12 @@ It is possible for a concept to appear in a result set more than once (i.e. mult
 * For mappings:
   * `entry.map_type`
   * `entry.sort_weight`
-  * `entry.from_concept_code` OR `entry.to_concept_code`
-  * `entry.from_concept_url` OR `entry.to_concept_url`
+  * If `reverse=false`:
+    * `entry.to_concept_code`
+    * `entry.to_concept_url`
+  * If `reverse=true`:
+    * `entry.from_concept_code`
+    * `entry.from_concept_url`
   * `entry.cascade_target_concept_code`
   * `entry.cascade_target_concept_url`
   * `entry.cascade_target_concept_name`
