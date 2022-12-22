@@ -10,7 +10,9 @@ GET /:ownerType/:ownerId/sources/:source/[:sourceVersion/]concepts/:concept/$cas
 GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:concept/$cascade/
 ```
 
-**Parameters**
+It is possible for a concept to appear in a result set more than once (i.e. multiple concepts have the same concept as a child). In a hierarchical response (`view=hierarchy`), only the first appearance of a concept will be cascaded. In a flattened response (`view=flat`), duplicates are removed so the concept will appear only once.
+
+**Input Parameters**
 * `mapTypes` (0..\*) - Comma-delimited list of map types used to process the cascade, e.g. `*` or `Q-AND-A,CONCEPT-SET`. If set, map types not in this list are ignored.
 * `excludeMapTypes` (0..\*) - Comma-delimited list of map types to exclude from processing the cascade. If set, all map types are cascaded except for those listed here. This parameter is ignored if `mapType` is set.
 * `returnMapTypes` (0..\*) - Comma-delimited list of map types to include in the resultset. If no value (the default), then this takes on the value of `mapTypes`. `*` returns all of a concept’s mappings; `false`/`0` will not include any mappings in the resultset.
@@ -24,9 +26,37 @@ GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:
 * `view` (string) - `flat` (default), `hierarchy`; Set to `“hierarchy”` to have entries returned inside each concept, beginning with the requested root concept. The default `“flat”` behavior simply returns a flat list of all concepts and mappings.
 * `includeMappings` DEPRECATED (optional; boolean) - default=true; if true, all mappings that are cascaded are included in the response; set this to false to exclude the mappings from the response and only include the concepts. This parameter is deprecated as it has been replaced by `returnMapTypes`, which has even more features.
 
+**Output Parameters**
+* `resourceType` - `Bundle`
+* `type` - `searchset`
+* `requested_url` - The relative URL of the original request
+* `total` - In a flattened resopnse, the total number of entries in the result set
+* `meta` - Metadata about the request
+* `entry` - The concept from where the cascade operations was initiated
+* `entry.type` - `Concept` or `Mapping`
+* `entry.id` - ID/mnemonic of the resource
+* `entry.url` - Version-less relative URL to the resource
+* `entry.version_url` - Relative URL to the resource within its repository version
+* `entry.retired`
+* For concepts:
+  * `entry.display_name`
+  * `entry.terminal` - For a concept in the result set, `terminal` indicates if the cascade operation cut off the tree, if it is possible to continue cascading further given the input parameters, or if it is indeterminate:
+    * `true` - The concept was cascaded, and there were no further results for the concept. i.e. The tree, as defined by the input parameters, does not go any further.
+    * `false` - The concept was cascaded, and there were results that were included in the response. Note: For a hierarchical response, associated mappings and target concepts will always appear with the first occurrence of a concept.
+    * `null` - The concept was not cascaded based on the provided parameters (e.g. cascadeLevels=1), so no information is available about whether the concept is terminal.
+  * `entry.entries` - For a hierarchical response, includes the list of Mappings and target Concepts associated with this concept based on the input parameters.
+* For mappings:
+  * `entry.map_type`
+  * `entry.sort_weight`
+  * `entry.from_concept_code` OR * `entry.to_concept_code`
+  * `entry.from_concept_url` OR * `entry.to_concept_url`
+  * `entry.cascade_target_concept_code`
+  * `entry.cascade_target_concept_url`
+  * `entry.cascade_target_concept_name`
+  * `entry.cascade_target_source_owner`
+  * `entry.cascade_target_source_name`
 
 ### Example requests
-
 * Default: Cascade all map types recursively
 ```
 /users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/
