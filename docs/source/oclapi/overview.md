@@ -1,28 +1,27 @@
 OCL API Overview
 =======================
 ## Overview
-The **OCL-API v2.0** is an open definition for collaborative management of data dictionaries using a RESTful API. Data dictionaries consist of data definitions, terminology or indicators, which are collectively referred to as `concepts`. Relationships between concepts are defined in OCL as `mappings`. The API supports searching and editing concepts and mappings, building `sources` (a.k.a. data dictionaries), and logically grouping concepts and mappings into `collections`. Social features such as sharing, following, etc. are planned for subsequent phases. This is the Technical Documentation for the **OCL-API v1.0**.
+The **OCL-API v2.0** is an open definition for collaborative management of concept definitions. Relationships between concepts are defined in OCL as `mappings`. The API supports searching and editing concepts and mappings, building `sources`, and logically grouping concepts and mappings into `collections`. Social features such as sharing, following, etc. are planned for subsequent phases.
 
-A cloud-based instance of OCL is available at <https://openconceptlab.org>. The OCL User Documentation is available at <https://github.com/OpenConceptLab/ocl_web/wiki/>.
+A cloud-based instance of OCL is available at <https://openconceptlab.org>.
 
 ## Technical Overview
 These slides provide a useful technical overview of OCL and will be updated regularly:
 * [OCL Technical Overview](https://docs.google.com/presentation/d/1B0N_TlhBt54JdgqLXcH_NANnhQ-H39vm1IeFnf1kOI4/pub?start=false&loop=false&delayms=3000)
-* [Overview of Versioning in OCL](https://docs.google.com/presentation/d/e/2PACX-1vROcmEkRnBGBXLOiznMwhfA6qhiRwWuc5-yoOZrc7XMhrxZ1Kvbuy4B_BEyfHmybl-SnoWrWrznPz58/pub?start=false&loop=false&delayms=10000)
 
 ## Implementation Notes
-* All dates should follow ISO 8601 and be in UTC. Ex: `2011-11-16T14:26:15Z`
-* All field/properties should follow the `underscore_spacing` convention
-* All URL parameters follow are in `camelCase`
+* All dates follow ISO 8601 and are in UTC. Ex: `2011-11-16T14:26:15Z`
+* All field/properties follow the `underscore_spacing` convention
+* All URL parameters are in `camelCase`
 * All URL references within JSON are relative. For example, use `/orgs/WHO/sources/ICD-10-2010/` instead of `http://api.openconceptlab.com/orgs/WHO/sources/ICD-10-2010/`
 * Use UTF-8 encoding
 
 ## API Endpoint
 * `https://api.openconceptlab.org/`
 
-## API Collections
+## Postman API Collections
 These collections allow you to get up and running with the API within these clients.
-### Postman  
+
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/oclmediators/workspace/ocl-openapi/collection/9998242-1ef8d595-b142-473f-b48f-209cdcd90686)  
 This Postman collection was created from [OCL's OpenAPI](https://api.openconceptlab.org/swagger/?format=openapi), which is also available in [Swagger](https://api.openconceptlab.org/swagger/). 
 

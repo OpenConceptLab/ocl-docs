@@ -1,7 +1,7 @@
 # Operation: $cascade
 
 ## Overview
-The API exposes a `$cascade` operation to retrieve a list of associated concepts and mappings initiated from a specific concept code for a source or collection version. Associations may be determined using both hierarchy and mappings and may be processed recursively. Note that a repository version is required in order to unambiguously navigate hierarchy and mappings – therefore, it is not possible to cascade interim resource versions. `$cascade` can return a hierarchical response or a flattened response.
+The API exposes a `$cascade` operation to retrieve a list of associated concepts and mappings initiated from a specific concept within a source or collection version. Associations may be determined using both hierarchy (parent-child relationships) and/or mappings, and associations may be processed recursively. Note that a repository version is required in order to unambiguously navigate hierarchy and mappings – therefore, it is not possible to cascade interim resource versions. `$cascade` can return a hierarchical response or a flattened response.
 
 ## Get a list of resources that are associated with a concept within a specific source or collection version
 If `:sourceVersion`/`:collectionVersion` is omitted, OCL defaults to the `latest` released repository version (not `HEAD`), or returns an error if that does not exist. Note that it is possible to cascade the `HEAD` version of a repository.
@@ -25,7 +25,31 @@ GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:
 * `includeMappings` DEPRECATED (optional; boolean) - default=true; if true, all mappings that are cascaded are included in the response; set this to false to exclude the mappings from the response and only include the concepts. This parameter is deprecated as it has been replaced by `returnMapTypes`, which has even more features.
 
 
-### Example Request
+### Example requests
+
+* Default: Cascade all map types recursively
+```
+/users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/
+```
+* Cascade SAME-AS mappings recursively -- Note: Only SAME-AS mappings are returned in the result set
+```
+/users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/?mapTypes=SAME-AS
+```
+* Cascade SAME-AS mappings recursively, but return all of each concept's mappings in the result set
+```
+/users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/?mapTypes=SAME-AS&returnMapTypes=*
+```
+* Cascade 2-levels in the reverse direction
+```
+/users/ocladmin/sources/CascadeTest/v2/concepts/CC/$cascade/?reverse=true&cascadeLevels=1
+```
+* OpenMRS-compatible cascade - Includes associated Mappings and target Concepts from the same source, and recursively adds any of their answer and set member concepts and mappings (e.g. CONCEPT-SET and Q-AND-A mappings)
+```
+/users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/?mapType=CONCEPT-SET,Q-AND-A&returnMapType=*&view=hierarchy
+```
+
+
+### Example request and response
 ```
 GET /users/ocladmin/sources/CascadeTest/v2/concepts/BB/$cascade/?mapType=CONCEPT-SET,Q-AND-A&returnMapType=*&view=hierarchy
 ```

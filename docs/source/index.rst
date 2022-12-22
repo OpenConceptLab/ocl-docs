@@ -8,11 +8,15 @@ The Open Concept Lab (OCL) is an open-source terminology management system to he
 
 Learn more about OCL, its tools and its core features:
 
-* **Overview of core OCL tools:** :doc:`OCL API Overview</oclapi/overview>` |  :doc:`OCL FHIR Overview</oclfhir/overview>` | :doc:`API Reference of OCL</oclapi/apireference/index>`
+* **Overview of core OCL tools:**
+   * :doc:`OCL API Overview</oclapi/overview>`
+   * :doc:`OCL FHIR Overview</oclfhir/overview>`
+   * :doc:`API Reference of OCL</oclapi/apireference/index>`
 * **OCL roadmaps:** 
-    * Current Roadmap:  `OCL Roadmap 2022 <https://openconceptlab.org/technical-roadmap/>`_
+    * Current Roadmap:  `OCL Roadmap 2022 <https://openconceptlab.org/technical-roadmap/>`
     * :doc:`Previous Roadmaps </roadmaps/2021/roadmap2>`
-* **OCL releases:** :doc:`Release Notes </oclapi/releases>` 
+* **OCL releases:**
+   * :doc:`Release Notes </oclapi/releases>`
 
 
 Getting Started with OCL
@@ -54,16 +58,16 @@ OCL Servers
        - `Web v2 <https://app.openconceptlab.org>`_ 
        - `FHIR <https://fhir.openconceptlab.org>`_
    * - Staging
-       - `Web v2 <https://app.staging.openconceptlab.org>`_ 
-     - - `API v2 <https://api.staging.openconceptlab.org/>`_ 
+     - - `Web v2 <https://app.staging.openconceptlab.org>`_ 
+       - `API v2 <https://api.staging.openconceptlab.org/>`_ 
        - `FHIR <https://fhir.staging.openconceptlab.org>`_
    * - Demo
-       - `Web v2 <https://app.demo.openconceptlab.org>`_ 
-     - - `API v2 <https://api.demo.openconceptlab.org/>`_ 
+     - - `Web v2 <https://app.demo.openconceptlab.org>`_ 
+       - `API v2 <https://api.demo.openconceptlab.org/>`_ 
        - `FHIR <https://fhir.demo.openconceptlab.org>`_
    * - QA
-       - `Web v2 <https://app.qa.openconceptlab.org>`_ 
-     - - `API v2 <https://api.qa.openconceptlab.org/>`_ 
+     - - `Web v2 <https://app.qa.openconceptlab.org>`_ 
+       - `API v2 <https://api.qa.openconceptlab.org/>`_ 
        - `FHIR <https://fhir.qa.openconceptlab.org>`_
 
 
