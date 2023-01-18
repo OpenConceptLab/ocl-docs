@@ -24,14 +24,17 @@ It is possible for a concept to appear in a result set more than once (i.e. mult
 * `cascadeLevels` (optional) - default="\*"; Set the number of levels of cascading to process from the starting concept. The number of levels of recursion for the cascade process, beginning from the requested root concept, where 0=no recursion, so only the root concept and its children/target concepts are processed. 1=one level of recursion, so the root concept, its children/targets, and their children/targets are included in the response. “\*”=infinite recursion, where the process recursively cascades until it is not possible to go further or until it has reached a hard limit (e.g. 1,000 resources, or as set by the system administrator). Note that the `$cascade` operator prevents infinite loops by not cascading a concept that has already been cascaded. Also note that each level of recursion applies the same “mapTypes” or “excludeMapTypes” filters.
 * `reverse` (optional; boolean) - default=false. By default, `$cascade` is processed from parent-to-child, from-concept-to-target-concept. Set `reverse=false` to process in the reverse direction, from child-to-parent and target-concept-to-from-concept.
 * `view` (string) - `flat` (default), `hierarchy`; Set to `“hierarchy”` to have entries returned inside each concept, beginning with the requested root concept. The default `“flat”` behavior simply returns a flat list of all concepts and mappings.
+* `omitIfExistsIn` (string) - Relative or canonical URL of a repository (or repository version) used to terminate the processing of a branch if the current concept already exists in the repository version specified in `omitIfExistsIn`. The matching concept and associated mappings will not be included in the result set, and its children (and associated mapping) will also be omitted from the result set unless they happen to be included via processing of another returned concept.
+* `equivalencyMapType` (string) - A map type (e.g. `SAME-AS`) used to terminate the processing of a branch if the current concept has an equivalent mapping in the repository version specified in `omitIfExistsIn`. This attribute has no effect if blank or if `omitIfExistsIn` is empty or does not point to a valid repository.
 * `includeMappings` DEPRECATED (optional; boolean) - default=true; if true, all mappings that are cascaded are included in the response; set this to false to exclude the mappings from the response and only include the concepts. This parameter is deprecated as it has been replaced by `returnMapTypes`, which has even more features.
 
 **Output Parameters**
 * `resourceType` - `Bundle`
 * `type` - `searchset`
 * `requested_url` - The relative URL of the original request
+* `repo_version_url` - The relative URL of the repository version used to process the cascade request. If the repository version is specified in the original request, this will always reflect that. If the repository version was not specified
 * `total` - In a flattened resopnse, the total number of entries in the result set
-* `meta` - Metadata about the request
+* `meta` - Metadata about the request, such as `lastUpdated`
 * `entry` - The concept from where the cascade operations was initiated
 * `entry.type` - `Concept` or `Mapping`
 * `entry.id` - ID/mnemonic of the resource
