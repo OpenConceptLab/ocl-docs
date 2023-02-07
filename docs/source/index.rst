@@ -8,14 +8,13 @@ The Open Concept Lab (OCL) is an open-source terminology management system to he
 
 Learn more about OCL, its tools and its core features:
 
-* **Overview of core OCL tools:**
+* **Overview of the OCL Toolkit:**
    * :doc:`OCL API Overview</oclapi/overview>`
    * :doc:`OCL FHIR Overview</oclfhir/overview>`
    * :doc:`API Reference of OCL</oclapi/apireference/index>`
-* **OCL roadmaps:** 
-    * Current Roadmap:  `OCL Roadmap 2022 <https://openconceptlab.org/technical-roadmap/>`
-    * :doc:`Previous Roadmaps </roadmaps/2021/roadmap2>`
-* **OCL releases:**
+* **2023 OCL Community Roadmap:** 
+    * `2023 OCL Community Roadmap <https://openconceptlab.org/technical-roadmap/>`
+* **OCL Releases:**
    * :doc:`Release Notes </oclapi/releases>`
 
 
@@ -144,6 +143,7 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :hidden:
    :caption: Archived OCL Roadmaps
 
+   roadmaps/2022/2022-roadmap
    roadmaps/2021/roadmap2
    roadmaps/2021/roadmap
    roadmaps/2020/roadmap
