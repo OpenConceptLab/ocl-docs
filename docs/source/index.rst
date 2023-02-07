@@ -1,6 +1,6 @@
 Welcome!
 --------
-**OCL Docs** is a community-maintained collection of documentation about our software and about our community. You can browse **OCL Docs** anonymously. Volunteers create documentation and maintain this site, and we invite you to help by improving content, filling gaps, and correcting errors. To contribute, request access to the `ocl-docs<https://github.com/OpenConceptLab/ocl-docs>` repository on GitHub.
+**OCL Docs** is a community-maintained collection of documentation about our software and about our community. You can browse **OCL Docs** anonymously. Volunteers create documentation and maintain this site, and we invite you to help by improving content, filling gaps, and correcting errors. To contribute, request access to the `ocl-docs <https://github.com/OpenConceptLab/ocl-docs>`_ repository on GitHub.
 
 OCL Overview
 -------------
@@ -13,7 +13,7 @@ Learn more about OCL, its tools and its core features:
    * :doc:`OCL FHIR Overview</oclfhir/overview>`
    * :doc:`API Reference of OCL</oclapi/apireference/index>`
 * **2023 OCL Community Roadmap:** 
-    * `2023 OCL Community Roadmap<https://openconceptlab.org/technical-roadmap/>`
+    * `2023 OCL Community Roadmap <https://openconceptlab.org/technical-roadmap/>`_
 * **OCL Releases:**
    * :doc:`Release Notes </oclapi/releases>`
 
