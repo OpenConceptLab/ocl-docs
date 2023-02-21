@@ -4,13 +4,14 @@
 The API exposes a `$cascade` operation to retrieve a list of associated concepts and mappings initiated from a specific concept within a source or collection version. Associations may be determined using both hierarchy (parent-child relationships) and/or mappings, and associations may be processed recursively. Note that a repository version is required in order to unambiguously navigate hierarchy and mappings – therefore, it is not possible to cascade interim resource versions. `$cascade` can return a hierarchical response or a flattened response.
 
 ## Get a list of resources that are associated with a concept within a specific source or collection version
-If `:sourceVersion`/`:collectionVersion` is omitted, OCL defaults to the `latest` released repository version (not `HEAD`), or returns an error if that does not exist. Note that it is possible to cascade the `HEAD` version of a repository.
 ```
 GET /:ownerType/:ownerId/sources/:source/[:sourceVersion/]concepts/:concept/$cascade/
 GET /:ownerType/:ownerId/collections/:collection/[:collectionVersion/]concepts/:concept/$cascade/
 ```
 
-It is possible for a concept to appear in a result set more than once (i.e. multiple concepts have the same concept as a child). In a hierarchical response (`view=hierarchy`), the same concept may appear more than once, but only the first appearance of a concept will be cascaded. In a flattened response (`view=flat`), duplicates are removed so the concept will appear only once.
+Notes:
+* If `:sourceVersion`/`:collectionVersion` is omitted, OCL defaults to the `latest` released repository version (not `HEAD`), or returns an error if that does not exist. Note that it is possible to cascade the `HEAD` version of a repository.
+* It is possible for a concept to appear in a result set more than once (i.e. multiple concepts have the same concept as a child). In a hierarchical response (`view=hierarchy`), the same concept may appear more than once, but only the first appearance of a concept will be cascaded. In a flattened response (`view=flat`), duplicates are removed so the concept will appear only once.
 
 **Input Parameters**
 * `mapTypes` (0..\*) - Comma-delimited list of map types used to process the cascade, e.g. `*` or `Q-AND-A,CONCEPT-SET`. If set, map types not in this list are ignored.
