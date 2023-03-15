@@ -15,6 +15,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     mappings
     orgs
     cascade
+    cloning
     resolveReference
     permissionssummary
     sources
