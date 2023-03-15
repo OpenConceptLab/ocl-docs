@@ -34,7 +34,7 @@ Notes:
 * `type` - `searchset`
 * `requested_url` - The relative URL of the original request
 * `repo_version_url` - The relative URL of the repository version used to process the cascade request. If the repository version is specified in the original request, this will always reflect that. If the repository version was not specified
-* `total` - In a flattened resopnse, the total number of entries in the result set
+* `total` - In a flattened response, the total number of entries in the result set
 * `meta` - Metadata about the request, such as `lastUpdated`
 * `entry` - The concept from where the cascade operations was initiated
 * `entry.type` - `Concept` or `Mapping`
