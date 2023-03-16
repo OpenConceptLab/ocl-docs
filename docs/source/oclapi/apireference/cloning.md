@@ -56,7 +56,7 @@ POST /:ownerType/:ownerId/sources/:destinationSource/concepts/$clone/
 
 The `$clone` operation inherits all of the input parameters from the [`$cascade` operation documentation](https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html#get-a-list-of-resources-that-are-associated-with-a-concept-within-a-specific-source-or-collection-version)
 
-* `expressions` (1..*) - List of one or more expressions referencing the resources to be cloned
+* `expressions` (1..*) - List of one or more concept expressions, referencing the concepts to be cloned
 
 * `parameters` (0..1) - Input parameters that control the behavior of the $clone operation
 
@@ -89,9 +89,6 @@ The `$clone` operation inherits all of the input parameters from the [`$cascade`
 
 
     * `reverse` (optional; boolean) - default=false. By default, `$cascade` is processed from parent-to-child, from-concept-to-target-concept. Set `reverse=false` to process in the reverse direction, from child-to-parent and target-concept-to-from-concept.
-
-
-    * `view` (string) - `flat` (default), `hierarchy`; Set to `“hierarchy”` to have entries returned inside each concept, beginning with the requested root concept. The default `“flat”` behavior simply returns a flat list of all concepts and mappings.
 
 
     * `omitIfExistsIn` (string) - Relative or canonical URL of a repository (or repository version) used to terminate the processing of a branch if the current concept already exists in the repository version specified in `omitIfExistsIn`. The matching concept and associated mappings will not be included in the result set, and its children (and associated mapping) will also be omitted from the result set unless they happen to be included via processing of another returned concept.
