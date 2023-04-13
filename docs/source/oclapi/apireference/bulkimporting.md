@@ -1,7 +1,8 @@
 # Bulk Import API
 
 ## Overview
-OCL exposes a method for submitting a bulk import file to the OCL API that is processed asynchronously on the server. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
+OCL exposes a method for submitting an OCL-formatted bulk import JSON file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but 
+A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
 
 ### Authorization
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
@@ -54,7 +55,6 @@ Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?us
 Link to example: [https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing](https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing) 
 
 ```
-
 resource_type,id,name,company,website,location,public_access,logo_url,description,text,attr:Ex_Num,attr:ex_name,full_name,owner_id,owner_type,source_type,default_locale,supported_locales,custom_validation_schema,external_id,canonical_url,hierarchy_meaning,hierarchy_root_url,internal_reference_id,meta,collection_reference,publisher,purpose,copyright,revision_date,experimental,jurisdiction,content_type,case_sensitive,compositional,version_needed,external_id,retired,datatype,concept_class,source,description[1],description[2],name[1],name_type[1],attr:extra_names:list,attr:extra_bool:bool,attr:extra_float:float,attr:extra_int:int,parent_concept_urls[0],map_type[0],map_from_concept_id[0],map_to_concept_id[0],map_type,to_concept_url,from_concept_url,attr:extra_names,collection_type,immutable,jurisdiction[1],jurisdiction[2],collection_url,data:expressions
 Organization,DemoOrg,My Demo Organization,DemoLand Inc.,https://www.demoland.fake,DemoLand,View,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Generic Demo description text,This organization is demo-tastic!,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Source,MyDemoSource,My Test Source,,https://www.demoland.fake/source,,Edit,https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg,Using this source just for testing purposes,,,Source Name,My Demonstrative Test Source,DemoOrg,Organization,Dictionary,en,"en,fk",None,164531246546-IDK,https://demo.fake/CodeSystem/Source,is-a,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/,askjdhbas,IDK,/orgs/DemoOrg/collections/MyDemoCollection/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -68,11 +68,7 @@ Collection,MyDemoCollection,My Test Collection,,https://www.demoland.fake/source
 Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Act/
 Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Ret/
 Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/DemoOrg/collections/MyDemoCollection/,/orgs/DemoOrg/sources/MyDemoSource/concepts/Unresolved/
-
 ```
-
-Note that this example is in progress and will be updated to meet the latest OCL bulk import syntax.
-
 
 
 ## Required and Optional Bulk Import Fields
@@ -252,7 +248,7 @@ Note that this example is in progress and will be updated to meet the latest OCL
 * **retired** - default=False
   
 
-## OCL Bulk Importing 
+## OCL Bulk Import API Reference 
 ### Bulk Import via API
 API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. Inline importing can be performed using `POST /importers/bulk-import-inline/`, while parallel importing can be performed using `POST /importers/bulk-import-parallel-inline/`.
 
@@ -398,7 +394,7 @@ GET /manage/bulkimport/?task=2344a457-cfdf-4985-ae0f-b2797d33a1a2&result=json
 ### Cancelling a Bulk Import
 Ongoing bulk imports can be cancelled before completion, although it will not undo what parts of the import have already been done.
 ```
-DELETE /importers/bulkimport/?task_id=2344a457-cfdf-4985-ae0f-b2797d33a1a2&signal=SIGKILL
+DELETE /importers/bulk-import/?task_id=2344a457-cfdf-4985-ae0f-b2797d33a1a2&signal=SIGKILL
 ```
 
 Parameters:
@@ -406,7 +402,41 @@ Parameters:
 * signal - default=SIGKILL ; Other signals available [here](https://man7.org/linux/man-pages/man7/signal.7.html)
 
 
-### Bulk Import via the OCL TermBrowser Bulk Import Tool
+## Bulk Import examples using curl
+OCL provides two ways of importing Parallel (new and recommended) and sequential (legacy) modes.
+The parallel import can take import content input in three ways:
+* JSON/CSV file:
+```
+curl -X 'POST' \
+  'http://localhost:8000/importers/bulk-import-parallel-inline/custom-queue/?update_if_exists=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Token XXXXXXXXXXXXX' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@sample_ocldev.json;type=application/json' \
+  -F 'parallel=2'
+```
+* HTTPs URL for JSON/CSV File:
+```
+curl -X 'POST' \
+  'http://localhost:8000/importers/bulk-import-parallel-inline/custom-queue/?update_if_exists=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Token XXXXXXXXXXXXX' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file_url=https://my-file.json' \
+  -F 'parallel=2'
+```
+* JSON content:
+```
+curl --location --request POST 'http://127.0.0.1:8000/importers/bulk-import-parallel-inline/custom-queue/?update_if_exists=true' \
+--header 'Accept: */*' \
+--header 'Content-Type: multipart/form-data' \
+--header 'Authorization: Token XXXXXXXXXXXXX' \
+--form 'parallel=2' \
+--form 'data={"foo": "bar"}' \
+```
+
+
+## Bulk Import via the OCL TermBrowser
 When logged into an OCL account, the Bulk Import interface in the TermBrowser is available in the App menu at the top right. This interface allows the use of the following bulk import features:
 * Content Load
    * Upload JSON or CSV file for loading
