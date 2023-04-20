@@ -627,6 +627,7 @@ PUT /user/collections/:collection/references/
       * `none` (default): Do not cascade to any mappings or concepts
       * `sourecemappings`: Cascade to mappings in the same source, where the concept currently being processed is the `from-concept` of the mapping
       * `sourcetoconcepts`: Cascade to mappings and target concepts in the same source, where the concept currently being processed is the `from-concept` of the mapping
+      * Note: Full documentation on cascade parameters can be found here: https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html
 
 ### Example
 * `PUT /orgs/KenyaMOH/collections/KenyaEMR/references/?cascade=sourcemappings`
