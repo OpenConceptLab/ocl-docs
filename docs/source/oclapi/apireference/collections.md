@@ -1,49 +1,18 @@
 # Collections
 
 ## Overview
-The API exposes a representation of `collections`, which are versioned containers of references to `concepts` and `mappings`. Note that `sources` are used to actually author `concepts` and `mappings`, whereas `collections` are used to organize existing `concepts` and `mappings` into useful logical groupings, such as a diabetes value set or a Community Maternal-Child Starter Set. Collections reference concepts and mappings by combining one or more expressions that return concepts and mappings. Some expressions may be processed dynamically, meaning that the `concepts` and `mappings` in a collection may change automatically.
+The API exposes a representation of `collections`, which are versioned containers of references to `concepts` and `mappings`. Note that `sources` are used to actually author `concepts` and `mappings`, whereas `collections` are used to organize existing `concepts` and `mappings` into useful logical groupings, such as a diabetes value set or a Community Maternal-Child Starter Set.
 
-In the future, `collections` will be used to represent a variety of intensional and extensional value sets, where intensional value sets define a set of properties that are evaluated (or "expanded") to determine the collection members, and extensional value sets explicitly state each member of the value set. At this time, `collections` can be used to represent any type of extensional value set by adding individual concepts and mappings into a collection. Currently, `collections` support a limited number of intensional value sets, where the expression that is added cannot be dynamic, such as a source version or collection version.
+Collections reference concepts and mappings by combining one or more expressions that, when evaluated, result in concepts and mappings. A reference may be "static" or "dynamic":
+- **static** - A static expression will always resolve to the same resource version
+- **dynamic** - A dynamic expression may resolve to different resources or resource versions
 
-### Expressions
-* Expressions have been split into Phase 1 and Future Phases, where phase 1 includes expressions that result in either individual concepts and mappings or static lists of concepts and mappings (such as a source or collection version). Expressions follow the REST API syntax.
-* Phase 1 support for expressions:
-    * Expressions to add individual concepts:
-        * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
-        * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
-    * Expressions to add individual mappings:
-        * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
-        * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
-* Possible support for expressions in Future Phases:
-    * Expressions to add individual concepts:
-        * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
-    * Expressions to add individual mappings:
-        * Mapping from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/mappings/:mapping/`
-    * Expressions to add concepts from a source or collection version:
-        * All concepts from specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
-    * Expressions to add mappings from a source or collection version:
-        * All concepts from specific mapping version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-    * Expressions to add all mappings for a concept:
-        * All direct mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/`
-        * All direct and inverse mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/?includeInverseMappings=true`
-    * Parameters or filters may be included to filter the results. For example:
-        * All public concepts matching search criteria: `/concepts/?q=malaria`
-        * All concepts from a single source matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?class=Drug`
-    * Expressions to add concepts based on relationships
-        * E.g. All concepts that are descendants of a concept
-    * Expressions to add concepts from the top-level search endpoints
-        * All public concepts that meet specific criteria: `/concepts/?q=:criteria`
-        * All public direct mappings for a concept: `/mappings/?fromConcept=:concept`
-    * Expressions to add all resources from a source or collection with a single expression:
-        * All concepts and mappings from a source: `/orgs/:org/sources/:source/[:sourceVersion/]`
-        * All concepts and mappings from a collection: `/orgs/:org/collections/:collection/[:collectionVersion/]`
-    * Expressions to add concepts and mappings from the `HEAD` of a source or collection
-        * All concepts from head of source: `/orgs/:org/sources/:source/concepts/`
-        * All concepts from head of collection: `/orgs/:org/collections/:collection/concepts/`
-        * All mappings from head of source: `/orgs/:org/collections/:collection/mappings/`
-        * All mappings from head of collection: `/orgs/:org/collections/:collection/mappings/`
+In OCL, a collection is used to represent a FHIR ValueSet. "Dynamic" and "static" are closely related to the idea of "extensional" and "intensional" value sets:
+- **extensional** - Extensional value sets explicitly state each member of the value set (e.g. a list of concept codes)
+- **intensional** - Intensional value sets define a set of properties that are evaluated (or "expanded") to determine the value set members
+
+### References Syntax
+The full references syntax that is supported for references is specified in the :doc:`$resolveReference operation documentation</oclapi/apireference/resolveReference>`
 
 ### Implementation Considerations
 * Collections may contain concepts that share the same code, which means that to ensure unique identification of a concept, the owner and source must also be included. Ideally, the API can support use of only the concept ID if the ID is unique within the collection, and it would always support the fully specified form. Here are examples of using the fully specified owner, repository and ID to reference a concept within a collection:
@@ -623,6 +592,7 @@ PUT /user/collections/:collection/references/
     * **mappings** (optional) lists of strings - URLs of the mappings to add or `*` when used with `uri` to add all mappings from the collection/ source
     * **search_term** (optional) - Used with `uri` to filter concepts/ mappings to add by search term
 * Query Parameters
+    * **async** (optional) - set to `true` to process the request asynchronously; 
     * **cascade** (optional) (default=none) string - It takes `none`, `sourcemappings`, or `sourcetoconcepts` as a value
       * `none` (default): Do not cascade to any mappings or concepts
       * `sourecemappings`: Cascade to mappings in the same source, where the concept currently being processed is the `from-concept` of the mapping
@@ -1123,3 +1093,47 @@ GET /orgs/MyOrg/collections/MyCollection/mappings/
     * **bestMatch** (default) - see search fields above
     * **name** (Asc/Desc) - collection.name
     * **lastUpdate** (Asc/Desc) - collection.updated_on
+
+
+
+
+## Older material - keeping here to integrate into the updated documentation
+
+* Expressions have been split into Phase 1 and Future Phases, where phase 1 includes expressions that result in either individual concepts and mappings or static lists of concepts and mappings (such as a source or collection version). Expressions follow the REST API syntax.
+* Phase 1 support for expressions:
+    * Expressions to add individual concepts:
+        * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
+        * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
+    * Expressions to add individual mappings:
+        * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
+        * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
+* Possible support for expressions in Future Phases:
+    * Expressions to add individual concepts:
+        * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
+    * Expressions to add individual mappings:
+        * Mapping from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/mappings/:mapping/`
+    * Expressions to add concepts from a source or collection version:
+        * All concepts from specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
+        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
+    * Expressions to add mappings from a source or collection version:
+        * All concepts from specific mapping version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
+        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
+    * Expressions to add all mappings for a concept:
+        * All direct mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/`
+        * All direct and inverse mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/?includeInverseMappings=true`
+    * Parameters or filters may be included to filter the results. For example:
+        * All public concepts matching search criteria: `/concepts/?q=malaria`
+        * All concepts from a single source matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?class=Drug`
+    * Expressions to add concepts based on relationships
+        * E.g. All concepts that are descendants of a concept
+    * Expressions to add concepts from the top-level search endpoints
+        * All public concepts that meet specific criteria: `/concepts/?q=:criteria`
+        * All public direct mappings for a concept: `/mappings/?fromConcept=:concept`
+    * Expressions to add all resources from a source or collection with a single expression:
+        * All concepts and mappings from a source: `/orgs/:org/sources/:source/[:sourceVersion/]`
+        * All concepts and mappings from a collection: `/orgs/:org/collections/:collection/[:collectionVersion/]`
+    * Expressions to add concepts and mappings from the `HEAD` of a source or collection
+        * All concepts from head of source: `/orgs/:org/sources/:source/concepts/`
+        * All concepts from head of collection: `/orgs/:org/collections/:collection/concepts/`
+        * All mappings from head of source: `/orgs/:org/collections/:collection/mappings/`
+        * All mappings from head of collection: `/orgs/:org/collections/:collection/mappings/`
