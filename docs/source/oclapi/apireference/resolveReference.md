@@ -7,26 +7,36 @@ Note that this operation follows the FHIR convention of using the word “refere
 
 OCL supports both "Inline" and "Expanded" reference syntaxes.
 
+## Rules for Resolution of a Reference
+OCL resolves a reference to a repository version (source, collection, codesystem, valueset, conceptmap) by following this process:
+1. If relative reference, then convert to full URI by prepending the default OCL namespace: “http://api.openconceptlab.org”
+2. If scope is set within a namespace: First, attempt to resolve the canonical URL within the namespace
+3. If scope is global or the canonical URL could not be resolved based on the above rules (and if `oldstyle=false`): Attempt to resolve the canonical URL with the Global Canonical URL Registry
+4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
+
 ### Inline Reference Syntax
-* Relative URL:
+* Relative repository URL:
 ```
 “/orgs/CIEL/sources/CIEL/”
 ```
-* Relative URL with source version:
+* Relative URL with repository version:
 ```
 “/orgs/CIEL/sources/CIEL/v2021-03-12/”
 ```
-* Relative URL with coding: 
+* Relative URL with coding:
 ```
 “/orgs/CIEL/sources/CIEL/concepts/1948/”
+“/orgs/CIEL/sources/CIEL/v2021-03-12/concepts/1948/”
 ```
-* Canonical URL: 
+* FHIR-formatted Canonical URL:
 ```
 “http://hl7.org/fhir/CodeSystem/my-codesystem”
+"https://CIELterminology.org"
 ```
-* Canonical URL with piped CodeSystem version: 
+* FHIR-formatted Canonical URL with piped CodeSystem version:
 ```
 “http://hl7.org/fhir/CodeSystem/my-codesystem|1.2”
+"https://CIELterminology.org|v2021-03-12"
 ```
 
 ### Expanded reference syntax:
@@ -37,7 +47,7 @@ OCL supports both "Inline" and "Expanded" reference syntaxes.
   “version”: “v2021-03-12”
 }
 ```
-* Relative URL with coding (Note: Code is ignored by $resolveReference):
+* Relative URL with coding (Note: Code is ignored by `$resolveReference`):
 ```
 {
   “url”: “/orgs/CIEL/sources/CIEL/”,
@@ -77,13 +87,6 @@ OCL supports both "Inline" and "Expanded" reference syntaxes.
   * **cascade** (optional) - TBD
 * If `resourceType=Mapping`:
   * **id** (optional) - A mapping id to include in a collection. Note that the id field cannot be used in combination with the filter field.
-
-## Rules for Resolution of a Reference
-The following rules specify how OCL resolves a reference to a repository version (source, collection, codesystem, valueset, conceptmap):
-1. If relative reference, then convert to full URI by prepending the default OCL namespace: “http://api.openconceptlab.org”
-2. If scope is set within a namespace: First, attempt to resolve the canonical URL within the namespace
-3. If scope is global or the canonical URL could not be resolved based on the above rules (and if `oldstyle=false`): Attempt to resolve the canonical URL with the Global Canonical URL Registry
-4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
 
 ## $resolveReference Parameters
 * **oldstyle** (optional) - default=false; set to True to evaluate version-less repository references to HEAD instead of to latest
@@ -153,5 +156,5 @@ Status: 200
 
 
 ## Additional Considerations
-* Add an internal switch in $resolveReference that is set to resolve version-less "relative URLs" to HEAD that we can change to latest when we're ready -- note that version-less "canonical URLs" should always resolve to latest
+* Add an internal switch in `$resolveReference` that is set to resolve version-less "relative URLs" to HEAD that we can change to latest when we're ready -- note that version-less "canonical URLs" should always resolve to latest
 * In the future, we may want to implement an optional URL parameter that returns the full list of repositories that OCL could resolve a URL to across all namespaces that a requesting user has access to
