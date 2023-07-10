@@ -223,6 +223,16 @@ POST /orgs/:org/sources/
     * **description** (optional) string - description of the source
     * **custom_validation_schema** (optional) string - name of the custom validation schema
     * **extras** (optional) json dictionary - additional metadata for the resource
+    * **autoid_concept_mnemonic** (optional) string - sets the ID auto-assignment scheme for the source to either Sequential (i.e. the next available integer starting from the "start from" value) or UUID (a generated UUID string) when concepts are created in TermBrowser or via Bulk Import without a specified ID - possible options include  "sequential", "uuid", or null
+    * **autoid_concept_external_id** (optional) string - sets the External ID auto-assignment scheme for the source to either Sequential (i.e. the next available integer starting from the "start from" value) or UUID (a generated UUID string) when concepts are created in TermBrowser or via Bulk Import without a specified external ID - possible options include  "sequential", "uuid", or null
+    * **autoid_mapping_mnemonic** (optional) string - sets the ID auto-assignment scheme for the source to either Sequential (i.e. the next available integer starting from the "start from" value) or UUID (a generated UUID string) when mappings are created in TermBrowser or via Bulk Import without a specified ID - possible options include  "sequential", "uuid", or null
+    * **autoid_mapping_external_id** (optional) string - sets the External ID auto-assignment scheme for the source to either Sequential (i.e. the next available integer starting from the "start from" value) or UUID (a generated UUID string) when mappings are created in TermBrowser or via Bulk Import without a specified external ID - possible options include  "sequential", "uuid", or null
+    * **autoid_concept_mnemonic_start_from** (optional) integer - if the concept autoid field is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a concept's ID in that source).
+    * **autoid_concept_external_id_start_from** (optional) integer - if the concept autoid field for external ID is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a concept's external ID in that source).
+    *  **autoid_mapping_mnemonic_start_from** (optional) integer - if the mapping autoid field is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a mapping's ID in that source).
+    *  **autoid_mapping_external_id_start_from** (optional) integer - if the mapping autoid field for external ID is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a mapping's external ID in that source).
+  
+
 ```JSON
 {
     "id": "loinc2",
@@ -234,6 +244,14 @@ POST /orgs/:org/sources/
     "default_locale": "en",
     "supported_locales": "en",
     "website": "http://loinc.org/",
+    "autoid_concept_mnemonic": "sequential",
+    "autoid_concept_external_id": "uuid",
+    "autoid_mapping_mnemonic": "sequential",
+    "autoid_mapping_external_id": "uuid",
+    "autoid_concept_mnemonic_start_from": 1,
+    "autoid_concept_external_id_start_from": 1,
+    "autoid_mapping_mnemonic_start_from": 1,
+    "autoid_mapping_external_id_start_from": 1,
     "description": "A universal code system for identifying laboratory and clinical observations.",
     "extras": { "my_extra_field": "my_extra_value" }
 }
@@ -260,6 +278,15 @@ POST /orgs/:org/sources/
     "description": "A universal code system for identifying laboratory and clinical observations.",
 
     "extras": { "my_extra_field": "my_extra_value" },
+
+    "autoid_concept_mnemonic": "sequential",
+    "autoid_concept_external_id": "uuid",
+    "autoid_mapping_mnemonic": "sequential",
+    "autoid_mapping_external_id": "uuid",
+    "autoid_concept_mnemonic_start_from": 1,
+    "autoid_concept_external_id_start_from": 1,
+    "autoid_mapping_mnemonic_start_from": 1,
+    "autoid_mapping_external_id_start_from": 1,
 
     "owner": "Regenstrief",
     "owner_type": "Organization",
