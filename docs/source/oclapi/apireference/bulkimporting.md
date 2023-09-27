@@ -19,6 +19,8 @@ Note that any `DELETE` action will occur in sequence and finish processing befor
 ## Bulk Import File Formats
 Two types of Bulk Import files are currently supported for OCL: CSV and [JSON Lines](https://jsonlines.org/) files. Both file types support Bulk Importing of multiple resource types. In CSV files, each row represents an OCL resource, with columns representing the attributes. In JSON Lines files, each line is an OCL-formatted JSON resource.
 
+Note that OCL specifically supports UTF-8 formatting (without BOM) for import files, and imports may fail or give unexpected results with encoded characters if another encoding format is used.
+
 Regardless of format, when creating resources using Bulk Imports, each type of OCL resource has required and optional fields that can be used. The summary of required and optional fields is listed below, but here are some basic rules for Bulk Importing into OCL:
 * Each resource must specify a valid resource type, e.g. `Concept`, `Source`, or `Organization`. In CSV, this is specified with the `resource_type` attribute. In OCL-formatted JSON, use the `type` attribute.
 * For all resources other than orgs and users, each resource must define an owner and, if applicable, a repository. These are defined using one or more of these attributes: `owner`, `owner_type`, `source`, `collection`.
