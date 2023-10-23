@@ -11,13 +11,15 @@ The header uses the following key/value:
 * Value: “Token [API token]”
 The API token can be received from OCL’s TermBrowser UI on your Profile page, once you have created and logged into an OCL account.
 
-### Parallel vs. Asynchronous Processing of Bulk Imports
+### Parallel and Asynchronous Processing of Bulk Imports
 By default, OCL attempts to process bulk imports in parallel using multiple workers where it can, providing a significant performance improvement. OCL will process a sequential list of resources of the same type, eg `Concept` or `Mapping`, in parallel, pausing before moving onto a resource of a different type. For example, if a bulk import script contains 5 concepts and 5 mappings, in that order, the 5 concepts would be processed in parallel and then the 5 mappings would be processed in parallel after the concepts had all been processed.
 
 Note that any `DELETE` action will occur in sequence and finish processing before moving to the next resource.
 
 ## Bulk Import File Formats
 Two types of Bulk Import files are currently supported for OCL: CSV and [JSON Lines](https://jsonlines.org/) files. Both file types support Bulk Importing of multiple resource types. In CSV files, each row represents an OCL resource, with columns representing the attributes. In JSON Lines files, each line is an OCL-formatted JSON resource.
+
+Note that OCL specifically supports UTF-8 formatting (without BOM) for import files, and imports may fail or give unexpected results with encoded characters if another encoding format is used.
 
 Regardless of format, when creating resources using Bulk Imports, each type of OCL resource has required and optional fields that can be used. The summary of required and optional fields is listed below, but here are some basic rules for Bulk Importing into OCL:
 * Each resource must specify a valid resource type, e.g. `Concept`, `Source`, or `Organization`. In CSV, this is specified with the `resource_type` attribute. In OCL-formatted JSON, use the `type` attribute.
@@ -134,7 +136,7 @@ Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/Demo
 * **resource_type** - “Concept”
 * **owner_id** - OCL resource identifier of the OCL user or organization that will own this object
 * **source** - OCL resource identifier of the source in which this concept will be defined
-* **id** - OCL resource identifier
+* **id** - OCL resource identifier (Optional if Source is configured with auto ID)
 * **concept_class** - Type of concept, which can vary across and within sources and collections. 
 
 **Optional**
@@ -250,7 +252,7 @@ Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/Demo
 
 ## OCL Bulk Import API Reference 
 ### Bulk Import via API
-API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. Inline importing can be performed using `POST /importers/bulk-import-inline/`, while parallel importing can be performed using `POST /importers/bulk-import-parallel-inline/`.
+API calls for bulk importing can be found in OCL’s [Swagger page](https://api.openconceptlab.org/swagger/) under the `importers` section. 
 
 Using parallel importing allows the specification of a number of parallel threads, which speed up the import process but consume more of OCL’s resources. By default, 5 workers are used for a bulk import, but this number can be anywhere between 2 and 10.
 
@@ -259,7 +261,7 @@ Submitting to the Standard Queue
 Post a JSON bulk import file for asynchronous processing in the standard queue. The standard queue has multiple workers processing in parallel, and therefore bulk imports may not be processed in the order that they are submitted.
 
 ```
-POST /manage/bulkimport/:queue/
+POST /importers/bulk-import/
 ```
 
 * POST Request Parameters:
@@ -269,9 +271,8 @@ POST /manage/bulkimport/:queue/
 Submitting to a User Assigned Queue
 Adds a JSON bulk import file for asynchronous processing in a user assigned queue. User assigned queues process bulk import files using only one worker, therefore guaranteeing that they will be processed in the order in which they are submitted.
 
-
 ```
-POST /manage/bulkimport/:queue/
+POST /importers/bulk-import/:queue/
 ```
 
 * POST Request Parameters:
@@ -284,8 +285,8 @@ To monitor the list of bulk imports by your account, use a GET request. Specify 
 
 
 ```
-GET /manage/bulkimport/
-GET /manage/bulkimport/:queue/
+GET /importers/bulk-import/
+GET /importers/bulk-import/:queue/
 ```
 *  GET Request Parameters:
    *  Root user only:
@@ -299,7 +300,7 @@ To view the final outcome of a previous bulk import, use a GET request to specif
 
 
 ```
-GET /manage/bulkimport/?task=:taskid[&result=:format]
+GET /importers/bulk-import/?task=:taskid[&result=:format]
 ```
 * GET Request Parameters:
    * **task** (Required for GET request) - Task ID of a previously submitted bulk import request
