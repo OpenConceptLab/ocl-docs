@@ -129,6 +129,7 @@ GET /user/collections/
     * **locale** (optional) string - Filter results to the ones that include a particular locale in their supported locales, e.g. "en", "fr".
     * **contains** (optional) string - Filter results to collections that contain a referenced to the specified relative URL for a concept version or mapping version, e.g. `/orgs/MOH/sources/HMIS-Indicators/concepts/HIV01-01/5a120687f7dccb0064ee8d2f/`
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
@@ -161,6 +162,7 @@ GET /user/orgs/collections/
     * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
@@ -193,6 +195,7 @@ GET /collections/
     * **locale** (optional) string - Filter results down to the ones that include a particular locale in their supported locales, e.g. "en", "fr".
     * **contains** (optional) string - Filter results to collections that contain a referenced to the specified relative URL for a concept version or mapping version, e.g. `/orgs/MOH/sources/HMIS-Indicators/concepts/HIV01-01/5a120687f7dccb0064ee8d2f/`
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
