@@ -18,6 +18,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     cloning
     resolveReference
     permissionssummary
+    repos
     sources
     users
     other/index
