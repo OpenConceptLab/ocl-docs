@@ -116,6 +116,7 @@ GET /user/sources/
     * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
@@ -147,6 +148,7 @@ GET /user/orgs/sources/
     * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
@@ -167,7 +169,6 @@ Status: 200 OK
 
 
 
-
 ## List all public sources
 * Use the `/sources/` endpoint to list or search public sources across users and organizations
 ```
@@ -179,6 +180,7 @@ GET /sources/
     * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
+    * **canonicalUrl** (optional) string - Filter results by canonical URL
 
 ### Response
 ```
