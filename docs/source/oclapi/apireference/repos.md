@@ -19,7 +19,7 @@ GET /users/:user/repos/
 GET /user/repos/
 ```
 * Notes
-    * Private sources owned by the organization are only returned for users that are members of the organization
+    * Only private repositories that a user has permissions to access are returned in the response
 * Parameters
     * **q** (optional) string - Search criteria (search across: "name", "full_name" and "description")
     * **sortAsc/sortDesc** (optional) string - Sort results on one of the following fields: "best_match" (default), "last_update", "name"
