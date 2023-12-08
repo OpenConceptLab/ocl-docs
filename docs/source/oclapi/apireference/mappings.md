@@ -28,7 +28,11 @@ A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs 
   - New Auto-ID behavior
   - Support canonical URLs
   - How to interact with OCL mappings via the OCL FHIR Core (and vice versa)
+  - Sort weight
 - Confirm whether repo version can be specified separately or inline for each of the 3 approaches
+- Update all examples to use canonical URLs
+- Update response examples with all of the new fields
+- Add OpenMRS specific examples
 
 ### Future work
 - Implement support for `context` (as specified in FHIR)
