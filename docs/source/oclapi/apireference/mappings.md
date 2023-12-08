@@ -1,30 +1,37 @@
 # Mappings
 
 ## Overview
-The API exposes a representation of `mappings` to represent relationships between 2 concepts. The type of relationship is defined by the `map_type` attribute. Relationships are unidirectional, originating from the `from_concept` to the `to_concept`, even if the inverse mapping is equivalent (e.g. "Same As" relationship). Note that the inverse mappings can be retrieved from the "to_concept" by setting the "includeInverseMappings" to `true`. `mappings` are also used to store hierarchical relationships (such as parent/child), and OpenMRS-specific relationships such as Question/Answer and Concept Sets.
+The API exposes a representation of `mappings` to represent relationships between two concepts or codes. The type of relationship is defined by the `map_type` attribute. Relationships are unidirectional, originating from the `from_concept` to the `to_concept`, even if the inverse mapping is equivalent (e.g. "Same As" relationship). Note that the inverse mappings can be retrieved from the `to_concept` by setting the `includeInverseMappings` to `true`. In addition to the `concept.hierarchy` attributes, `mappings` may be used as a flexible approach to model other hierarchical relationships, and OpenMRS-specific relationships such as Question/Answer and Concept Sets. While mappings are generally used define relationships between sources and concepts that are defined in OCL, this is not required, allowing the definition of mappings to concepts and sources that are external to OCL.
 
-The `from_concept` must be a concept within an OCL source, while the `to_concept` may refer to a concept stored in OCL or to an external code. Regardless, the definition for the source must be in OCL. If the `to_concept` refers to a concept in OCL, it is referenced using the `to_concept_url` field. If the `to_concept` refers to an external concept, it is referenced using the `to_source_url`, `to_concept_code`, and (optionally) `to_concept_name` fields. In other words, there are two types of **to_concepts**:
-
-1. **Internal** - The `to_concept` is stored in OCL
-2. **External** - The `to_source` is defined in OCL (as an "external" source), but the `to_concept` is not.
-
-Following are the fields that are required for Internal and External mappings:
-
-| Field | Type | Notes |
-| -------------- | ----- | ----- |
-| `from_concept_url` | 1, 2 | Required for both types of mappings. |
-| `to_concept_url` | 1 | Required for internal mappings. |
-| `to_source_url` | 2 | Required for external mappings. URL in OCL of the `to_concept` source (e.g. /orgs/Regenstrief/sources/LOINC/). |
-| `to_concept_code` | 2 | Required for external mappings. Identifier for the external `to_concept`. |
-| `to_concept_name` | (2) | Optional for external mappings. The human-readable name for the external `to_concept`. |
-
-Editing of mappings is supported, but edits that substantively change the meaning of a mapping is discouraged. For example, instead of changing the "from" or "to" concept of an existing mapping, retire the mapping and create a new one.
+Editing of mappings is supported, but edits that substantively change the meaning of a mapping is discouraged. For example, instead of changing the "from" or "to" concept code or updating the `map_type`, consider retiring the mapping and creating a new one.
 
 `mappings` are owned by `sources`, not by their `from_concept`. Modifications to mappings do not directly effect the concepts to which they are linked. Like `concepts`, `mappings` will be saved as part of source versions. Mappings may point to concepts from any source, meaning that neither the "from" or "to" concept needs to be in the source that owns the mapping. This allows sources to be used as containers of a set of mappings.
+
+A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs or Relative URLs. 
+1. **Canonical URL** - this is the preferred way of defining mappings that maintain meaning within and outside of OCL; note that repository version, if needed, must be specified in a separate field and cannot use the "pipe" syntax (e.g. this syntax is not supported for mappings: "http://hl7.org/fhir/CodeSystem/my-codeystem|0.8")
+2. **Relative URL: Inline** - A single relative URL specified both source and concept, and, optionally, repository version
+3. **Relative URL: Expanded** - Source, concept, and, optionally, repository version, are specified in separate fields
+
+| Field                 | Canonical URL                    | Relative URL: Inline                     | Relative URL: Expanded |
+| --------------        | -----                            | -----                                    | -----                  |
+| `from_source_url`     | "https://CIELterminology.org"    | _(n/a)_                                    | "/orgs/CIEL/sources/CIEL/" |
+| `from_source_version` | _(optional)_                       | _(optional- can embed in `from_concept_url`)_ | _(optional- can embed in `from_source_url`)_ |
+| `from_concept_code`   | "161426"                         | _(n/a)_                                    | "161426"                 |
+| `from_concept_name`   | _(optional)_ "Malarial parasites by smear test" | _(optional)_                    | _(optional)_             |
+| `from_concept_url`    | _(n/a)_                            | "/orgs/CIEL/sources/CIEL/concepts/161426/" | _(n/a)_                  |
 
 ### Versioning of mappings
 * All changes to mappings are tracked and can be accessed via a mapping's history
 
+### Changes Needed to this Documentation:
+- Add to the Overview:
+  - New Auto-ID behavior
+  - Support canonical URLs
+  - How to interact with OCL mappings via the OCL FHIR Core (and vice versa)
+- Confirm whether repo version can be specified separately or inline for each of the 3 approaches
+
+### Future work
+- Implement support for `context` (as specified in FHIR)
 
 ## Get a single mapping
 * Get a single mapping
@@ -230,35 +237,51 @@ POST /users/:user/sources/:source/mappings/
 POST /orgs/:org/sources/:source/mappings/
 ```
 * Input
-    * Internal Mapping: `from_concept` and `to_concept` are stored in OCL
-        * **id** (optional) string - ID is auto-generated if not provided
-        * **map_type** (required) string - map type
-        * **external_id** (optional) string - external unique identifier for import/export
-        * **from_concept_url** (required) string - relative URL of the "from" concept
-        * **to_concept_url** (required) string - relative URL for the "to" concept
-    * External Mapping: `from_concept` is stored in OCL; `to_source` is defined in OCL, but `to_concept` is not
-        * **id** (optional) string - ID is auto-generated if not provided
-        * **map_type** (required) string - map type
-        * **external_id** (optional) string - external unique identifier for import/export
-        * **from_concept_url** (required) string - relative URL of the "from" concept
-        * **to_source_url** (required) string - relative URL of the "to" source (must be stored in OCL)
-        * **to_concept_code** (required) string - code for the external `to_concept`
-        * **to_concept_name** (optional) string - name of the external `to_concept`
+    * **id** (optional) string - ID is auto-generated if not provided
+    * **map_type** (required) string - map type, e.g. "SAME-AS, "NARROWER-THAN"
+    * **external_id** (optional) string - external unique identifier for import/export
+    * **retired** (optional) bool - default: `false`; set to `true` to mark that this mapping is not recommended for use
+    * **sort_weight** (optional) decimal - a numeric value indicating where you want the mapping sorted relative to other mappings of the same `map_type`
+    * **extras** (optional) JSON dictionary - additional metadata for the resource
+    * `from_concept`:
+        * **from_concept_url** (optional) string - relative URL of the `from_concept`
+        * **from_concept_code** (optional) string - code for the `from_concept`; required if `from_concept_url` is not provided, otherwise omitted
+        * **from_concept_name** (optional) string - optional name of the `from_concept` within the context of the mapping; this need not be the same as one of the concept's names or synonyms
+        * **from_source_url** (optional) string - canonical or relative URL of the `from_source`; if `from_concept_url` is not provided, this field is required, otherwise it is omitted
+        * **from_source_version** (optional) string - version identifier for the source; Note that best practice is to only define this field if absolutely necessary
+    * `to_concept`:
+        * **to_concept_url** (optional) string - relative URL of the `to_concept`
+        * **to_concept_code** (optional) string - code for the `to_concept`; required if `to_concept_url` is not provided, otherwise omitted
+        * **to_concept_name** (optional) string - optional name of the `to_concept` within the context of the mapping; this need not be the same as one of the concept's names or synonyms
+        * **to_source_url** (optional) string - canonical or relative URL of the `to_source`; if `to_concept_url` is not provided, this field is required, otherwise it is omitted
+        * **to_source_version** (optional) string - version identifier for the source; Note that best practice is to only define this field if absolutely necessary
 
 ### Examples
-* Internal mapping: `to_concept` is stored in OCL:
+* Example defining a mapping using canonical URLs:
 ```JSON
 {
-    "map_type": "Same As",
-    "from_concept_url": "/orgs/Columbia/sources/CIEL/concepts/161426/",
-    "to_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/"
+    "map_type": "NARROWER-THAN",
+    "from_source_url": "https://CIELterminology.org",
+    "from_concept_code": "168094",
+    "from_concept_name": "Mother pregnant or currently breastfeeding",
+    "to_source_url": "http://hl7.org/fhir/ValueSet/medicationdispense-status-reason",
+    "to_concept_code": "preg",
+    "to_concept_name": "Pregnant or breastfeeding"
 }
 ```
-* External mapping: `to_concept` is not stored in OCL (but `to_source_url` is defined in OCL):
+* Simple example using relative URLs for both from and to concepts
 ```JSON
 {
-    "map_type": "Narrower Than",
-    "from_concept_url": "/orgs/Columbia/sources/CIEL/concepts/116125/",
+    "map_type": "SAME-AS",
+    "from_concept_url": "/orgs/CIEL/sources/CIEL/concepts/161426/",
+    "to_concept_url": "/orgs/Regenstrief/sources/LOINC/concepts/32700-7/"
+}
+```
+* Example where the `to_concept` is not stored in OCL, but the `to_source` is
+```JSON
+{
+    "map_type": "NARROWER-THAN",
+    "from_concept_url": "/orgs/CIEL/sources/CIEL/concepts/116125/",
     "to_source_url": "/orgs/WHO/sources/ICPC-2/",
     "to_concept_code": "A73",
     "to_concept_name": "Malaria"
@@ -280,27 +303,26 @@ PUT /users/:user/sources/:source/mappings/:mapping/
 PUT /orgs/:org/sources/:source/mappings/:mapping/
 ```
 * Input
-    * Internal Mapping: `to_concept` is stored in OCL
-        * **map_type** (optional) string - map type
-        * **external_id** (optional) string - external unique identifier for import/export
-        * **from_concept_url** (optional) string - relative URL of the "from" concept
-        * **to_concept_url** (optional) string - relative URL of the "to" concept
-    * External Mapping: `to_concept` is not stored in OCL
-        * **map_type** (optional) string - map type
-        * **external_id** (optional) string - external unique identifier for import/export
-        * **from_concept_url** (optional) string - relative URL of the "from" concept
-        * **to_source_url** (optional) string - relative URL of the "to" source - note that the source must be defined in OCL
-        * **to_concept_code** (optional) string - code for the external `to_concept`
-        * **to_concept_name** (optional) string - name of the external `to_concept`
+    * **map_type** (optional) string - map type, e.g. "SAME-AS, "NARROWER-THAN"
+    * **external_id** (optional) string - external unique identifier for import/export
+    * **retired** (optional) bool - default: `false`; set to `true` to mark that this mapping is not recommended for use
+    * **sort_weight** (optional) decimal - a numeric value indicating where you want the mapping sorted relative to other mappings of the same `map_type`
+    * **extras** (optional) JSON dictionary - additional metadata for the resource
+    * `from_concept`:
+        * **from_concept_url** (optional) string - relative URL of the `from_concept`
+        * **from_concept_code** (optional) string - code for the `from_concept`; required if `from_concept_url` is not provided, otherwise omitted
+        * **from_concept_name** (optional) string - optional name of the `from_concept` within the context of the mapping; this need not be the same as one of the concept's names or synonyms
+        * **from_source_url** (optional) string - canonical or relative URL of the `from_source`; if `from_concept_url` is not provided, this field is required, otherwise it is omitted
+        * **from_source_version** (optional) string - version identifier for the source; Note that best practice is to only define this field if absolutely necessary
+    * `to_concept`:
+        * **to_concept_url** (optional) string - relative URL of the `to_concept`
+        * **to_concept_code** (optional) string - code for the `to_concept`; required if `to_concept_url` is not provided, otherwise omitted
+        * **to_concept_name** (optional) string - optional name of the `to_concept` within the context of the mapping; this need not be the same as one of the concept's names or synonyms
+        * **to_source_url** (optional) string - canonical or relative URL of the `to_source`; if `to_concept_url` is not provided, this field is required, otherwise it is omitted
+        * **to_source_version** (optional) string - version identifier for the source; Note that best practice is to only define this field if absolutely necessary
+    * **update_comment** (optional) string - Brief description of the update
 
 ### Examples
-* Internal Mapping: `to_concept` is stored in OCL
-```JSON
-{
-    "map_type": "Same As",
-    "to_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/"
-}
-```
 * External Mapping: `to_concept` is not stored in OCL
 ```JSON
 {
