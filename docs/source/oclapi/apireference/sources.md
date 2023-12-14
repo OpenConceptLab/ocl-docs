@@ -233,6 +233,9 @@ POST /orgs/:org/sources/
     * **autoid_concept_external_id_start_from** (optional) integer - if the concept autoid field for external ID is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a concept's external ID in that source).
     *  **autoid_mapping_mnemonic_start_from** (optional) integer - if the mapping autoid field is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a mapping's ID in that source).
     *  **autoid_mapping_external_id_start_from** (optional) integer - if the mapping autoid field for external ID is set to "sequential", this integer is the lowest value that OCL will check for available before moving up to the next integer, which will happen recursively until an available integer is found (i.e. an integer that is not already a mapping's external ID in that source).
+    * **autoid_concept_name_external_id** (optional) string - sets the External ID auto-assignment scheme for the source to UUID (which generates a UUID string) when concept names are created in TermBrowser or via Bulk Import without a specified external ID - possible options include  "uuid" or null (default)
+    * **autoid_concept_description_external_id** (optional) string - sets the External ID auto-assignment scheme for the source to UUID (which generates a UUID string) when concept descriptions are created in TermBrowser or via Bulk Import without a specified external ID - possible options include  "uuid" or null (default)
+
   
 
 ```JSON
