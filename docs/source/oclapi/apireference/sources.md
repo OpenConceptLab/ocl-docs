@@ -257,6 +257,8 @@ POST /orgs/:org/sources/
     "autoid_concept_external_id_start_from": null,
     "autoid_mapping_mnemonic_start_from": 1,
     "autoid_mapping_external_id_start_from": null,
+    "autoid_concept_name_external_id": null,
+    "autoid_concept_description_external_id": null,
     "description": "A universal code system for identifying laboratory and clinical observations.",
     "extras": { "my_extra_field": "my_extra_value" }
 }
@@ -292,6 +294,8 @@ POST /orgs/:org/sources/
     "autoid_concept_external_id_start_from": null,
     "autoid_mapping_mnemonic_start_from": 1,
     "autoid_mapping_external_id_start_from": null,
+    "autoid_concept_name_external_id": null,
+    "autoid_concept_description_external_id": null,
 
     "owner": "Regenstrief",
     "owner_type": "Organization",
