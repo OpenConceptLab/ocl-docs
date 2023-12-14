@@ -23,12 +23,16 @@ A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs 
 ### Versioning of mappings
 * All changes to mappings are tracked and can be accessed via a mapping's history
 
+### Other notes and attributes of mappings
+* Mapping IDs (both the OCL ID and External ID) can be automatically generated upon resource creation using the auto-id assignment scheme outlined in the [Create Source page]([url](https://docs.openconceptlab.org/en/latest/oclapi/apireference/sources.html#create-source))
+* Mappings can be given a sort weight using the numeric `sort_weight` attribute, which is used in OCL's TermBrowser application to visually sort mapped concepts within a particular map type. A sort weight can be applied using OCL's Bulk Import, API, or TermBrowser's Edit Mapping form or in the Associations section of a concept.    
+
+
+
 ### Changes Needed to this Documentation:
 - Add to the Overview:
-  - New Auto-ID behavior
   - Support canonical URLs
   - How to interact with OCL mappings via the OCL FHIR Core (and vice versa)
-  - Sort weight
 - Confirm whether repo version can be specified separately or inline for each of the 3 approaches
 - Update all examples to use canonical URLs
 - Update response examples with all of the new fields
