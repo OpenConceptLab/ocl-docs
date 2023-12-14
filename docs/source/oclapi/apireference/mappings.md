@@ -24,7 +24,7 @@ A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs 
 * All changes to mappings are tracked and can be accessed via a mapping's history
 
 ### Other notes and attributes of mappings
-* Mapping IDs (both the OCL ID and External ID) can be automatically generated upon resource creation using the auto-id assignment scheme outlined in the [Create Source page]([url](https://docs.openconceptlab.org/en/latest/oclapi/apireference/sources.html#create-source))
+* Mapping IDs (both the OCL ID and External ID) can be automatically generated upon resource creation using the auto-id assignment scheme outlined in the [Create Source page](https://docs.openconceptlab.org/en/latest/oclapi/apireference/sources.html#create-source)
 * Mappings can be given a sort weight using the numeric `sort_weight` attribute, which is used in OCL's TermBrowser application to visually sort mapped concepts within a particular map type. A sort weight can be applied using OCL's Bulk Import, API, or TermBrowser's Edit Mapping form or in the Associations section of a concept.    
 
 
