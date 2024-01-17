@@ -28,31 +28,15 @@ Example uses:
 * `POST /orgs/MyOrg/url-registry/$lookup/` - Lookup a canonical URL in a specific registry
 
 
-## List all repositories globally or for a specific user or organization
-* List repositories globally or owned by an organization or user
-```
-GET /repos/
-GET /orgs/:org/repos/
-GET /users/:user/repos/
-GET /user/repos/
-```
-* Notes
-    * Only private repositories that a user has permissions to access are returned in the response
-* Parameters
-    * **q** (optional) string - Search criteria (search across: "name", "full_name" and "description")
-    * **sortAsc/sortDesc** (optional) string - Sort results on one of the following fields: "best_match" (default), "last_update", "name"
-    * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
-    * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
-    * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
-    * **canonicalUrl** (optional) string - Filter results by canonical URL
- 
-
-## Attributes:
-* `id` - internally generated seq ID
-* `url` (required) - canonical URL
-* `namespace` (optional) - e.g. `/orgs/:org/` or `/users/:username/`; URL cannot be resolved to a repo unless a namespace is provided
-* `name` (optional) - name of the repo
-* `extras` (optional) - key-value pairs intended to store additional index terms to make it easy for users to find
+## Attributes for an entry in the canonical URL registry
+* `id` <int> - internally generated sequential ID
+* `url` (required) <url> - canonical URL for the entry
+* `namespace` (optional) <string> - namespace to be used to resolve a URL, e.g. `/orgs/:org/` or `/users/:username/`; URL cannot be resolved to a repo unless a namespace is provided
+* `name` (optional) <string> - name of the repo
+* `extras` (optional) <json> - key-value pairs intended to store additional index terms to make it easy for users to find
+* `owner_url` <url> - URL for the owner of the URL registry (e.g. "/orgs/MyOrg/"), _not_ the owner of the namespace to be used to resolve a URL
+* `owner_type` string - Owner type, e.g. "Organization" or "User"
+* `owner` string - Owner ID
 
 ## Get/search list of URL registry entries, with paging
 ```
