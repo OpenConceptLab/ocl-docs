@@ -20,6 +20,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     permissionssummary
     repos
     sources
+    urlregistry
     users
     other/index
     
