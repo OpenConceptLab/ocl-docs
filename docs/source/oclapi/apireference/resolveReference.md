@@ -27,22 +27,16 @@ The API exposes a global `$resolveReference` operation to resolve one or more re
 * Else if relative URL provided:
   * Return the repository directly using the relative URL, or return 404 if not found
 
-### OLD Rules for Resolution of a Reference
-OCL resolves a reference to a repository version (source, collection, codesystem, valueset, conceptmap) by following this process:
-1. If relative reference, then convert to full URI by prepending the default OCL namespace: “http://api.openconceptlab.org”
-2. If scope is set within a namespace: First, attempt to resolve the canonical URL within the namespace
-3. If scope is global or the canonical URL could not be resolved based on the above rules (and if `oldstyle=false`): Attempt to resolve the canonical URL with the Global Canonical URL Registry
-4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
+### Add to this doc
+- Updates to allow $resolveReference to be used internally to resolve mappings
+- Permissions
+- Example request/response for a single reference (the example below is for a batch)
+- Status codes for found/not found
+- Example of a response for a batch request where some references resolved and others did not
 
-### Open Questions
-- Option to resolve to a version-less repo, rather than a specific repo version?
+### Future Considerations
+- Support `url` as an inline GET request param (in addition to namespace)? This would allow basic requests for a single url/namespace to be embedded entirely in the request URL for simplicity, but is not RESTful
 - Optional URL parameter that returns the full list of repositories that OCL could resolve a URL to across all namespaces that a requesting user has access to?
-- Remove "oldstyle" param from the docs? This was conceived as a temporary hack to resolve version-less "relative URLs" to HEAD instead of latest released, but I don't think that it was ever implemented? -- note that version-less "canonical URLs" should always resolve to latest
-- Also support `url` as an inline request param (in addition to namespace)? This would allow basic requests for a single url/namespace to be embedded entirely in the request URL for simplicity
-- Add to the docs:
-  - Example request/response for a single reference (the example below is for a batch)
-  - Status codes for found/not found
-  - Example of a response for a batch request where some references resolved and others did not
 
 ## Reference syntax
 A non-exhaustive list of examples for the "inline" and "expanded" reference syntax:
@@ -122,7 +116,6 @@ A non-exhaustive list of examples for the "inline" and "expanded" reference synt
   * **id** (optional) - A mapping id to include in a collection. Note that the id field cannot be used in combination with the filter field.
 
 ## $resolveReference Parameters
-* **oldstyle** (optional) - default=false; set to True to evaluate version-less repository references to HEAD instead of to latest
 * **namespace** (optional) - default="/" (global); the context in which to evaluate the references, e.g. a relative URL to an organization or user in OCL. This parameter allows a client to compare the results of evaluating the same reference(s) in multiple namespaces. When this operation is performed internally, namespace is typically set automatically based on the context of the request, i.e. the owner of the ValueSet that is being expanded.
 
 ### $resolveReference Examples
@@ -186,3 +179,12 @@ Status: 200
   }
 ]
 ```
+
+## Deprecated content -- will remove after we're sure that we don't need it
+### OLD Rules for Resolution of a Reference
+OCL resolves a reference to a repository version (source, collection, codesystem, valueset, conceptmap) by following this process:
+1. If relative reference, then convert to full URI by prepending the default OCL namespace: “http://api.openconceptlab.org”
+2. If scope is set within a namespace: First, attempt to resolve the canonical URL within the namespace
+3. If scope is global or the canonical URL could not be resolved based on the above rules: Attempt to resolve the canonical URL with the Global Canonical URL Registry
+4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
+
