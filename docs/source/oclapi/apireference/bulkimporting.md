@@ -1,8 +1,7 @@
 # Bulk Import API
 
 ## Overview
-OCL exposes a method for submitting an OCL-formatted bulk import JSON file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but 
-A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
+OCL exposes a method for submitting an OCL-formatted bulk import JSON file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but this is on the roadmap. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
 
 ### Authorization
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
@@ -24,7 +23,7 @@ Note that OCL specifically supports UTF-8 formatting (without BOM) for import fi
 Regardless of format, when creating resources using Bulk Imports, each type of OCL resource has required and optional fields that can be used. The summary of required and optional fields is listed below, but here are some basic rules for Bulk Importing into OCL:
 * Each resource must specify a valid resource type, e.g. `Concept`, `Source`, or `Organization`. In CSV, this is specified with the `resource_type` attribute. In OCL-formatted JSON, use the `type` attribute.
 * For all resources other than orgs and users, each resource must define an owner and, if applicable, a repository. These are defined using one or more of these attributes: `owner`, `owner_type`, `source`, `collection`.
-* Each resource may optionally provide processing directives. Currently supported processing directives are:
+* Each resource may optionally specify processing directives. Currently supported processing directives are:
    * `__action`: There are 4 action types supported:
       * `CREATE_OR_UPDATE` (default) - By default, the bulk importer will attempt to update a resource if it already exists; otherwise it will try to create a new resource.
       * `CREATE` - The bulk importer will attempt to create a new resource without first checking if it already exists
@@ -33,7 +32,7 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
       * `SKIP` (not currently implemented) - The bulk importer will skip the resource
       * `DELETE_IF_EXISTS` (not currently implemented) - The bulk importer will attempt to delete a resource if it confirms that it exists
    * `__cascade`: For resources of type `Reference`, it is possible to specify whether and how mappings are cascaded:
-      * `None` (default) - No cascading will occur. Only the
+      * `None` (default) - No cascading will occur
       * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added
 
 ### OCL-formatted JSON Format Example
@@ -53,7 +52,6 @@ Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?us
 
 
 ### CSV Format Example
-
 Link to example: [https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing](https://drive.google.com/file/d/1lmK0qDlDJU4Mth__gCeSkPkiON0c0I02/view?usp=sharing) 
 
 ```
@@ -73,7 +71,7 @@ Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/Demo
 ```
 
 
-## Required and Optional Bulk Import Fields
+## Required and Optional CSV Bulk Import Fields
 ### Organization
 
 **Required**
@@ -86,10 +84,11 @@ Reference,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/orgs/Demo
 * **website** - URL of the organization’s main website
 * **location** - State, country, etc. of the organization
 * **public_access** - Allows users outside of the organization to “View” or “Edit” the Organization and its resources, or the organization can be hidden from unauthorized users by setting this to “None” (default=”View”) 
-* **Extra attributes** - custom attributes that are outside of OCL’s model
+* **Extra attributes** - custom attributes that are outside of OCL’s core data model
 * **logo_url** - URL of logo image for this organization
 * **description** - Description of organization
 * **text** - “About” text for organization
+
 ### Repositories (Sources and Collections)
 **Required**
 * **resource_type** - “Source” or “Collection”
@@ -439,15 +438,14 @@ curl --location --request POST 'http://127.0.0.1:8000/importers/bulk-import-para
 
 ## Bulk Import via the OCL TermBrowser
 When logged into an OCL account, the Bulk Import interface in the TermBrowser is available in the App menu at the top right. This interface allows the use of the following bulk import features:
-* Content Load
-   * Upload JSON or CSV file for loading
-   * Paste in JSON text for loading
-   * Paste in a URL for a JSON or CSV file for loading
-   * Specify a queue name for the import
-   * “Update Existing” option to update a resource that is already available in OCL
-   * “Parallel” option to speed up the process by running multiple lines of the same resource type synchronously
-   * “Hierarchy” option to load content that has a hierarchical structure
+* Bulk import modes
+   * **Upload File:** Upload a file
+   * **Fetch URL:** Enter a URL to fetch a file
+   * **Text:** Type or paste in JSON for loading
+* Options
+   * **Queue ID:** Optionlly specify a queue ID for the import. Imports that share the same queue ID are processed in sequence. 
+   * **Update Existing:** Option to update a resource that is already available in OCL. If unchecked, if a resource already exists in OCL, it will be skipped.
+   * **Hierarchy:** Check this box if the content has a hierarchical structure
 * Import Queue Monitoring
    * View active and past import queues (for up to 3 days), with filters to find imports
    * View and download a report for completed imports, including runtime, results, etc.
-
