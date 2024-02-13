@@ -1,7 +1,7 @@
 # Bulk Import API
 
 ## Overview
-OCL exposes a method for submitting an OCL-formatted bulk import JSON file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but this is on the roadmap. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
+OCL exposes a method for submitting an OCL-formatted bulk import JSON or CSV file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but this is on the roadmap. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
 
 ### Authorization
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
