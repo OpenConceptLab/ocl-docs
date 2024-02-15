@@ -113,12 +113,13 @@ We scrupulously gather logs to troubleshoot any issues you report us.
    :caption: OCL TermBrowser
    
    oclweb/configuringtermbrowser
+   oclweb/updatingCoreTableValues
    oclweb/FHIRconnectors
    
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OpenMRS Dictionary Manager
+   :caption: OpenMRS Dictionary Management
    
    oclomrs/openmrstooclmapping
    oclomrs/importingciel
