@@ -9,16 +9,9 @@ All pull requests should contain a single commit (unless you have a very good re
 * git
 * docker-compose
 
-Source for the Open Concept Lab APIs
+## Local development environment 
+To setup your local development environment, follow the README.md instructions for the `oclapi2` and `oclweb2` repositories in this order:
+1. https://github.com/OpenConceptLab/oclapi2
+2. https://github.com/OpenConceptLab/oclweb2
 
-Please see more on:
-https://github.com/OpenConceptLab/oclapi2
-https://github.com/OpenConceptLab/oclweb2
-
------------------------------------------------------
-
-Copyright (C) 2016 Open Concept Lab. Use of this software is subject to the terms of the Mozille Public License v2.0. Open Concept Lab is also distributed under the terms the Healthcare Disclaimer described at http://www.openconceptlab.com/license/.
-
------------------------------------------------------
-
-<!--- --->
+Post any questions and join the conversation at [OCL Chat](https://chat.openconceptlab.org/)
