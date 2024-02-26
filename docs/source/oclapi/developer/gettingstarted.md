@@ -11,7 +11,7 @@ All pull requests should contain a single commit (unless you have a very good re
 
 ## Local development environment 
 To setup your local development environment, follow the README.md instructions for the `oclapi2` and `oclweb2` repositories in this order:
-1. https://github.com/OpenConceptLab/oclapi2
-2. https://github.com/OpenConceptLab/oclweb2
+1. [https://github.com/OpenConceptLab/oclapi2](https://github.com/OpenConceptLab/oclapi2)
+2. [https://github.com/OpenConceptLab/oclweb2](https://github.com/OpenConceptLab/oclweb2)
 
 Post any questions and join the conversation at [OCL Chat](https://chat.openconceptlab.org/)
