@@ -7,4 +7,3 @@ Developer Documentation
     :maxdepth: 2
 
     gettingstarted
-    developersguide
