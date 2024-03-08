@@ -30,12 +30,10 @@ The API exposes a global `$resolveReference` operation to resolve one or more re
 ### Add to this doc
 - Updates to allow $resolveReference to be used internally to resolve mappings
 - Permissions
-- Example request/response for a single reference (the example below is for a batch)
 - Status codes for found/not found
-- Example of a response for a batch request where some references resolved and others did not
+- Examples: request/response for a single reference (the example below is for a batch); response for a batch request where some references resolved and others did not
 
 ### Future Considerations
-- Support `url` as an inline GET request param (in addition to namespace)? This would allow basic requests for a single url/namespace to be embedded entirely in the request URL for simplicity, but is not RESTful
 - Optional URL parameter that returns the full list of repositories that OCL could resolve a URL to across all namespaces that a requesting user has access to?
 
 ## Reference syntax
@@ -101,11 +99,11 @@ A non-exhaustive list of examples for the "inline" and "expanded" reference synt
 ### Expanded Reference Syntax
 * **url** (required) - A relative or canonical URL that points to a repository (e.g. a Source, Collection, CodeSystem, ValueSet, ConceptMap). If a canonical URL, a version may be piped, e.g. `http://hl7.org/fhir/CodeSystem/my-codeystem|0.8`. This field may also include a full inline reference expression, possibly including a relative URL or canonical URL, version, code, mapping id, filters, etc.
 * **version** (optional) - The version of a repository to use. Note that in most situations it is best to omit this field and instead to specify a repository version in the expansion request.
+* **namespace** (optional) - Forces a reference to be evaluated within the context of a specific namespace. Generally, this value should be omitted and instead determined by the context of a request
 * **filter** (optional) - An ordered list of filters used to select concepts or mappings by their properties. Note that the “filter” field cannot be combined with the “code” or “id” fields. Each filter has the following fields:
   * **property** - A property/filter defined by the code system
   * **op** - The type of operation to apply for the specified property. Examples: = | is-a | descendent-of | is-not-a | regex | in | not-in | generalizes | exists [see FilterOperator] – also see http://hl7.org/fhir/filter-operator
   * **value** - Code from the system, or regex criteria, or boolean value for exists
-* **namespace** (optional) - Forces a reference to be evaluated within the context of a specific namespace. Generally, this value should be omitted and instead determined by the context of a request
 * **includeExclude** (optional) - default=”Include”; set to “Exclude” to make this an exclusion. All inclusion references are processed first, and then all exclusion references are processed. The rules for processing inclusions and exclusions are otherwise the same.
 * **resourceType** (optional) - default=”Concept” if blank. Set this field to “Mapping” to retrieve a mapping resource instead of a Concept. Note that Mapping references are unique to OCL and cannot be represented via FHIR.
 * If `resourceType=Concept`:
@@ -141,6 +139,7 @@ The operation responds with a list of the results for each reference submitted, 
 * **resolved**: boolean - whether or not OCL was able to resolve the reference
 * **request**: a copy of the original reference that was requested to be resolved
 * **result**: the Source Version or Collection Version
+* **url_registry_entry**: relative URL to the registry entry used to resolve a canonical URL, or null if not used
 
 ```
 Status: 200
@@ -179,12 +178,3 @@ Status: 200
   }
 ]
 ```
-
-## Deprecated content -- will remove after we're sure that we don't need it
-### OLD Rules for Resolution of a Reference
-OCL resolves a reference to a repository version (source, collection, codesystem, valueset, conceptmap) by following this process:
-1. If relative reference, then convert to full URI by prepending the default OCL namespace: “http://api.openconceptlab.org”
-2. If scope is set within a namespace: First, attempt to resolve the canonical URL within the namespace
-3. If scope is global or the canonical URL could not be resolved based on the above rules: Attempt to resolve the canonical URL with the Global Canonical URL Registry
-4. If the above rules do not resolve, then the reference cannot be resolved based on the current state of OCL
-
