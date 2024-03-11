@@ -138,7 +138,8 @@ The operation responds with a list of the results for each reference submitted, 
 * **timestamp**: date+time of the request
 * **resolved**: boolean - whether or not OCL was able to resolve the reference
 * **request**: a copy of the original reference that was requested to be resolved
-* **result**: the Source Version or Collection Version
+* **result**: the Source Version or Collection Version summary
+* **resolution_url**: the cleaned repository URL that the operation attempted to resolve, with concept identifier, additional parameters, or piped versions removed
 * **url_registry_entry**: relative URL to the registry entry used to resolve a canonical URL, or null if not used
 
 ```
@@ -147,30 +148,46 @@ Status: 200
 ```
 [
   {
-    "reference_type": "relative",
-    "timestamp": "2022-03-01T13:12:18.919301",
-    "resolved": true,
-    "request": “/orgs/CIEL/sources/CIEL/concepts/1948/”,
-    "result": {
-      "type": "Source Version",    # or Collection Version
-      <repository version summary>
-    }
-  },
-  {
-    "reference_type": "relative",
-    "timestamp": "2022-03-01T13:12:18.919301",
-    "request": {"url": "/orgs/CIEL/sources/CIEL/concepts/123/", "namespace": "/orgs/CIEL/", "version": "v2021-03-12"},
-    "resolved": true,
-    "result": {
-      "type": "Source Version",    # or Collection Version
-      <repository version summary>
-    }
-  },
-  {
     "reference_type": "canonical",
     "timestamp": "2022-03-01T13:12:18.919301",
-    "request": {“url”: “http://hl7.org/fhir/CodeSystem/my-codeystem”, “version”: “0.8”, “code”: “1948”, “namespace”: “/orgs/MyOrg/”},
     "resolved": true,
+    "request": {
+      "url": "http://terminology.hl7.org/CodeSystem/reason-medication-given|0.1.0",
+      "code": "a",
+      "namespace": "/orgs/fhir_imports/"
+    },
+    "resolution_url": "http://terminology.hl7.org/CodeSystem/reason-medication-given",
+    "url_registry_entry": null,
+    "result": {
+      "type": "Source Version",
+      <repository version summary>
+    }
+  },
+  {
+    "reference_type": "relative",
+    "timestamp": "2022-03-01T13:12:18.919301",
+    "resolved": true,
+    "request": {
+      “/orgs/CIEL/sources/CIEL/concepts/1948/”
+    },
+    "resolution_url": “/orgs/CIEL/sources/CIEL/”,
+    "url_registry_entry": null,
+    "result": {
+      "type": "Source Version",    # or Collection Version
+      <repository version summary>
+    }
+  },
+  {
+    "reference_type": "relative",
+    "timestamp": "2022-03-01T13:12:18.919301",
+    "resolved": true,
+    "request": {
+      "url": "/orgs/CIEL/sources/CIEL/concepts/123/",
+      "namespace": "/orgs/CIEL/",
+      "version": "v2021-03-12"
+    },
+    "resolution_url": "/orgs/CIEL/sources/CIEL/",
+    "url_registry_entry": null,
     "result": {
       "type": "Source Version",    # or Collection Version
       <repository version summary>
