@@ -30,10 +30,12 @@ For example, each set points to the same three concepts:
 ### Versioning of concepts
 All changes to concepts are tracked internally. The latest version of a concept is retrieved if no version identifier (for the source or concept) is specified. If a source version identifier is specified, then the version of the concept at the time the source version was created is used. Alternatively, specific versions of concepts may also be retrieved.
 
+OCL does not create a new version of a concept in the HEAD of a repo if the submitted concept details would result in the creation of an identical concept version as the latest concept version already in HEAD, as determined by its standard checksum. In this case, OCL responds with a `208 Already reported` status code. Because edits only take place in the HEAD version of a repository, this behavior has no effect on the content returned to a user and it helps to streamline resource management because it reduces the number of interim concept versions that must be maintained. Please refer to the Checksum documentation for more information.
+
 ### Future Considerations
 * Should the standard concept shorthand be changed to refer to the concept of the latest "released" source version instead of the latest version of a concept (regardless of source version)? For example, which url should this shorthand refer to:
-    * /orgs/WHO/sources/ICD-10/concepts/A10.9/
-    * /orgs/WHO/sources/ICD-10/latest/concepts/A10.9/
+    * `/orgs/WHO/sources/ICD-10/concepts/A10.9/`
+    * `/orgs/WHO/sources/ICD-10/latest/concepts/A10.9/`
 * Should "deleting a concept" return the "retired" concept?
 * Would be great to allow additional annotation when concepts are retired to indicate to the user which concepts they should use instead. E.g. "retire_reason", "alternative_concepts" fields?
 
@@ -346,6 +348,7 @@ POST /user/sources/:source/concepts/
 * Notes
     * At least one name must be submitted when the concept is created in order to set the "display_name" and "display_locale" fields
     * "descriptions", "extras", and additional "names" may be submitted with the concept details, in addition to being created after the fact by posting to the sub-resource (e.g. POST /.../concepts/12845003/names/)
+    * 
 
 ### Example
 * `POST /orgs/IHTSDO/sources/SNOMED-CT/concepts/`
@@ -440,7 +443,7 @@ POST /user/sources/:source/concepts/
 
 
 ## Edit concept
-* Edit a concept - note that this creates a new version of the concept
+* Edit a concept - Creates a new version of a concept in the HEAD of a repository
 ```
 POST /orgs/:org/sources/:source/concepts/:concept/
 POST /users/:user/sources/:source/concepts/:concept/
@@ -465,6 +468,8 @@ PUT /user/sources/:source/concepts/:concept/
     * **update_comment** (optional) string - text describing the reason for the update; this is stored in the "concept_version" resource
 * Notes
     * "names", "descriptions", and "extras" may be submitted with the concept details to update, but note that this approach will replace all of the names, descriptions, or extras with the newly submitted values. Use the sub-resources to create, edit, or delete individual values (e.g. POST /.../concepts/12845003/names/19jfjf9j3j/)
+    * OCL does not create a new version of a concept in the HEAD of a repo if the submitted concept details would result in the creation of an identical concept version as determined by its standard checksum. In this case, OCL responds with a `208 Already reported` status code. Refer to the Checksum documentation for more information.
+
 
 ### Response
 * Status: 200 OK
