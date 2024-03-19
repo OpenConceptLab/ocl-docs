@@ -21,7 +21,10 @@ A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs 
 | `from_concept_url`    | _(n/a)_                            | "/orgs/CIEL/sources/CIEL/concepts/161426/" | _(n/a)_                  |
 
 ### Versioning of mappings
-* All changes to mappings are tracked and can be accessed via a mapping's history
+All changes to mappings are tracked and can be accessed via a mapping's history. The latest version of a concept is retrieved if no version identifier (for the repository or mapping) is specified. If a repository version identifier is specified, then the version of the concept at the time the repository version was created is used. Altenratively, specific versions of mappigns may be retrieved directly, though this is designed as an administrative function and not intended for external use.
+
+OCL does not create a new version of a mapping in the HEAD of a repo if the submitted mapping details would result in the creation of an identical mapping version as the latest mapping version already in HEAD, as determined by its standard checksum. In this case, OCL responds with a `208 Already reported` status code. Because edits only take place in the HEAD version of a repository, this behavior has no effect on the content returned to a user and it helps to streamline resource management because it reduces the number of interim mapping versions that must be maintained. Please refer to the Checksum documentation for more information.
+
 
 ### Other notes and attributes of mappings
 * Mapping IDs (both the OCL ID and External ID) can be automatically generated upon resource creation using the auto-id assignment scheme outlined in the [Create Source page](https://docs.openconceptlab.org/en/latest/oclapi/apireference/sources.html#create-source)
@@ -304,7 +307,7 @@ POST /orgs/:org/sources/:source/mappings/
 
 
 ## Edit a mapping
-* Edit a mapping
+* Edit a mapping - Creates a new version of a mapping in the HEAD of a repository
 ```
 PUT /user/sources/:source/mappings/:mapping/
 PUT /users/:user/sources/:source/mappings/:mapping/
@@ -329,6 +332,9 @@ PUT /orgs/:org/sources/:source/mappings/:mapping/
         * **to_source_url** (optional) string - canonical or relative URL of the `to_source`; if `to_concept_url` is not provided, this field is required, otherwise it is omitted
         * **to_source_version** (optional) string - version identifier for the source; Note that best practice is to only define this field if absolutely necessary
     * **update_comment** (optional) string - Brief description of the update
+* Notes
+    * OCL does not create a new version of a mapping in the HEAD of a repo if the submitted mapping details would result in the creation of an identical mapping version as the latest mappign version already in HEAD, as determined by its standard checksum. In this case, OCL responds with a 208 Already reported status code. Refer to the Checksum documentation for more information.
+
 
 ### Examples
 * External Mapping: `to_concept` is not stored in OCL
