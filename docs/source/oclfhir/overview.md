@@ -1,25 +1,12 @@
-# OUT OF DATE
-This page refers to the old OCL FHIR service, which has been replaced by the OCL FHIR Core (beta). See the announcement here: https://openconceptlab.org/2023/03/22/ocl-fhir-core-beta/. This page will be updated soon with information about the OCL FHIR Core (beta).
+# OCL FHIR Core (beta)
+OCL provides native support for a subset of the FHIR R4B specification. OCL FHIR Core (beta) implementation supports the FHIR `CodeSystem`, `ValueSet` and `ConceptMap` terminology resources and their operations (`$validate-code`, `$lookup`, `$expand`, and `$translate`) in compliance with the IHE Sharing Valuesets and Concept Maps (SVCM) Profile. Users may interchangeably interact with terminology resources loaded into OCL using the OCL FHIR Core API or the OCL API.
 
-## Overview
-OpenConceptLab FHIR terminology service allows OCL users to manage resources in FHIR format. The OCL FHIR terminology service is implemented based on IHE's (Integrating the Healthcare Enterprise) mobile sharing ValueSets, CodeSystems, and ConceptMaps (mSVCM) profile. Based on mSVCM profile, OCL FHIR terminology service provides ability to retrieve ValueSets, CodeSystems and ConceptMaps along with ability to perform FHIR operations on this resources.
+## FHIR Validator
+The [FHIR Validator](https://github.com/hapifhir/org.hl7.fhir.validator-wrapper) is deployed at: https://fhir-validator.qa.openconceptlab.org. Requests may use `GET` or `POST`. The FHIR Validator is used by OCL to transform XML FHIR requests to JSON, which is natively understood by the OCL FHIR Core.
 
-## Versions
-* FHIR        v4.0.1
-* HAPI FHIR   v5.0.0
-* Java        OpenJDK 14.0.2
-
-## Building
-In order to build run: `docker-compose build`
-
-## Running
-Before running make sure that oclapi2 is running. Check the oclapi2 network by running: `docker network list`
-
-If it is different than `oclapi2_default`, please prepend network variable `OCLAPI_NETWORK=oclapi` to the following run commands.
-
-In order to startup the FHIR service in development mode run: `SERVER_PORT=9000 docker-compose up`
-
-To run in production run: `SERVER_PORT=9000 docker-compose -f docker-compose.yml up`
-
-## Testing
-Import [OCL FHIR Postman Collection](https://www.postman.com/collections/e7ff349688c4c10f474a) into your postman client to test the OCL FHIR endpoints 
+Example requests:
+```
+curl --location --request GET 'https://fhir.qa.openconceptlab.org/fhir/CodeSystem' --header 'Accept: application/xml'
+curl --location --request GET 'https://fhir.qa.openconceptlab.org/fhir/CodeSystem' --header 'Accept: application/fhir+xml'
+curl --location --request GET 'https://fhir.qa.openconceptlab.org/fhir/ValueSet' --header 'Accept: application/xml'
+```
