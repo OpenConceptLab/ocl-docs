@@ -303,49 +303,56 @@ To view the final outcome of a previous bulk import, use a GET request to specif
 GET /importers/bulk-import/?task=:taskid[&result=:format]
 ```
 * GET Request Parameters:
-   * **task** (Required for GET request) - Task ID of a previously submitted bulk import request
-   * **result** (Optional) - default="summary"; format of the results to be returned. Options are:
-      * **summary** -- one line of plain text (see `OclImportResults.get_detailed_summary()`)
-      * **report** -- longer report of plain text (see `OclImportResults.display_report()`)
-      * **json** -- full results object serialized to JSON (see `OclImportResults.to_json()`)
-_”Summary” example_
-```
-Processed 348 of 348 -- 346 NEW (200:39, 201:307); 1 UPDATE (200:1); 1 DELETE (200:1)
-```
+   * **task=\<str:uuid\>** (Required for GET request) - Task ID of a previously submitted bulk import request
+   * **result=json** (Optional) - full results object serialized to JSON (see `OclImportResults.to_json()`)
+
+Default GET Response (without `?result=json`) has:
+1. "message" (string)
+    ```doctest
+    Started: 2024-08-08 02:58:04.072628 | Processed: 62/62 | Created: 48 | Updated: 1 | Deleted: 0 | Existing: 1 | Permission Denied: 0 | Unchanged: 11 | Time: 41.45secs
+    ```
+2. ”report” (json) -- Summary of the results in counts
+    ```json
+    {
+            "total": <int>,                         # Total number of lines/requests in the import content
+            "processed": <int>,                     # Number of lines/requests processed
+            "created": <int>,                       # Number of new resources created
+            "updated": <int>,                       # Number of new resources updated
+            "invalid": int,                         # Number of invalid (bad) resources
+            "exists": <int>,                        # Number of resources that already exist
+            "failed": <int>,                        # Number of resources that failed to be created/updated
+            "exception": <int>,                     # Number of resources that caused an exception
+            "deleted": <int>,                       # Number of resources that were deleted
+            "others": <int>,                        # Number of resources that OCL had no idea on what to do with
+            "unknown": <int>,                       # Number of resources that had "resource_type" unknown to OCL 
+            "permission_denied": <int>,             # Number of resources that the user did not have permission to create/update
+            "unchanged": <int>,                     # Number of resources that were unchanged due to same standard checksum
+            "elapsed_seconds": <float:seconds>,     # Time taken to process the import
+            "start_time": <str:datetime-utc>,       # Time the import started
+            "child_resource_time_distribution": {
+                "concept": <float:seconds>,         # Time taken to process concepts
+                "mapping": <float:seconds>          # Time taken to process mappings
+            }
+        }
+    ```
 
 
-_”Report” example_
-
-
-```
-REPORT OF IMPORT RESULTS:
-/orgs/DATIM-MOH-BW-FY19/collections/HTS-TST-N-MOH-HllvX50cXC0/:
-NEW 200:
-[{"message": "Added the latest versions of concept to the collection. Future updates will not be added automatically.",
-"added": true, "expression":
-...
-```
-
-
-_”JSON” example_
-
-
-
-
-```
-{
-        "count": 348,
-        "elapsed_seconds": 94.10947012901306,
-        "total_lines": 348,
-        "num_skipped": 0,
-        "results": {
-            "/orgs/DATIM-MOH-BW-FY19/collections/HTS-TST-N-MOH-HllvX50cXC0/": {
-                "NEW": {
-                    "200": [
-                        {
-                            "obj_type": "Reference",
-                            "text": "{\"data\": {\"expressions\": [\"/orgs/DATIM-MOH-BW-FY19/sources/DATIM-Alignment-Indicators/mappings/MAP-DATIM-HAS-OPTION-HTS_TST_N_MOH-HllvX50cXC0/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HTS_TST_N_MOH/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HllvX50cXC0/\", \"/orgs/DATIM-MOH-BW-FY19/sources/
-```
+GET Response with `?result=json` has:
+1. "result" (json):
+    ```json
+    {
+            "count": 348,
+            "elapsed_seconds": 94.10947012901306,
+            "total_lines": 348,
+            "num_skipped": 0,
+            "results": {
+                "/orgs/DATIM-MOH-BW-FY19/collections/HTS-TST-N-MOH-HllvX50cXC0/": {
+                    "NEW": {
+                        "200": [
+                            {
+                                "obj_type": "Reference",
+                                "text": "{\"data\": {\"expressions\": [\"/orgs/DATIM-MOH-BW-FY19/sources/DATIM-Alignment-Indicators/mappings/MAP-DATIM-HAS-OPTION-HTS_TST_N_MOH-HllvX50cXC0/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HTS_TST_N_MOH/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HllvX50cXC0/\", \"/orgs/DATIM-MOH-BW-FY19/sources/
+    ```
 
 
 * Notes:
