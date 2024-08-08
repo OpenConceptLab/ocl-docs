@@ -311,7 +311,7 @@ Default GET Response (without `?result=json`) has:
     ```doctest
     Started: 2024-08-08 02:58:04.072628 | Processed: 62/62 | Created: 48 | Updated: 1 | Deleted: 0 | Existing: 1 | Permission Denied: 0 | Unchanged: 11 | Time: 41.45secs
     ```
-2. ”report” (json) -- Summary of the results in counts
+2. ”report” (json) -- _Summary of the result in counts_
     ```json
     {
             "total": <int>,                         # Total number of lines/requests in the import content
@@ -338,20 +338,29 @@ Default GET Response (without `?result=json`) has:
 
 
 GET Response with `?result=json` has:
-1. "result" (json):
+1. "result" (json) -- _An extended format of "report" with more details_
     ```json
     {
-            "count": 348,
-            "elapsed_seconds": 94.10947012901306,
-            "total_lines": 348,
-            "num_skipped": 0,
-            "results": {
-                "/orgs/DATIM-MOH-BW-FY19/collections/HTS-TST-N-MOH-HllvX50cXC0/": {
-                    "NEW": {
-                        "200": [
-                            {
-                                "obj_type": "Reference",
-                                "text": "{\"data\": {\"expressions\": [\"/orgs/DATIM-MOH-BW-FY19/sources/DATIM-Alignment-Indicators/mappings/MAP-DATIM-HAS-OPTION-HTS_TST_N_MOH-HllvX50cXC0/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HTS_TST_N_MOH/\", \"/orgs/PEPFAR/sources/DATIM-MOH-FY19/concepts/HllvX50cXC0/\", \"/orgs/DATIM-MOH-BW-FY19/sources/
+            "total": <int>,                         # Total number of lines/requests in the import content
+            "processed": <int>,                     # Number of lines/requests processed
+            "created": <list>,                      # List of new resources created
+            "updated": <list>,                      # List of new resources updated
+            "invalid": <list>,                      # List of invalid (bad) resources
+            "exists": <list>,                       # List of resources that already exist
+            "failed": <list>,                       # List of resources that failed to be created/updated
+            "exception": <list>,                    # List of resources that caused an exception
+            "deleted": <list>,                      # List of resources that were deleted
+            "others": <list>,                       # List of resources that OCL had no idea on what to do with
+            "unknown": <list>,                      # List of resources that had "resource_type" unknown to OCL 
+            "permission_denied": <list>,            # List of resources that the user did not have permission to create/update
+            "unchanged": <list>,                    # List of resources that were unchanged due to same standard checksum
+            "elapsed_seconds": <float:seconds>,     # Time taken to process the import
+            "start_time": <str:datetime-utc>,       # Time the import started
+            "child_resource_time_distribution": {
+                "concept": <float:seconds>,         # Time taken to process concepts
+                "mapping": <float:seconds>          # Time taken to process mappings
+            }
+        }
     ```
 
 
