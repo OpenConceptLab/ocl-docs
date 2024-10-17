@@ -14,7 +14,7 @@ curl --location --request GET 'https://fhir.qa.openconceptlab.org/fhir/ValueSet'
 ```
 
 ## FHIR NPM Package Import
-This feature provides an API method to import content directly from the FHIR NPM package registry at (https://registry.fhir.org/). It also enhances the bulk import tool in OCL to support FHIR resources and Does 44.
+This feature provides an API method to import content directly from the [FHIR NPM Package Registry](https://registry.fhir.org/). It also enhances the bulk import tool in OCL to support FHIR resources and Does 44.
 
 The integral part of the work is to make large imports memory efficient by implementing streamed file read as opposed to loading the entire file in memory.
 
