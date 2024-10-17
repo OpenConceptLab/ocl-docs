@@ -12,7 +12,7 @@ Learn more about OCL, its tools and its core features:
    * :doc:`OCL API Overview</oclapi/overview>`
    * :doc:`OCL FHIR Overview</oclfhir/overview>`
    * :doc:`API Reference of OCL</oclapi/apireference/index>`
-* **2023 OCL Community Roadmap:** 
+* **OCL Community Roadmap:** 
     * `2024 OCL Community Roadmap <https://openconceptlab.org/2024-ocl-community-roadmap/>`_
 * **OCL Releases:**
    * :doc:`Release Notes </oclapi/releases>`
