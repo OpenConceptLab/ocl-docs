@@ -1,10 +1,10 @@
 # OCL FHIR Core (beta)
 OCL supports a subset of the [FHIR R4B Terminology Services specification](https://hl7.org/fhir/r4b/). OCL FHIR Core (beta) implementation supports the FHIR `CodeSystem`, `ValueSet` and `ConceptMap` terminology resources and their operations (`$validate-code`, `$lookup`, `$expand`, and `$translate`) in alignment with the [IHE Sharing Valuesets and Concept Maps (SVCM) Profile](https://profiles.ihe.net/ITI/SVCM/). Users may interchangeably interact with terminology resources loaded into OCL using the OCL FHIR Core API or the OCL API.
 
-* OCL Cabability Statement DRAFT: (https://fhir.openconceptlab.org/fhir/)
+* OCL Cabability Statement DRAFT: [https://fhir.openconceptlab.org/fhir/](https://fhir.openconceptlab.org/fhir/)
 
 ## FHIR Validator
-The [FHIR Validator](https://github.com/hapifhir/org.hl7.fhir.validator-wrapper) is deployed at: (https://fhir-validator.qa.openconceptlab.org). Requests may use `GET` or `POST`. The FHIR Validator is used by OCL to transform XML FHIR requests to JSON, which is natively understood by the OCL FHIR Core.
+The [FHIR Validator](https://github.com/hapifhir/org.hl7.fhir.validator-wrapper) is deployed at: [https://fhir-validator.qa.openconceptlab.org](https://fhir-validator.qa.openconceptlab.org). Requests may use `GET` or `POST`. The FHIR Validator is used by OCL to transform XML FHIR requests to JSON, which is natively understood by OCL.
 
 Example requests:
 ```
