@@ -13,7 +13,7 @@ Learn more about OCL, its tools and its core features:
    * :doc:`OCL FHIR Overview</oclfhir/overview>`
    * :doc:`API Reference of OCL</oclapi/apireference/index>`
 * **2023 OCL Community Roadmap:** 
-    * `2023 OCL Community Roadmap <https://openconceptlab.org/technical-roadmap/>`_
+    * `2024 OCL Community Roadmap <https://openconceptlab.org/2024-ocl-community-roadmap/>`_
 * **OCL Releases:**
    * :doc:`Release Notes </oclapi/releases>`
 
@@ -24,15 +24,13 @@ Learn how to start contributing to OCL as a developer:
 
 * **As a developer:** :doc:`Getting Started as a Developer</oclapi/developer/gettingstarted>` | :doc:`Developers Guide</oclapi/developer/developersguide>`
 
-Advanced Features of OCL
+Features
 --------------------------
 
 Learn more about these integrations and how you can interact with OCL.
 
 * **Retrieving Content from OCL's API** : Visit our `Swagger page <https://api.openconceptlab.org/swagger/>`_ for information about OCL's API endpoints and examples for retrieving terminology content  
 * **Importing into OCL:** :doc:`Bulk Importing into OCL</oclapi/apireference/bulkimporting>` | :doc:`Importing CIEL into OCL </oclomrs/importingciel>`
-* **Interface layer:** The interface layer is a set of API endpoints customized to support PEPFAR use cases through OpenHIM mediators. `Interface layer API Documentation <https://documenter.getpostman.com/view/10981858/TW77f3MH?version=latest>`_
-
 
 OCL Releases
 ------------
