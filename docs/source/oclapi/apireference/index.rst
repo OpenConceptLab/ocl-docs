@@ -17,6 +17,7 @@ This section explains how to interact with OCL using REST APIs. Please refer to 
     cascade
     cloning
     resolveReference
+    match
     permissionssummary
     repos
     sources
