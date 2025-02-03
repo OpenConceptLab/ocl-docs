@@ -1,4 +1,4 @@
-# $match Concepts (EXPERIMENTAL)
+# Operation: $match (Experimental)
 
 ## Overview
 
