@@ -249,3 +249,19 @@ API documentation revisions will be assigned a unique version number in the form
 * **MAJOR** version numbers are incremented when new functionality is introduced which is semantically incompatible with previous versions.
 
 As new major versions of the code are released, prior versions will continue to be supported as long as they are still supported by the code.
+
+
+## Rate Limiting
+OCL API limits (aka throttles) the number of requests that can be made within a specific amount of time. Rate limits help to prevent abuse and denial-of-service attacks, and ensure that the API remains available for all users. Rate limits are determined by a user's authentication method and may be specific to certain endpoints.
+
+In the current implementation, requests made from all clients (e.g. direct REST API requests or from the OCL TermBrowser) impact the rate limits.
+
+### Unauthenticated users
+You can make unauthenticated requests if you are only fetching public data. Unauthenticated requests are associated with the originating IP address, not with the user or application that made the request.
+
+The default rate limit for unauthenticated requests is 400 requests/minute and 10,000 requests/day. A system administrator may adjust this setting for a specific OCL instance.
+
+### Authenticated users
+You can use a personal access token to make API requests.
+
+The default rate limit for an authenticated user is 500 requests/minute and 20,000 requests/day. A system administrator may adjust this setting for a specific OCL instance.
