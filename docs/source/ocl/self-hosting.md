@@ -25,3 +25,14 @@ The changes do the following:
 * Adjust index maintenance commands
 
 We plan to do the migration to OpenSearch and upgrade to a newer version in OCL Online at some point. It is not yet determined the exact timeline for this migration to happen.
+
+
+### Configuring API Rate Limiting (throttling)
+By default Rate Limiting is turned off, enable it by making ENABLE_THROTTLING=true
+See core/settings.py for throttling policies guest and lite.
+
+* Existing users are by default assigned "lite" plan.
+* Anonymous users are configured to use "guest" plan.
+* Create a new policy by adding new User Throttle class(s) in core/common/throttling.py
+
+For more info checkout https://www.django-rest-framework.org/api-guide/throttling/
