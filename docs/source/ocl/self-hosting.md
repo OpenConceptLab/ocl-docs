@@ -29,10 +29,10 @@ We plan to do the migration to OpenSearch and upgrade to a newer version in OCL 
 
 ### Configuring API Rate Limiting (throttling)
 By default Rate Limiting is turned off, enable it by making ENABLE_THROTTLING=true
-See core/settings.py for throttling policies guest and lite.
 
 * Existing users are by default assigned "lite" plan.
 * Anonymous users are configured to use "guest" plan.
 * Create a new policy by adding new User Throttle class(s) in core/common/throttling.py
 
+See [core/settings.py](https://github.com/OpenConceptLab/oclapi2/blob/master/core/settings.py#L181) for throttling policies limits.
 For more info checkout https://www.django-rest-framework.org/api-guide/throttling/
