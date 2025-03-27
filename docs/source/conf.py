@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'ocl-docs'
-copyright = '2022, openconceptlab'
+copyright = '2025, openconceptlab'
 author = 'openconceptlab'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '2.0'
 
 
 # -- General configuration ---------------------------------------------------
