@@ -3,8 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/ocl-docs/badge/?version=latest)](https://ocl-docs.readthedocs.io/en/latest/?badge=latest)
 
 
-Consolidated documentation for OCL. This documentation supports both Markdown (.md) and Restructured Text (.rst) files. This repository is directly linked to the content in https://ocl-docs.readthedocs.io/ and any changes with commits will be built and deployed in that website.
-
+Consolidated documentation for OCL. This documentation supports both Markdown (.md) and Restructured Text (.rst) files. This repository is directly linked to the content in https://docs.openconceptlab.org (or https://ocl-docs.readthedocs.io/). Commits are automatically built and deployed to that website.
 
 
 ## How to contribute -
