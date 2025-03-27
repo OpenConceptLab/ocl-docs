@@ -56,7 +56,7 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
-html_logo = "ocl_logo.png"
+html_logo = "Icon-White.png"
 
 html_theme_options = {
     'logo_only': True,
