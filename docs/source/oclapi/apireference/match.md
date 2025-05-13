@@ -27,3 +27,15 @@ POST /concepts/$match/
 |-------|------|----------|-------------|---------|
 | `target_repo_url` | String | Yes | Repository URL to match against. Uses $resolve operation to get the repo version | `/orgs/CIEL/sources/CIEL/` |
 | `rows` | Array | Yes | List of concept-like objects to match. Each object can have different structure | ... |
+
+### Example
+```
+POST https://api.openconceptlab.org/concepts/$match/?includeSearchMeta=true&semantic=true&bestMatch=true
+{
+    "rows":[
+        {"s_n":"1", "name":"malaria"},
+        {"s_n":"2", "name":"blood type"}
+    ],
+    "target_repo_url": "/orgs/MSF/sources/MSF/20250311/"
+}
+```
