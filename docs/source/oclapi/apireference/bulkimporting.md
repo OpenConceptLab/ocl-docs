@@ -35,7 +35,7 @@ Regardless of format, when creating resources using Bulk Imports, each type of O
       * `None` (default) - No cascading will occur
       * `sourcemappings` - Mappings stored in the same source whose `from_concept` matches a concept that is being added to a collection will also be added
 
-### OCL-formatted JSON Format Example
+### OCL-formatted JSON-lines Format Example
 Link: [https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing](https://drive.google.com/file/d/1n1wC5-w4fYKNDx5uViQ5MaaAokHuBOn8/view?usp=sharing) 
 
 ```
