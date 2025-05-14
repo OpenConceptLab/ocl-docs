@@ -1,14 +1,23 @@
 # Bulk Import API
 
 ## Overview
-OCL exposes a method for submitting an OCL-formatted bulk import JSON or CSV file to the OCL API that is processed asynchronously on the server. Note that the OCL bulk import methods do not currently support FHIR resources, but this is on the roadmap. A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
+OCL exposes a method for submitting a bulk import script is processed asynchronously on the server. There are several types of files supported:
+- JSON-lines
+- CSV
+- OCL repository version export file
+
+A bulk import file may include creates, updates, or deletes for multiple owners and repositories. This approach is significantly more efficient than using individual REST API calls to modify or create one resource at a time. A bulk import file is processed using the credentials provided in the bulk import request.
+
+Note that OCL also supports importing [FHIR NPM packages](https://docs.openconceptlab.org/en/latest/oclfhir/overview.html#fhir-npm-package-import).
 
 ### Authorization
 The bulk importer processes a bulk import script using the credentials provided in the bulk import request (eg. the `Authorization` request header). All actions taken by the bulk importer use these credentials, meaning that the user must have the required permissions for each action. This includes GET requests that the bulk importer submits to determine whether resources already exist in OCL.
-The header uses the following key/value:
-* Key: “Authorization”
-* Value: “Token [API token]”
-The API token can be received from OCL’s TermBrowser UI on your Profile page, once you have created and logged into an OCL account.
+The request header uses the following key/value:
+```
+Authorization: Token [API token]
+```
+
+The API token can be received from your user profile page in the OCL TermBrowser.
 
 ### Parallel and Asynchronous Processing of Bulk Imports
 By default, OCL attempts to process bulk imports in parallel using multiple workers where it can, providing a significant performance improvement. OCL will process a sequential list of resources of the same type, eg `Concept` or `Mapping`, in parallel, pausing before moving onto a resource of a different type. For example, if a bulk import script contains 5 concepts and 5 mappings, in that order, the 5 concepts would be processed in parallel and then the 5 mappings would be processed in parallel after the concepts had all been processed.
