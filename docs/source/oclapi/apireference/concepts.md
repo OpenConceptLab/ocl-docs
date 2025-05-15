@@ -243,7 +243,7 @@ GET /user/sources/:source/[:sourceVersion/]concepts/
 GET /orgs/WHO/sources/ICD-10-2010/concepts/?q=tuberculosis
 
 # Retrieve concepts with a concept_class of "Symptom" or "Diagnosis"
-https://api.staging.openconceptlab.org/orgs/PEPFAR-Test7/sources/MER/concepts/?conceptClass="Symptom"+OR+"Diagnosis"
+https://api.staging.openconceptlab.org/orgs/PEPFAR-Test7/sources/MER/concepts/?conceptClass=Symptom,Diagnosis
 ```
 
 ### Response
