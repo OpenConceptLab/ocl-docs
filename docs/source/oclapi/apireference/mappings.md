@@ -170,6 +170,7 @@ GET /user/sources/:source/[:sourceVersion/]mappings/
     * **q** (optional) string - ID of the "from" or "to" concept
     * **includeRetired** (optional) string - default is "false"; set to "true" to return retired mappings
     * **mapType** (optional) string - mapType descriptor, such as "Same As", "Parent", "Child", etc.
+    * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
     * Sources
         * **conceptSource** (optional) string - comma-separated list of sources for the "from" or "to" source; can be the "code" for the source (e.g. "SNOMED-CT" or "ICPC-2") or the fully specified URL
         * **fromConceptSource** (optional) string - comma-separated list of source IDs for the "from" source (e.g. "SNOMED-CT" or "ICPC-2")
@@ -212,6 +213,7 @@ GET /mappings/
     * **q** (optional) string - ID of the "from" or "to" concept
     * **includeRetired** (optional) string - default is "false"; set to "true" to return retired mappings
     * **mapType** (optional) string - map type descriptor, such as "Same As", "Parent", "Child", etc.
+    * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
     * Sources
         * **conceptSource** (optional) string - comma-separated list of source IDs for the "from" or "to" source (e.g. "SNOMED-CT" or "ICPC-2")
         * **fromConceptSource** (optional) string - comma-separated list of source IDs for the "from" source (e.g. "SNOMED-CT" or "ICPC-2")

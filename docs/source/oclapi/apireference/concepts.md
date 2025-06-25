@@ -236,6 +236,7 @@ GET /user/sources/:source/[:sourceVersion/]concepts/
     * **includeRetired** (optional) integer - 1 or 0, default 0
     * **includeMappings** (optional) string - default is "false" (even if "verbose" is set to "true"); set to "true" to return direct mappings contained in this source
     * **includeInverseMappings** (optional) string - default is "false" (even if "verbose" is set to "true"); set to "true" to return inverse mappings contained in this source
+    * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
 
 ### Examples
 ```
@@ -289,6 +290,7 @@ GET /concepts/
     * **org** (optional) string - filter by the organization name of the owner of the concept's source; cannot be used with user
     * **includeMappings** (optional) string - default is "false" (even if "verbose" is set to "true"); set to "true" to return mappings
     * **includeInverseMappings** (optional) string - default is "false" (even if "verbose" is set to "true"); set to "true" to return inverse mappings
+    * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
 
 ### Example
 ```
