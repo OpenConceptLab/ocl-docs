@@ -23,34 +23,48 @@ POST /concepts/$match/
 
 ### Request Body Schema
 
-| Field | Type | Required | Description | Example |
-|-------|------|----------|-------------|---------|
-| `target_repo_url` | String | Yes | Repository URL to match against. Uses $resolve operation to get the repo version | `/orgs/CIEL/sources/CIEL/` |
-| `rows` | Array | Yes | List of concept-like objects to match. Each object can have different structure | ... |
+| **Code (Name)**                | **Card.** | **Type**             | **Definition (Description)**                                                                                                                                                                                         |
+| ------------------------------ | --------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target_repo_url`              | 1..1      | string               | Repository URL to match against. Uses `$resolve` to identify the specific repo version. **Example:** `/orgs/CIEL/sources/CIEL/`                                                                                      |
+| `rows`                         | 1..\*     | list      | List of concept-like objects to match; each item may have different fields. **Example:** `[{"s_n":"1","name":"malaria"},{"s_n":"2","name":"blood type"}]`                                                            |
+| `rows.id`                      | 0..1      | string               | Exact match against a concept ID. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
+| `rows.name`                    | 0..1      | string               | Semantic or fuzzy search on primary display name. **Example Input Data:** `Anemia due to blood loss`                                                                                                                 |
+| `rows.synonyms`                | 0..1     | string               | Semantic or fuzzy search across all names/synonyms. **Example Input Data:** `"Anemia, blood loss", "Anémie secondaire à une hémorragie"`                                                                           |
+| `rows.description`             | 0..1      | string               | Text search on concept descriptions. **Example Input Data:** `"Anemia due to bleeding or a hemorrhagic process"`                                                                                                     |
+| `rows.concept_class`           | 0..1      | string               | Match on concept class (e.g., diagnosis, symptom). **Example Input Data:** `Diagnosis`, `Symptom`                                                                                                                    |
+| `rows.datatype`                | 0..1      | string               | Match on datatype (e.g., numeric, coded). **Example Input Data:** `Numeric`, `Coded`                                                                                                                                 |
+| `rows.mapping_code`            | 0..1      | string               | Exact match on a concept ID or mapping in the target repo version. **Example Input Data:** `D50.0`, `Z87.5`, `X59.9`                                                                                                 |
+| `rows.mapping_list`            | 0..1      | string               | Exact match on comma‑separated mapping list. *(In development.)* **Example Input Data:** `CIEL:1858, ICD10:DC14.Z, LOINC:5792-7`                                                                                     |
+| `rows.same_as_map_codes`       | 0..1      | string               | Search only “same as” mappings. *(Deprecated.)* **Example Input Data:** `CIEL:1858, ICD10:DC14.Z, LOINC:5792-7`                                                                                                      |
+| `rows.other_map_codes`         | 0..1      | string               | Search all non‑“same as” mappings. *(Deprecated.)* **Example Input Data:** `CIEL:1858, ICD10:DC14.Z, LOINC:5792-7`                                                                                                   |
+| `map_config`                   | 0..\*     | list      | Optional list configuring mapping logic per row. **Example from Request Body:** see below.                                                                                                                           |
+| `map_config.type`              | 1..1      | code                 | Type of mapping: `mapping-code` or `mapping-list`. **Example:** `mapping-code`, `mapping-list`                                                                                                                       |
+| `map_config.input_column`      | 1..1      | string               | Name of the row‑field to use. **Example:** `loinc-example`, `icd10-example`, `list example`                                                                                                                          |
+| `map_config.target_source_url` | 0..1      | string               | Target repo URL for `mapping-code` entries (required if type is `mapping-code`). **Example:** `/orgs/CIEL/sources/CIEL/`                                                                                             |
+| `map_config.separator`         | 0..1      | string               | Separator between source name and code in `mapping-list`. **Example:** `:`                                                                                                                                           |
+| `map_config.delimiter`         | 0..1      | string               | Delimiter for multiple mappings in `mapping-list`. **Example:** `,`                                                                                                                                                  |
+| `map_config.target_urls`       | 0..1      | map\<string, string> | URL map of source mnemonics to repositories. Required for `mapping-list`. **Example:** `{"ICD10": "/orgs/WHO/sources/ICD-10-WHO/", "CIEL": "/orgs/CIEL/sources/CIEL/", "LOINC": "/orgs/Regenstrief/sources/LOINC/"}` |
 
-#### Schema for `rows`
 
-| Display | Current $match field | Description | Example Input Data |
-| :---- | :---- | :---- | :---- |
-| ID | `id` | Exact match on concept ID *Note: This is the same as Mapping: Code with the target repo selected. We may remove this option.* | 12, 57, A01.1 |
-| Name | `name` | Semantic or fuzzy string search (based on selected algorithm) on primary display name | Anemia due to blood loss |
-| Synonyms | `synonyms` | Semantic or fuzzy string search (based on selected algorithm) on all concept names and synonyms | “Anemia, blood loss”, “Anémie secondaire à une hémorragie” |
-| Description | `description` | Basic string search on concept descriptions | “Anemia due to bleeding or a hemorrhagic process” |
-| Property: Class | `concept_class` | String matching on concept class (e.g. diagnosis, symptom) | Diagnosis, Symptom |
-| Property: Datatype | `datatype` | String matching on concept datatype (e.g. numeric, coded) | Numeric, Coded |
-| Mapping: Code | `mapping_code` | Exact match of the concept ID or the mappings for the selected target repo version, where a value in the input data may have only a single code. | D50.0, Z87.5, X59.9 |
-| Mapping: List | `mapping_list` | Exact match of the concept ID or the mappings for the selected target repo version. A value in the input data may have a comma-separated list of key-value pairs, where the key is the mnemonic for the map repository (e.g. ICD10) and the value is the code. *Note: This feature is currently under development.* | CIEL:1858, ICD10:DC14.Z, LOINC:5792-7 |
-| Same As Mappings | `same_as_map_codes` | Searches only “same as” mappings *Note: Deprecated. This option will not be supported moving forward.* | CIEL:1858, ICD10:DC14.Z, LOINC:5792-7 |
-| Concept Set | `other_map_codes` | Searches all map codes except “same as” *Note: Deprecated. This option will not be supported moving forward.* | CIEL:1858, ICD10:DC14.Z, LOINC:5792-7 |
-
-### Example
+### Example Request
 ```
 POST https://api.openconceptlab.org/concepts/$match/?includeSearchMeta=true&semantic=true&bestMatch=true
+```
+```json
 {
     "rows":[
         {"s_n":"1", "name":"malaria"},
         {"s_n":"2", "name":"blood type"}
     ],
-    "target_repo_url": "/orgs/MSF/sources/MSF/20250311/"
+    "target_repo_url": "/orgs/MSF/sources/MSF/20250311/",
+    "map_config": [
+        {"type": "mapping-code", "input_column": "loinc-example", "target_source_url": "/orgs/CIEL/sources/CIEL/"},
+        {"type": "mapping-code", "input_column": "icd10-example", "target_source_url": "/orgs/CIEL/sources/CIEL/"},
+        {"type": "mapping-list", "input_column": "list example", "separator": ":", "delimiter": ",", "target_urls": {
+            "ICD10": "/orgs/WHO/sources/ICD-10-WHO/",
+            "CIEL": "/orgs/CIEL/sources/CIEL/",
+            "LOINC": "/orgs/Regenstrief/sources/LOINC/"
+        }
+    ]
 }
 ```
