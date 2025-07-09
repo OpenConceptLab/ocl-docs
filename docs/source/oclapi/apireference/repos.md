@@ -27,6 +27,7 @@ GET /user/repos/
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **ownerType** (optional) string - "Organization" or "User"
 
 
 
