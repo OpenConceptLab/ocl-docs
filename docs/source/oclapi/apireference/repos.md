@@ -24,10 +24,12 @@ GET /user/repos/
     * **q** (optional) string - Search criteria (search across: "name", "full_name" and "description")
     * **sortAsc/sortDesc** (optional) string - Sort results on one of the following fields: "best_match" (default), "last_update", "name"
     * **sourceType** (optional) string - Filter results to a given source type, e.g. "dictionary", "reference"
+    * **collectionType** (optional) string - Filter results to a given collection type
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
-    * **ownerType** (optional) string - "Organization" or "User"
+    * **ownerType** (optional) string - "Organization", "User"
+    * **repoType** (optional) string - "Source", "Collection"
 
 
 
