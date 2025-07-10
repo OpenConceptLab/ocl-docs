@@ -64,7 +64,7 @@ POST https://api.openconceptlab.org/concepts/$match/?includeSearchMeta=true&sema
             "ICD10": "/orgs/WHO/sources/ICD-10-WHO/",
             "CIEL": "/orgs/CIEL/sources/CIEL/",
             "LOINC": "/orgs/Regenstrief/sources/LOINC/"
-        }
+        }}
     ]
 }
 ```
