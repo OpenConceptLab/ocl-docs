@@ -43,7 +43,7 @@ POST /concepts/$match/
 | `map_config.target_source_url` | 0..1      | string               | Target repo URL for `mapping-code` entries (required if type is `mapping-code`). **Example:** `/orgs/CIEL/sources/CIEL/`                                                                                             |
 | `map_config.separator`         | 0..1      | string               | Separator between source name and code in `mapping-list`. **Example:** `:`                                                                                                                                           |
 | `map_config.delimiter`         | 0..1      | string               | Delimiter for multiple mappings in `mapping-list`. **Example:** `,`                                                                                                                                                  |
-| `map_config.target_urls`       | 0..1      | map\<string, string> | URL map of source mnemonics to repositories. Required for `mapping-list`. **Example:** `{"ICD10": "/orgs/WHO/sources/ICD-10-WHO/", "CIEL": "/orgs/CIEL/sources/CIEL/", "LOINC": "/orgs/Regenstrief/sources/LOINC/"}` |
+| `map_config.target_urls`       | 0..1      | map                  | URL map of source mnemonics to repositories. Required for `mapping-list`. **Example:** `{"ICD10": "/orgs/WHO/sources/ICD-10-WHO/", "CIEL": "/orgs/CIEL/sources/CIEL/", "LOINC": "/orgs/Regenstrief/sources/LOINC/"}` |
 
 
 ### Example Request
