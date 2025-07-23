@@ -53,6 +53,10 @@ A non-exhaustive list of examples for the "inline" and "expanded" reference synt
 “/orgs/CIEL/sources/CIEL/concepts/1948/”
 “/orgs/CIEL/sources/CIEL/v2021-03-12/concepts/1948/”
 ```
+* Relative URL with filters -- all active diagnoses with French translations:
+```
+/orgs/CIEL/sources/CIEL/concepts/?conceptClass=diagnosis&locale=fr&retired=false
+```
 * FHIR-formatted Canonical URL:
 ```
 “http://hl7.org/fhir/CodeSystem/my-codesystem”
