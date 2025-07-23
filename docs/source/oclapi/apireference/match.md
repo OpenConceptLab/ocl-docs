@@ -4,6 +4,17 @@
 
 The `$match` endpoint allows you to find similar or matching concepts across different repositories in OCL. While search returns concepts that match a specific search query, `$match` returns concept candidates that match structured input data, such as a row in a spreadsheet. This could be used to retrieve mapping candidates for an entire spreadsheet.
 
+### $match Algorithm Fields
+- `id` - Exact match on concept ID in the target repository
+- `name` - Keyword or semantic search on primary display names
+- `synonyms` - Keyword or semantic search on all synonyms
+- `description` - String search on concept descriptions
+- Properties: String match on defined properties in the target repository
+  - `Property: Class` - String match on `concept_class`
+  - `Property: Datatype` - String match on `datatype`
+- `Mapping: Code` - Matches concepts in the target repo that share a mapping with the input row. For example, the input row and target concept share a mapping to the same LOINC code.
+- `Mapping: List` - Matches concepts in the target repo that share a mapping, where the input is a list of mappings for the row.
+
 ## Request
 ```
 POST /concepts/$match/
@@ -26,7 +37,7 @@ POST /concepts/$match/
 | **Code (Name)**                | **Card.** | **Type**             | **Definition (Description)**                                                                                                                                                                                         |
 | ------------------------------ | --------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `target_repo_url`              | 1..1      | string               | Repository URL to match against. Uses `$resolve` to identify the specific repo version. **Example:** `/orgs/CIEL/sources/CIEL/`                                                                                      |
-| `rows`                         | 1..\*     | list      | List of concept-like objects to match; each item may have different fields. **Example:** `[{"s_n":"1","name":"malaria"},{"s_n":"2","name":"blood type"}]`                                                            |
+| `rows`                         | 1..\*     | list      | List of concept-like key-value pairs; each row may have different fields. Only fields that are recognized by the matching algorithm are used, all other rows are ignored. **Example:** `[{"s_n":"1","name":"malaria"},{"s_n":"2","name":"blood type"}]`                                                            |
 | `rows.id`                      | 0..1      | string               | Exact match against a concept ID. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
 | `rows.name`                    | 0..1      | string               | Semantic or fuzzy search on primary display name. **Example Input Data:** `Anemia due to blood loss`                                                                                                                 |
 | `rows.synonyms`                | 0..1     | string               | Semantic or fuzzy search across all names/synonyms. **Example Input Data:** `"Anemia, blood loss", "Anémie secondaire à une hémorragie"`                                                                           |
@@ -46,21 +57,78 @@ POST /concepts/$match/
 | `map_config.target_urls`       | 0..1      | map                  | URL map of source mnemonics to repositories. Required for `mapping-list`. **Example:** `{"ICD10": "/orgs/WHO/sources/ICD-10-WHO/", "CIEL": "/orgs/CIEL/sources/CIEL/", "LOINC": "/orgs/Regenstrief/sources/LOINC/"}` |
 
 
-### Example Request
+### Example Request 1: Simple Request
 ```
-POST https://api.openconceptlab.org/concepts/$match/?includeSearchMeta=true&semantic=true&bestMatch=true
+POST https://api.openconceptlab.org/concepts/$match/?includeSearchMeta=true&semantic=true&bestMatch=true&limit=1
 ```
 ```json
 {
     "rows":[
-        {"s_n":"1", "name":"malaria"},
-        {"s_n":"2", "name":"blood type"}
+        {"local_id":"1396", "name":"malaria"},
+        {"local_id":"2", "name":"a1c"}
     ],
-    "target_repo_url": "/orgs/MSF/sources/MSF/20250311/",
+    "target_repo_url": "/orgs/CIEL/sources/CIEL/"
+}
+```
+
+#### Response
+```json
+[
+    {
+        "row": {"local_id":"1396", "name":"malaria"},
+        "results": [
+            {
+                "search_meta": {
+                    "search_score": 2.0546277, # required
+                    "match_type": "very_high", # optional
+                    "search_confidence": null, # optional
+                    "search_highlight": {}     # optional
+                },
+                "id": "49051-6",
+                "url": "/orgs/Regenstrief/sources/LOINC/concepts/49051-6/",
+                "retired": false,
+                "source": "LOINC",
+                "owner": "Regenstrief",
+                "owner_type": "Organization",
+                "owner_url": "/orgs/Regenstrief/",
+                "display_name": "Gestational age in weeks",
+                "display_locale": "en"
+            },
+            {
+                "search_meta": {
+                    "search_score": 2.0455465,
+                    "match_type": "very_high",
+                    "search_confidence": null,
+                    "search_highlight": {}
+                },
+                "id": "56081-3",
+                "url": "/orgs/Regenstrief/sources/LOINC/concepts/56081-3/",
+                "retired": false,
+                "source": "LOINC",
+                "owner": "Regenstrief",
+                "owner_type": "Organization",
+                "owner_url": "/orgs/Regenstrief/",
+                "display_name": "Fetal gestational age in weeks --at most recent delivery",
+                "display_locale": "en"
+            }
+        }
+    }
+]
+```
+
+
+### Example Request 2
+
+```json
+{
+    "rows":[
+        {"local_id":"1396", "name":"Mother's HIV Status", "loinc_code": "75179-2"},
+        {"local_id":"2", "name":"Weeks of gestation", "loinc_code": "11884-4"}
+    ],
+    "target_repo_url": "/orgs/Regenstrief/sources/LOINC/2.71.21AA/",
     "map_config": [
-        {"type": "mapping-code", "input_column": "loinc-example", "target_source_url": "/orgs/CIEL/sources/CIEL/"},
-        {"type": "mapping-code", "input_column": "icd10-example", "target_source_url": "/orgs/CIEL/sources/CIEL/"},
-        {"type": "mapping-list", "input_column": "list example", "separator": ":", "delimiter": ",", "target_urls": {
+        {"type": "mapping-code", "input_column": "loinc_code", "target_source_url": "/orgs/CIEL/sources/CIEL/"},
+        {"type": "mapping-list", "input_column": "maps", "separator": ":", "delimiter": ",", "target_urls": {
             "ICD10": "/orgs/WHO/sources/ICD-10-WHO/",
             "CIEL": "/orgs/CIEL/sources/CIEL/",
             "LOINC": "/orgs/Regenstrief/sources/LOINC/"
