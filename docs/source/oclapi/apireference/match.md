@@ -4,6 +4,8 @@
 
 The `$match` endpoint allows you to find similar or matching concepts across different repositories in OCL. While search returns concepts that match a specific search query, `$match` returns concept candidates that match structured input data, such as a row in a spreadsheet. This could be used to retrieve mapping candidates for an entire spreadsheet.
 
+`$match` API must accept POST (GET is not supported).
+
 ### $match Algorithm Fields
 - `id` - Exact match on concept ID in the target repository
 - `name` - Keyword or semantic search on primary display names
@@ -56,6 +58,89 @@ POST /concepts/$match/
 | `map_config.delimiter`         | 0..1      | string               | Delimiter for multiple mappings in `mapping-list`. **Example:** `,`                                                                                                                                                  |
 | `map_config.target_urls`       | 0..1      | map                  | URL map of source mnemonics to repositories. Required for `mapping-list`. **Example:** `{"ICD10": "/orgs/WHO/sources/ICD-10-WHO/", "CIEL": "/orgs/CIEL/sources/CIEL/", "LOINC": "/orgs/Regenstrief/sources/LOINC/"}` |
 
+
+## Response Format
+
+| **Code (Name)**                | **Card.** | **Type**             | **Definition (Description)**   |
+| ------------------------------ | --------- | -------------------- | ------- |
+| _\<base\>_ | 1 | list | A list of response objects |
+| row | 1 | map | The original row submitted, with no alteration |
+| results | 1..* | list | Ordered list of concept candidates |
+| results.url | 1 | string | |
+| results.display_name | 1 | string | |
+| results.id | 1 | string | |
+| results.retired | 0..1 | bool | |
+| results.concept_class | 0..1 | string | |
+| results.datatype | 0..1 |  string | |
+| results.property | 0..* | list |  |
+| results.property.code | 1 | string | The key of the property (e.g. concept_class) |
+| results.property.valueCode | 0..1 | string |  |
+| results.property.valueCoding | 0..1 | ... |  |
+| results.property.valueString | 0..1 | string |  |
+| results.property.valueInteger | 0..1 | int |  |
+| results.property.valueBoolean | 0..1 | bool |  |
+| results.property.valueDateTime | 0..1 | DateTime |  |
+| results.property.valueDecimal | 0..1 | decimal |  |
+| results.extras | 0..1 | map | |
+| results.search_meta.search_score | 1 | decimal | |
+| results.search_meta.search_highlight | 0..1 |  map | |
+| | | | |
+| results.search_meta.match_type | 0..1 | string | |
+| results.source | 0..1 | | |
+| results.owner | 0..1 | | |
+| results.owner_type | 0..1 | | |
+| results.owner_url | 0..1 | | |
+| results.mappings | 0..1 | | |
+| results.names | 0..1 | | |
+
+#### Response
+```json
+[
+    {
+        "row": {"local_id":"1396", "name":"malaria"},
+        "results": [
+            {
+                "search_meta": {
+                    "search_score": 2.0546277,
+                    "match_type": "very_high",
+                    "search_highlight": {}
+                },
+                "id": "49051-6",
+                "url": "/orgs/Regenstrief/sources/LOINC/concepts/49051-6/",
+                "retired": false,
+                "source": "LOINC",
+                "owner": "Regenstrief",
+                "owner_type": "Organization",
+                "owner_url": "/orgs/Regenstrief/",
+                "display_name": "Gestational age in weeks",
+                "display_locale": "en",
+                "property": [
+                  {"code": "concept_class", "valueCode": "Coded"},
+                  {"code": "datatype", "valueCode": "Numeric"},
+                  {"code": "units", "valueString": "parts/microliter"}
+                ]
+            },
+            {
+                "search_meta": {
+                    "search_score": 2.0455465,
+                    "match_type": "very_high",
+                    "search_confidence": null,
+                    "search_highlight": {}
+                },
+                "id": "56081-3",
+                "url": "/orgs/Regenstrief/sources/LOINC/concepts/56081-3/",
+                "retired": false,
+                "source": "LOINC",
+                "owner": "Regenstrief",
+                "owner_type": "Organization",
+                "owner_url": "/orgs/Regenstrief/",
+                "display_name": "Fetal gestational age in weeks --at most recent delivery",
+                "display_locale": "en"
+            }
+        }
+    }
+]
+```
 
 ### Example Request 1: Simple Request
 ```
