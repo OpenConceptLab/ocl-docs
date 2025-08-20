@@ -7,15 +7,21 @@ The `$match` endpoint allows you to find similar or matching concepts across dif
 `$match` API must accept POST (GET is not supported).
 
 ### $match Algorithm Fields
-- `id` - Exact match on concept ID in the target repository
-- `name` - Keyword or semantic search on primary display names
-- `synonyms` - Keyword or semantic search on all synonyms
-- `description` - String search on concept descriptions
-- Properties: String match on defined properties in the target repository
-  - `Property: Class` - String match on `concept_class`
-  - `Property: Datatype` - String match on `datatype`
-- `Mapping: Code` - Matches concepts in the target repo that share a mapping with the input row. For example, the input row and target concept share a mapping to the same LOINC code.
-- `Mapping: List` - Matches concepts in the target repo that share a mapping, where the input is a list of mappings for the row.
+- `id` - Exact match on `concept.id` in the target repository
+- `name` - Keyword or semantic search on concept primary display name
+- `synonyms` - Keyword or semantic search on all concept names and synonyms
+- `description` - String search on all concept descriptions
+- Properties: String match on concept properties
+  - Syntax: `property:<property-name>` where `<property-name>` corresponds with `repo.properties.code`
+  - Note: A property must also be defined as a filter (i.e. `repo.filters`) in order for it to be indexed and searchable
+  - There are two special cases - for historical compatibility, class and datatype are stored as core concept attributes:
+    - `property:class` - String match on `concept.concept_class`
+    - `property:datatype` - String match on `concept.datatype`
+  - Examples:
+    - `property:component` - String match on LOINC's "component" property
+    - `property:units` - String match on a "units" property
+- `mapping:code` - Matches concepts in the target repo that share a mapping with the input row. For example, the input row and target concept share a mapping to the same LOINC code.
+- `mapping:list` - Matches concepts in the target repo that share a mapping, where the input is a list of mappings for the row.
 
 ## Request
 ```
