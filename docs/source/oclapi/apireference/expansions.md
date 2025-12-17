@@ -113,6 +113,23 @@ Adapted from [FHIR’s value set expansion specification](https://www.hl7.org/fh
 | force-system-version   | Upcoming             | Edge Case: Specifies a version to use for a system. This parameter  overrides any specified version in the value set (and any it depends  on). The format is the same as a canonical URL: [system]\|[version] -  e.g. http://loinc.org\|2.56. Note that this has obvious safety issues, in  that it may result in a value set expansion giving a different list of  codes that is both wrong and unsafe, and implementers should only use  this capability reluctantly. It primarily exists to deal with situations  where specifications have fallen into decay as time passes. If the  value is override, the version used SHALL explicitly be represented in  the expansion parameters                                                                                                                                                                                  |
 
 
+## Get all expansions for a collection
+Returns all expansions across all versions of a collection.
+```
+GET /orgs/:org/collections/:collection/expansions/
+GET /users/:user/collections/:collection/expansions/
+GET /user/collections/:collection/expansions/
+```
+
+* Input
+    * `includeSummary` (optional) boolean - default is false; set to true to return summary counts of active concepts and mappings
+    * `verbose` (optional) boolean - default is false; set to true to return full concept details instead of the summary
+
+### Response
+Status: 200 OK
+
+Returns a list of all expansions from all versions of the collection. The response format is the same as "Get a list of expansions for a collection version" below.
+
 ## Get a list of expansions for a collection version
 ```
 GET /orgs/:org/collections/:collection/:collectionVersion/expansions/
