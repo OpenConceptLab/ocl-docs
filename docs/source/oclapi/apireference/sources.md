@@ -117,6 +117,7 @@ GET /user/sources/
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all source versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```
@@ -149,6 +150,7 @@ GET /user/orgs/sources/
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all source versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```
@@ -181,6 +183,7 @@ GET /sources/
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all source versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```

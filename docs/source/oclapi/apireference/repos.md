@@ -30,6 +30,7 @@ GET /user/repos/
     * **canonicalUrl** (optional) string - Filter results by canonical URL
     * **ownerType** (optional) string - "Organization", "User"
     * **repoType** (optional) string - "Source", "Collection"
+    * **allVersions** (optional) boolean - Set to `true` to include all repository versions in results (default behavior only returns HEAD versions)
 
 
 

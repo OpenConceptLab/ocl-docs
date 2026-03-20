@@ -130,6 +130,7 @@ GET /user/collections/
     * **contains** (optional) string - Filter results to collections that contain a referenced to the specified relative URL for a concept version or mapping version, e.g. `/orgs/MOH/sources/HMIS-Indicators/concepts/HIV01-01/5a120687f7dccb0064ee8d2f/`
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all collection versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```
@@ -163,6 +164,7 @@ GET /user/orgs/collections/
     * **locale** (optional) string - Filter results to those with a given locale in their supported_locales, e.g. "en", "fr"
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all collection versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```
@@ -196,6 +198,7 @@ GET /collections/
     * **contains** (optional) string - Filter results to collections that contain a referenced to the specified relative URL for a concept version or mapping version, e.g. `/orgs/MOH/sources/HMIS-Indicators/concepts/HIV01-01/5a120687f7dccb0064ee8d2f/`
     * **customValidationSchema** (optional) string - Filter results to a given validationSchema, e.g. "OpenMRS"
     * **canonicalUrl** (optional) string - Filter results by canonical URL
+    * **allVersions** (optional) boolean - Set to `true` to include all collection versions in results (default behavior only returns HEAD versions)
 
 ### Response
 ```
