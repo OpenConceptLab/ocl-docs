@@ -167,18 +167,27 @@ GET /user/sources/:source/[:sourceVersion/]mappings/
     * Retired mappings are excluded by default
 * Parameters
     * **verbose** (optional) string - default is false; set to true to return full mapping details instead of the summary
-    * **q** (optional) string - ID of the "from" or "to" concept
+    * **q** (optional) string - full-text search across from/to concept codes and names
     * **includeRetired** (optional) string - default is "false"; set to "true" to return retired mappings
     * **mapType** (optional) string - mapType descriptor, such as "Same As", "Parent", "Child", etc.
     * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
+    * **updatedBy** (optional) string - filter by username of the user who last updated the mapping
     * Sources
-        * **conceptSource** (optional) string - comma-separated list of sources for the "from" or "to" source; can be the "code" for the source (e.g. "SNOMED-CT" or "ICPC-2") or the fully specified URL
+        * **conceptSource** (optional) string - comma-separated list of sources for the "from" or "to" source (e.g. "SNOMED-CT" or "ICPC-2")
         * **fromConceptSource** (optional) string - comma-separated list of source IDs for the "from" source (e.g. "SNOMED-CT" or "ICPC-2")
         * **toConceptSource** (optional) string - comma-separated list of source IDs for the "to" source (e.g. "SNOMED-CT" or "ICPC-2")
     * Concepts
-        * **concept** (optional) string - comma-separated list of concept IDs for the "from" or "to" concept (e.g. A57)
+        * **concept** (optional) string - comma-separated list of concept IDs for the "from" or "to" concept (e.g. A57). **Note:** this parameter may not work on repo-scoped endpoints; use ``fromConcept`` and ``toConcept`` instead (see `ocl_issues#2425 <https://github.com/OpenConceptLab/ocl_issues/issues/2425>`_)
         * **fromConcept** (optional) string - comma-separated list of concept IDs for the "from" concept (e.g. A57)
         * **toConcept** (optional) string - comma-separated list of concept IDs for the "to" concept (e.g. A57)
+    * Concept Owners
+        * **fromConceptOwner** (optional) string - filter by the owner of the "from" concept's source
+        * **toConceptOwner** (optional) string - filter by the owner of the "to" concept's source
+        * **fromConceptOwnerType** (optional) string - filter by the owner type of the "from" concept's source (Organization or User)
+        * **toConceptOwnerType** (optional) string - filter by the owner type of the "to" concept's source (Organization or User)
+    * Mapping Owner
+        * **owner** (optional) string - filter by the owner of the source that contains the mapping (distinct from the from/to concept owners)
+        * **ownerType** (optional) string - filter by owner type (Organization or User)
 
 ### Example
 ```
@@ -210,18 +219,27 @@ GET /orgs/Regenstrief/sources/loinc2/mappings/
 GET /mappings/
 ```
 * Parameters
-    * **q** (optional) string - ID of the "from" or "to" concept
+    * **q** (optional) string - full-text search across from/to concept codes and names
     * **includeRetired** (optional) string - default is "false"; set to "true" to return retired mappings
     * **mapType** (optional) string - map type descriptor, such as "Same As", "Parent", "Child", etc.
     * **updatedSince** (optional) string - filter results to those updated after the specified date/time, format: YYYY-MM-DD HH:MM:SS
+    * **updatedBy** (optional) string - filter by username of the user who last updated the mapping
     * Sources
         * **conceptSource** (optional) string - comma-separated list of source IDs for the "from" or "to" source (e.g. "SNOMED-CT" or "ICPC-2")
         * **fromConceptSource** (optional) string - comma-separated list of source IDs for the "from" source (e.g. "SNOMED-CT" or "ICPC-2")
         * **toConceptSource** (optional) string - comma-separated list of source IDs for the "to" source (e.g. "SNOMED-CT" or "ICPC-2")
     * Concepts
-        * **concept** (optional) string - comma-separated list of concept IDs for the "from" or "to" concept (e.g. A57)
+        * **concept** (optional) string - comma-separated list of concept IDs for the "from" or "to" concept (e.g. A57). **Note:** this parameter may not work on repo-scoped endpoints; use ``fromConcept`` and ``toConcept`` instead (see `ocl_issues#2425 <https://github.com/OpenConceptLab/ocl_issues/issues/2425>`_)
         * **fromConcept** (optional) string - comma-separated list of concept IDs for the "from" concept (e.g. A57)
         * **toConcept** (optional) string - comma-separated list of concept IDs for the "to" concept (e.g. A57)
+    * Concept Owners
+        * **fromConceptOwner** (optional) string - filter by the owner of the "from" concept's source
+        * **toConceptOwner** (optional) string - filter by the owner of the "to" concept's source
+        * **fromConceptOwnerType** (optional) string - filter by the owner type of the "from" concept's source (Organization or User)
+        * **toConceptOwnerType** (optional) string - filter by the owner type of the "to" concept's source (Organization or User)
+    * Mapping Owner
+        * **owner** (optional) string - filter by the owner of the source that contains the mapping (distinct from the from/to concept owners)
+        * **ownerType** (optional) string - filter by owner type (Organization or User)
 
 ### Response
 * Status: 200 OK
