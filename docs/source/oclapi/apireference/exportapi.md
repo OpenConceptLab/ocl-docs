@@ -1,9 +1,9 @@
 # Export API
 
 ## Overview
-The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of HEAD request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `303` if the export is ready for download, or `204` if it is still processing. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repost version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export to S3 is a much faster operation.
+The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `200` if the export is ready for download, or `204` if it is still processing. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repository version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export is a much faster operation.
 
-The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `Location` response header is included in a successful `GET` request to redirect a client to the download URL, which is designed to be used only once. Therefore, to ensure that the `Location` URL works correctly, you must make a new export request each time you want to download an export file.
+The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint streams the export file directly as `application/zip`, with the filename provided in the `Content-Disposition` response header.
 
 An export is a compressed zip of the JSON results of issuing a GET for a specific repository version. For example, the JSON results contained in an export are equivalent to the following request:
 ```
@@ -36,8 +36,8 @@ The [[Subscriptions]] documentation describes how the export functionality can b
 
 
 ## Get an export of a repository version
-* Get the export URL for the specified repository version. This has three possible results:
-    * If the export exists, returns a status code of `303 See Other` with the `Location` property in the response header set to the fully specified download URL
+* Download the export for the specified repository version, or check its availability. This has three possible results:
+    * If the export exists, `GET` returns a status code of `200 OK` with the export file streamed directly as `application/zip`, and a `Content-Disposition` header containing the filename. `HEAD` returns `200 OK` with the same headers but no body (useful for checking availability without downloading).
     * If the export file does not exist but the URL is correct, returns `204 No Content`
     * If the export URL is non-existent, returns `404 Not Found`
 ```
@@ -46,31 +46,30 @@ HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
     * `:repoVersion` is required - exports can only be created for repository versions. If `HEAD` version is requested, the API will return `405 Not Allowed`.
-    * The API returns the fully specified URL of the export file in the `Location` attribute of the response header. The `Location` is designed to be used only once -- to ensure that the `Location` works correctly, you must request another `Location` each time you want to download an export file.
-    * This request first performs a check as to whether the export file already exists. If it exists, it then generates an `Location`. These actions are performed on an Amazon Web Server and may take up to 30 seconds to process. The timeout of the client system making the request should set its timeout period accordingly.
+    * The `GET` request streams the export file directly. Use `HEAD` to check availability without downloading.
+    * The `Content-Disposition` response header contains the export filename (e.g. `attachment; filename=CIEL_CIEL_v2026-03-23.2026-03-23_073036.zip`).
 
 ### Example
-* Fetch the export URL for v2016-08-22 of the CIEL source
+* Download the export for v2016-08-22 of the CIEL source
 ```
 GET /orgs/CIEL/sources/CIEL/v2016-08-22/export/
 ```
-* Fetch the export URL for v1.2 of the CIEL Starter Set
+* Check export availability for v1.2 of the CIEL Starter Set
 ```
-GET /orgs/CIEL/collections/StarterSet/v1.2/export/
+HEAD /orgs/CIEL/collections/StarterSet/v1.2/export/
 ```
 
 ### Response
-* If the export file exists, follow the redirect to the `Location` response header:
+* If the export file exists (`GET` returns the file, `HEAD` returns headers only):
 ```
-Status: 303 See Other
+Status: 200 OK
 Response Header:
-Location: https://ocl-source-export-production.s3.amazonaws.com/CIEL/CIEL_55572f688a86f24b48d935be.20150516122820.tgz?Signature=fmBSI6hL9IhN4mu4W5x%2FPFs5uxw%3D&Expires=1431864368&AWSAccessKeyId=...
+Content-Type: application/zip
+Content-Disposition: attachment; filename=CIEL_CIEL_v2016-08-22.20150516122820.zip
 ```
 * If the URL is valid but the export file does not exist:
 ```
 Status: 204 No Content
-Response Header:
-Location:
 ```
 * If the URL is valid but the export file is still being processed:
 ```
@@ -91,7 +90,7 @@ POST /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
     * `:repoVersion` is required. If `HEAD` version is requested, the API will return `405 Not Allowed`.
-    * This request only triggers the creation of the export file and does **NOT** return the `Location`. It is necessary to follow up with a GET request after the file has been processed in order to get the `Location`
+    * This request only triggers the creation of the export file and does **NOT** return the export. It is necessary to follow up with a GET request after the file has been processed in order to download it.
 
 ### Example
 * Create the export file for v2.2 of the CIEL source
@@ -108,9 +107,9 @@ Status: 202 Accepted
 ```
 Status: 409 Conflict
 ```
-* If the export file already exists (This won't return `Location` header, to get `Location` header please use GET request)
+* If the export file already exists (use GET to download it):
 ```
-Status: 303 See Other
+Status: 200 OK
 ```
 * If the request is otherwise invalid - return the appropriate error code
 
