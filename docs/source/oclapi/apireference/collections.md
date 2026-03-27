@@ -1085,6 +1085,140 @@ GET /orgs/MyOrg/collections/MyCollection/mappings/
 
 
 
+## Get collection summary
+* Get a summary of a collection's contents
+```
+GET /user/collections/:collection/summary/
+GET /users/:user/collections/:collection/summary/
+GET /orgs/:org/collections/:collection/summary/
+```
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 100,
+    "active_mappings": 50,
+    "active_references": 25,
+    "versions": 2,
+    "expansions": 1
+}
+```
+
+
+## Get verbose collection summary
+* Get a detailed summary of a collection including distributions of concepts, mappings, versions, and references
+```
+GET /user/collections/:collection/summary/?verbose=true
+GET /users/:user/collections/:collection/summary/?verbose=true
+GET /orgs/:org/collections/:collection/summary/?verbose=true
+```
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "concepts": {
+        "active": 100,
+        "retired": 3,
+        "concept_class": [["Diagnosis", 40], ["Finding", 35], ["Procedure", 25]],
+        "datatype": [["Coded", 60], ["Text", 30], ["Numeric", 10]],
+        "locale": [["en", 100], ["fr", 50]],
+        "name_type": [["FULLY_SPECIFIED", 100], ["SHORT", 40]],
+        "contributors": [["johndoe", 70], ["janedoe", 30]]
+    },
+    "mappings": {
+        "active": 50,
+        "retired": 1,
+        "map_type": [["SAME-AS", 30], ["NARROWER-THAN", 15], ["BROADER-THAN", 5]],
+        "contributors": [["johndoe", 35], ["janedoe", 15]]
+    },
+    "versions": {
+        "total": 2,
+        "released": 1
+    },
+    "references": {
+        "include": 25,
+        "exclude": 0,
+        "concepts": 18,
+        "mappings": 7,
+        "total": 25
+    },
+    "expansions": 1
+}
+```
+
+
+## Get collection summary distribution by field
+* Get the distribution of a specific field or set of fields from a collection summary. Multiple fields can be requested as a comma-separated list.
+```
+GET /orgs/:org/collections/:collection/summary/?verbose=true&distribution=concept_class
+GET /orgs/:org/collections/:collection/summary/?verbose=true&distribution=concept_class,datatype,map_type
+```
+* Parameters
+    * `verbose` (required) string - must be set to "true"
+    * `distribution` (required) string - comma-separated list of fields to retrieve. Supported values: `concept_class`, `datatype`, `name_type`, `name_locale`, `map_type`
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "distribution": {
+        "concept_class": [
+            {"concept_class": "Diagnosis", "count": 40},
+            {"concept_class": "Finding", "count": 35},
+            {"concept_class": "Procedure", "count": 25}
+        ]
+    }
+}
+```
+
+
+## Get collection version summary
+* Get a summary for a specific version of a collection or the latest released version
+```
+GET /user/collections/:collection/:version/summary/
+GET /users/:user/collections/:collection/:version/summary/
+GET /orgs/:org/collections/:collection/:version/summary/
+GET /orgs/:org/collections/:collection/latest/summary/
+```
+* Notes
+    * The `latest` keyword returns the summary for the most recently created released version
+    * Supports the same `verbose` and `distribution` query parameters as the collection summary
+    * Version summaries do not include the `versions` field
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "v1.0",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 100,
+    "active_mappings": 50,
+    "active_references": 25,
+    "expansions": 1
+}
+```
+
+
+## Recalculate collection summary counts
+* Trigger a recalculation of a collection's concept and mapping counts. Requires edit access to the collection.
+```
+PUT /user/collections/:collection/summary/
+PUT /users/:user/collections/:collection/summary/
+PUT /orgs/:org/collections/:collection/summary/
+```
+
+### Response
+* Status: 202 Accepted
+
+
 ## Search and Filter Behavior
 * Text Search (e.g. `q=criteria`) - NOTE: Plus-sign (+) indicates relative relevancy weight of the term
     * collection.short_code (++++), collection.name (++++), collection.full_name (+++), collection.description (+)
