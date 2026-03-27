@@ -12,6 +12,14 @@ The `$match` endpoint allows you to find similar or matching concepts across dif
 - The user must be **mapper-approved** and not on the mapper waitlist. Returns `403 Forbidden` otherwise.
 - Plan-based throttling is applied per user.
 
+### Row Indexing
+
+For every request, the API automatically adds a zero-based `__index` field to each `row` in the response. This acts as a local identifier to correlate each response item with the corresponding input item. The `__index` is always returned and starts at 0.
+
+### Batching & Concurrency
+
+The API processes rows in batches. The client interface allows you to set the batch size, which is useful for APIs with longer computation times—using a lower batch size helps avoid timeouts. By default, the UI sends two concurrent batch requests at a time. For example, with 1000 rows and a batch size of 50, two batches (each with 50 rows) are sent concurrently; as soon as one finishes, the next batch is sent, maintaining exactly two in-flight requests.
+
 ### $match Algorithm Fields
 - `id` - Exact match on `concept.id` in the target repository
 - `name` - Keyword or semantic search on concept primary display name
@@ -81,7 +89,7 @@ POST /concepts/$match/
 | **Code (Name)**                | **Card.** | **Type**             | **Definition (Description)**   |
 | ------------------------------ | --------- | -------------------- | ------- |
 | _\<base\>_ | 1 | list | A list of response objects, one per input row |
-| row | 1 | map | The original row submitted, with no alteration |
+| row | 1 | map | The original row submitted, plus an auto-added zero-based `__index` local identifier |
 | results | 1..* | list | Ordered list of concept candidates, sorted by score |
 | results.url | 1 | string | Concept URL |
 | results.display_name | 1 | string | Primary display name |
