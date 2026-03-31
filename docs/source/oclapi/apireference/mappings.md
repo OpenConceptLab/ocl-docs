@@ -7,18 +7,21 @@ Editing of mappings is supported, but edits that substantively change the meanin
 
 `mappings` are owned by `sources`, not by their `from_concept`. Modifications to mappings do not directly effect the concepts to which they are linked. Like `concepts`, `mappings` will be saved as part of source versions. Mappings may point to concepts from any source, meaning that neither the "from" or "to" concept needs to be in the source that owns the mapping. This allows sources to be used as containers of a set of mappings.
 
-A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs or Relative URLs. 
-1. **Canonical URL** - this is the preferred way of defining mappings that maintain meaning within and outside of OCL; note that repository version, if needed, must be specified in a separate field and cannot use the "pipe" syntax (e.g. this syntax is not supported for mappings: "http://hl7.org/fhir/CodeSystem/my-codeystem|0.8")
-2. **Relative URL: Inline** - A single relative URL specified both source and concept, and, optionally, repository version
-3. **Relative URL: Expanded** - Source, concept, and, optionally, repository version, are specified in separate fields
+A mapping's `from_concept` and `to_concept` may be defined using Canonical URLs or Relative URLs. The same approaches apply symmetrically for both `from_*` and `to_*` fields.
+
+1. **Canonical URL** (preferred) - Uses the HL7 FHIR canonical URL of a source (e.g. `https://CIELterminology.org`) to identify the code system. This is the preferred approach because canonical URLs maintain meaning both within and outside of OCL. Note that repository version, if needed, must be specified in a separate field — the "pipe" syntax (e.g. `http://hl7.org/fhir/CodeSystem/my-codesystem|0.8`) is not supported for mappings.
+2. **Relative URL: Inline** - A single relative URL specifies both source and concept, and, optionally, repository version.
+3. **Relative URL: Expanded** - Source, concept, and, optionally, repository version, are specified in separate fields.
+
+The table below shows how the `from_*` fields are used in each approach. The `to_*` fields work identically (replace `from_` with `to_`).
 
 | Field                 | Canonical URL                    | Relative URL: Inline                     | Relative URL: Expanded |
 | --------------        | -----                            | -----                                    | -----                  |
-| `from_source_url`     | "https://CIELterminology.org"    | _(n/a)_                                    | "/orgs/CIEL/sources/CIEL/" |
-| `from_source_version` | _(optional)_                       | _(optional- can embed in `from_concept_url`)_ | _(optional- can embed in `from_source_url`)_ |
-| `from_concept_code`   | "161426"                         | _(n/a)_                                    | "161426"                 |
-| `from_concept_name`   | _(optional)_ "Malarial parasites by smear test" | _(optional)_                    | _(optional)_             |
-| `from_concept_url`    | _(n/a)_                            | "/orgs/CIEL/sources/CIEL/concepts/161426/" | _(n/a)_                  |
+| `from_source_url`     | `"https://CIELterminology.org"` (canonical URL) | _(n/a)_                       | `"/orgs/CIEL/sources/CIEL/"` (relative URL) |
+| `from_source_version` | _(optional)_                       | _(optional — can embed in `from_concept_url`)_ | _(optional — can embed in `from_source_url`)_ |
+| `from_concept_code`   | `"161426"`                       | _(n/a)_                                    | `"161426"`               |
+| `from_concept_name`   | _(optional)_ `"Malarial parasites by smear test"` | _(optional)_                  | _(optional)_             |
+| `from_concept_url`    | _(n/a)_                            | `"/orgs/CIEL/sources/CIEL/concepts/161426/"` | _(n/a)_                  |
 
 ### Versioning of mappings
 All changes to mappings are tracked and can be accessed via a mapping's history. The latest version of a concept is retrieved if no version identifier (for the repository or mapping) is specified. If a repository version identifier is specified, then the version of the concept at the time the repository version was created is used. Altenratively, specific versions of mappigns may be retrieved directly, though this is designed as an administrative function and not intended for external use.
@@ -28,21 +31,11 @@ OCL does not create a new version of a mapping in the HEAD of a repo if the subm
 
 ### Other notes and attributes of mappings
 * Mapping IDs (both the OCL ID and External ID) can be automatically generated upon resource creation using the auto-id assignment scheme outlined in the [Create Source page](https://docs.openconceptlab.org/en/latest/oclapi/apireference/sources.html#create-source)
-* Mappings can be given a sort weight using the numeric `sort_weight` attribute, which is used in OCL's TermBrowser application to visually sort mapped concepts within a particular map type. A sort weight can be applied using OCL's Bulk Import, API, or TermBrowser's Edit Mapping form or in the Associations section of a concept.    
-
-
-
-### Changes Needed to this Documentation:
-- Add to the Overview:
-  - Support canonical URLs
-  - How to interact with OCL mappings via the OCL FHIR Core (and vice versa)
-- Confirm whether repo version can be specified separately or inline for each of the 3 approaches
-- Update all examples to use canonical URLs
-- Update response examples with all of the new fields
-- Add OpenMRS specific examples
+* Mappings can be given a sort weight using the numeric `sort_weight` attribute, which is used in OCL's TermBrowser application to visually sort mapped concepts within a particular map type. A sort weight can be applied using OCL's Bulk Import, API, or TermBrowser's Edit Mapping form or in the Associations section of a concept.
 
 ### Future work
-- Implement support for `context` (as specified in FHIR)
+* Implement support for `context` (as specified in FHIR)
+* How to interact with OCL mappings via the OCL FHIR Core (and vice versa)
 
 ## Get a single mapping
 * Get a single mapping
@@ -63,41 +56,63 @@ GET /orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd
 {
     "type": "Mapping",
     "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "id": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
     "external_id": "a9d93ffjjen9dnfekd9",
-    "retired": "false",
-
+    "retired": false,
     "map_type": "Same As",
 
     "from_source_owner": "Regenstrief",
     "from_source_owner_type": "Organization",
     "from_source_name": "loinc2",
+    "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
+    "from_source_version": null,
     "from_concept_code": "32700-7",
     "from_concept_name": "Malarial Smear",
-    "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
     "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+    "from_concept_name_resolved": "Malarial Smear",
 
     "to_source_owner": "WHO",
     "to_source_owner_type": "Organization",
     "to_source_name": "ICPC-2",
+    "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+    "to_source_version": null,
     "to_concept_code": "A73",
     "to_concept_name": "Malaria",
-    "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+    "to_concept_url": null,
+    "to_concept_name_resolved": null,
 
     "source": "loinc2",
     "owner": "Regenstrief",
     "owner_type": "Organization",
-    "owner_url": "/orgs/Regenstrief/",
 
     "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
+    "version": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "version_url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/12345/",
+    "versioned_object_id": 12345,
+    "versioned_object_url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
+    "is_latest_version": true,
+    "update_comment": null,
+    "sort_weight": null,
 
     "extras": {},
+    "checksums": {
+        "smart": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+        "standard": "f6e5d4c3b2a1f6e5d4c3b2a1f6e5d4c3"
+    },
 
+    "version_created_on": "2008-01-14T04:33:35Z",
+    "version_updated_on": "2008-02-18T09:10:16Z",
+    "version_updated_by": "johndoe",
     "created_on": "2008-01-14T04:33:35Z",
     "created_by": "johndoe",
     "updated_on": "2008-02-18T09:10:16Z",
-    "updated_by": "johndoe"
+    "updated_by": "johndoe",
+    "public_can_view": true,
+    "latest_source_version": "v2023-09-11"
 }
 ```
+
+Note: When a mapping uses canonical URLs (e.g. `from_source_url` is `"https://CIELterminology.org"` instead of a relative URL), the response will show the canonical URL in `from_source_url` / `to_source_url`. If the canonical URL resolves to a source in OCL, the `from_source_owner`, `from_source_name`, and related fields will be populated; otherwise, they may be `null`.
 
 
 
@@ -120,39 +135,78 @@ GET /orgs/:org/sources/:source/[:sourceVersion/]concepts/:concept/mappings/
 ```JSON
 [
     {
+        "type": "Mapping",
+        "id": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
         "map_type": "Same As",
-        "retired": "false",
+        "retired": false,
         "source": "loinc2",
         "owner": "Regenstrief",
         "owner_type": "Organization",
+        "from_concept_code": "32700-7",
+        "from_concept_name": null,
         "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
-        "to_concept_url": "/orgs/WHO/sources/ICPC-2/concepts/A73/",
-        "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
-    },
-    {
-        "map_type": "Narrower Than",
-        "retired": "false",
-        "source": "loinc2",
-        "owner": "Regenstrief",
-        "owner_type": "Organization",
-        "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
+        "from_source_name": "loinc2",
+        "from_source_version": null,
         "to_concept_code": "A73",
         "to_concept_name": "Malaria",
-        "to_source_code": "ICPC-2",
-        "url": "/orgs/Regenstrief/sources/loinc2/def3fe-c2cc-11de-8d13-asdf9393930/",
+        "to_concept_url": "/orgs/WHO/sources/ICPC-2/concepts/A73/",
+        "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+        "to_source_name": "ICPC-2",
+        "to_source_version": null,
+        "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
+        "sort_weight": null
     },
     {
-        "map_type": "Same As",
-        "retired": "false",
+        "type": "Mapping",
+        "id": "def3fe-c2cc-11de-8d13-asdf9393930",
+        "map_type": "Narrower Than",
+        "retired": false,
         "source": "loinc2",
         "owner": "Regenstrief",
         "owner_type": "Organization",
-        "to_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "from_concept_code": "32700-7",
+        "from_concept_name": null,
+        "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
+        "from_source_name": "loinc2",
+        "from_source_version": null,
+        "to_concept_code": "A73",
+        "to_concept_name": "Malaria",
+        "to_concept_url": null,
+        "to_source_url": "https://who.int/classifications/icpc-2",
+        "to_source_name": null,
+        "to_source_version": null,
+        "url": "/orgs/Regenstrief/sources/loinc2/mappings/def3fe-c2cc-11de-8d13-asdf9393930/",
+        "sort_weight": null
+    },
+    {
+        "type": "Mapping",
+        "id": "8d492ee0-c2cc-11de-8d13-0010c6dffdea",
+        "map_type": "Same As",
+        "retired": false,
+        "source": "loinc2",
+        "owner": "Regenstrief",
+        "owner_type": "Organization",
+        "from_concept_code": "A73",
+        "from_concept_name": null,
         "from_concept_url": "/orgs/WHO/sources/ICPC-2/concepts/A73/",
+        "from_source_url": "/orgs/WHO/sources/ICPC-2/",
+        "from_source_name": "ICPC-2",
+        "from_source_version": null,
+        "to_concept_code": "32700-7",
+        "to_concept_name": null,
+        "to_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "to_source_url": "/orgs/Regenstrief/sources/loinc2/",
+        "to_source_name": "loinc2",
+        "to_source_version": null,
         "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffdea/",
+        "sort_weight": null
     }
 ]
 ```
+
+Note: The second mapping above demonstrates the use of a canonical URL (`"https://who.int/classifications/icpc-2"`) in `to_source_url`. When a canonical URL is used for an external source not in OCL, `to_concept_url` and `to_source_name` will be `null`.
 
 
 
@@ -199,14 +253,27 @@ GET /orgs/Regenstrief/sources/loinc2/mappings/
 ```JSON
 [
     {
+        "type": "Mapping",
+        "id": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
         "map_type": "Same As",
-        "retired": "false",
+        "retired": false,
         "source": "loinc2",
         "owner": "Regenstrief",
         "owner_type": "Organization",
+        "from_concept_code": "32700-7",
+        "from_concept_name": null,
         "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
+        "from_source_name": "loinc2",
+        "from_source_version": null,
+        "to_concept_code": "A73",
+        "to_concept_name": "Malaria",
         "to_concept_url": "/orgs/WHO/sources/ICPC-2/concepts/A73/",
+        "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+        "to_source_name": "ICPC-2",
+        "to_source_version": null,
         "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
+        "sort_weight": null
     }
 ]
 ```
@@ -246,14 +313,27 @@ GET /mappings/
 ```JSON
 [
     {
+        "type": "Mapping",
+        "id": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
         "map_type": "Same As",
-        "retired": "false",
+        "retired": false,
         "source": "loinc2",
         "owner": "Regenstrief",
         "owner_type": "Organization",
+        "from_concept_code": "32700-7",
+        "from_concept_name": null,
         "from_concept_url": "/orgs/Regenstrief/sources/loinc2/concepts/32700-7/",
+        "from_source_url": "/orgs/Regenstrief/sources/loinc2/",
+        "from_source_name": "loinc2",
+        "from_source_version": null,
+        "to_concept_code": "A73",
+        "to_concept_name": "Malaria",
         "to_concept_url": "/orgs/WHO/sources/ICPC-2/concepts/A73/",
+        "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+        "to_source_name": "ICPC-2",
+        "to_source_version": null,
         "url": "/orgs/Regenstrief/sources/loinc2/mappings/8d492ee0-c2cc-11de-8d13-0010c6dffd0f/",
+        "sort_weight": null
     }
 ]
 ```
@@ -357,13 +437,22 @@ PUT /orgs/:org/sources/:source/mappings/:mapping/
 
 
 ### Examples
-* External Mapping: `to_concept` is not stored in OCL
+* Edit a mapping to update the `to_concept` using a canonical URL:
 ```JSON
 {
     "map_type": "Narrower Than",
-    "to_source_code": "ICPC-2",
+    "to_source_url": "https://who.int/classifications/icpc-2",
     "to_concept_code": "A73",
-    "to_concept_name": "Malaria",
+    "to_concept_name": "Malaria"
+}
+```
+* Edit using a relative URL:
+```JSON
+{
+    "map_type": "Narrower Than",
+    "to_source_url": "/orgs/WHO/sources/ICPC-2/",
+    "to_concept_code": "A73",
+    "to_concept_name": "Malaria"
 }
 ```
 
