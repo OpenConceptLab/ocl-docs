@@ -27,11 +27,19 @@ The API exposes a global `$resolveReference` operation to resolve one or more re
 * Else if relative URL provided:
   * Return the repository directly using the relative URL, or return 404 if not found
 
-### Add to this doc
-- Updates to allow $resolveReference to be used internally to resolve mappings
-- Permissions
-- Status codes for found/not found
-- Examples: request/response for a single reference (the example below is for a batch); response for a batch request where some references resolved and others did not
+### Internal usage
+The `$resolveReference` operation is used internally by OCL to resolve all collection references and mapping references. When a collection reference specifies a `system` (source) or `valueset` (collection), `$resolveReference` is invoked to locate the corresponding repository version. This means the resolution logic described above applies consistently whether a user calls the operation directly or OCL evaluates it internally during collection expansion.
+
+For the full end-to-end evaluation pipeline for collection references, see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
+
+### Permissions
+- The `$resolveReference` operation respects standard OCL access controls. A reference can only be resolved to repositories that the requesting user (or the reference creator, for internal usage) has permission to view.
+- If the user does not have access to a resolved repository, the reference is treated as unresolved.
+
+### Status codes
+- `200 OK` — The request was processed successfully. Check the `resolved` field in each result to determine whether individual references were resolved.
+- `400 Bad Request` — The request body is malformed.
+- `401 Unauthorized` — Authentication is required.
 
 ### Future Considerations
 - Optional URL parameter that returns the full list of repositories that OCL could resolve a URL to across all namespaces that a requesting user has access to?
@@ -113,7 +121,7 @@ A non-exhaustive list of examples for the "inline" and "expanded" reference synt
 * If `resourceType=Concept`:
   * **code** (optional) - A concept code to include in a collection. Note that the code field cannot be used in combination with the filter field.
   * **display** (optional) - A display name that overrides a concept’s default display_name within the expansion. If this field is used, then the concept’s display_locale is always None (or an empty string). The “display” field may only be used when the “code” field is used.
-  * **cascade** (optional) - TBD
+  * **cascade** (optional) - Cascade configuration for graph traversal from the resolved concept(s). Can be a simple string (`"sourcemappings"` or `"sourcetoconcepts"`) or a JSON object with extended parameters. Cascade requires either `code` or `filter` to be specified. See [Cascade](collectionReferenceEvaluation.md#cascade) for the full parameter reference.
 * If `resourceType=Mapping`:
   * **id** (optional) - A mapping id to include in a collection. Note that the id field cannot be used in combination with the filter field.
 
@@ -125,6 +133,22 @@ A non-exhaustive list of examples for the "inline" and "expanded" reference synt
 ```
 POST https://api.qa.openconceptlab.org/$resolveReference/
 “/orgs/CIEL/sources/CIEL/concepts/1948/”
+```
+* Response for a single reference:
+```json
+{
+    “reference_type”: “relative”,
+    “timestamp”: “2024-01-15T10:30:00.000000”,
+    “resolved”: true,
+    “request”: “/orgs/CIEL/sources/CIEL/concepts/1948/”,
+    “resolution_url”: “/orgs/CIEL/sources/CIEL/”,
+    “url_registry_entry”: null,
+    “result”: {
+        “type”: “Source Version”,
+        “short_code”: “CIEL”,
+        “url”: “/orgs/CIEL/sources/CIEL/HEAD/”
+    }
+}
 ```
 * Resolve multiple references in one request – embed each request in an ordered list:
 ```

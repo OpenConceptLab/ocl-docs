@@ -14,6 +14,9 @@ In OCL, a collection is used to represent a FHIR ValueSet. "Dynamic" and "static
 ### References Syntax
 The full references syntax that is supported for references is specified in the :doc:`$resolveReference operation documentation</oclapi/apireference/resolveReference>`
 
+### Reference Evaluation Logic
+For a detailed explanation of how collection references are evaluated — including the evaluation pipeline, cascade parameters, transforms, include/exclude processing, and expansion version tracking — see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
+
 ### Implementation Considerations
 * Collections may contain concepts that share the same code, which means that to ensure unique identification of a concept, the owner and source must also be included. Ideally, the API can support use of only the concept ID if the ID is unique within the collection, and it would always support the fully specified form. Here are examples of using the fully specified owner, repository and ID to reference a concept within a collection:
         * `/orgs/CIEL/collections/DiabetesStarterSet/concepts/CIEL:CIEL:1234/`
@@ -599,11 +602,12 @@ PUT /user/collections/:collection/references/
     * **search_term** (optional) - Used with `uri` to filter concepts/ mappings to add by search term
 * Query Parameters
     * **async** (optional) - set to `true` to process the request asynchronously; 
-    * **cascade** (optional) (default=none) string - It takes `none`, `sourcemappings`, or `sourcetoconcepts` as a value
+    * **cascade** (optional) (default=none) - Controls whether related mappings and concepts are automatically included. Accepts a string or a JSON object:
       * `none` (default): Do not cascade to any mappings or concepts
-      * `sourecemappings`: Cascade to mappings in the same source, where the concept currently being processed is the `from-concept` of the mapping
-      * `sourcetoconcepts`: Cascade to mappings and target concepts in the same source, where the concept currently being processed is the `from-concept` of the mapping
-      * Note: Full documentation on cascade parameters can be found here: https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html
+      * `sourcemappings`: Cascade to mappings in the same source where the concept is the from-concept
+      * `sourcetoconcepts`: Cascade to mappings AND their target concepts in the same source
+      * JSON object: For extended cascade control with parameters like `cascade_levels`, `map_types`, `reverse`, `cascade_hierarchy`, etc. See [Cascade parameters](collectionReferenceEvaluation.md#cascade) for the full reference.
+      * Note: Additional cascade documentation: https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html
 
 ### Example
 * `PUT /orgs/KenyaMOH/collections/KenyaEMR/references/?cascade=sourcemappings`
@@ -1237,43 +1241,24 @@ PUT /orgs/:org/collections/:collection/summary/
 
 
 
-## Older material - keeping here to integrate into the updated documentation
+## Expression Examples
 
-* Expressions have been split into Phase 1 and Future Phases, where phase 1 includes expressions that result in either individual concepts and mappings or static lists of concepts and mappings (such as a source or collection version). Expressions follow the REST API syntax.
-* Phase 1 support for expressions:
-    * Expressions to add individual concepts:
-        * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
-        * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
-    * Expressions to add individual mappings:
-        * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
-        * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
-* Possible support for expressions in Future Phases:
-    * Expressions to add individual concepts:
-        * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
-    * Expressions to add individual mappings:
-        * Mapping from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/mappings/:mapping/`
-    * Expressions to add concepts from a source or collection version:
-        * All concepts from specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
-    * Expressions to add mappings from a source or collection version:
-        * All concepts from specific mapping version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-    * Expressions to add all mappings for a concept:
-        * All direct mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/`
-        * All direct and inverse mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/?includeInverseMappings=true`
-    * Parameters or filters may be included to filter the results. For example:
-        * All public concepts matching search criteria: `/concepts/?q=malaria`
-        * All concepts from a single source matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?class=Drug`
-    * Expressions to add concepts based on relationships
-        * E.g. All concepts that are descendants of a concept
-    * Expressions to add concepts from the top-level search endpoints
-        * All public concepts that meet specific criteria: `/concepts/?q=:criteria`
-        * All public direct mappings for a concept: `/mappings/?fromConcept=:concept`
-    * Expressions to add all resources from a source or collection with a single expression:
-        * All concepts and mappings from a source: `/orgs/:org/sources/:source/[:sourceVersion/]`
-        * All concepts and mappings from a collection: `/orgs/:org/collections/:collection/[:collectionVersion/]`
-    * Expressions to add concepts and mappings from the `HEAD` of a source or collection
-        * All concepts from head of source: `/orgs/:org/sources/:source/concepts/`
-        * All concepts from head of collection: `/orgs/:org/collections/:collection/concepts/`
-        * All mappings from head of source: `/orgs/:org/collections/:collection/mappings/`
-        * All mappings from head of collection: `/orgs/:org/collections/:collection/mappings/`
+OCL supports a wide range of reference expressions. For the full syntax, see [$resolveReference](resolveReference.md). For the evaluation pipeline, see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
+
+* **Individual concepts:**
+    * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
+    * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
+    * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
+* **Individual mappings:**
+    * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
+    * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
+* **Bulk expressions:**
+    * All concepts from a source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
+    * All concepts from a collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
+    * All concepts from HEAD of a source: `/orgs/:org/sources/:source/concepts/`
+* **Filtered expressions:**
+    * All concepts matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?q=malaria`
+    * All concepts of a specific class: `/orgs/CIEL/sources/CIEL/concepts/?conceptClass=Drug`
+* **Cascade expressions:**
+    * All direct mappings for a concept: `/orgs/:org/sources/:source/concepts/:concept/` with `cascade=sourcemappings`
+    * Full closure (mappings + target concepts): `/orgs/:org/sources/:source/concepts/:concept/` with `cascade=sourcetoconcepts`
