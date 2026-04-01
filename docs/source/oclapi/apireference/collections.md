@@ -14,6 +14,9 @@ In OCL, a collection is used to represent a FHIR ValueSet. "Dynamic" and "static
 ### References Syntax
 The full references syntax that is supported for references is specified in the :doc:`$resolveReference operation documentation</oclapi/apireference/resolveReference>`
 
+### Reference Evaluation Logic
+For a detailed explanation of how collection references are evaluated — including the evaluation pipeline, cascade parameters, transforms, include/exclude processing, and expansion version tracking — see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
+
 ### Implementation Considerations
 * Collections may contain concepts that share the same code, which means that to ensure unique identification of a concept, the owner and source must also be included. Ideally, the API can support use of only the concept ID if the ID is unique within the collection, and it would always support the fully specified form. Here are examples of using the fully specified owner, repository and ID to reference a concept within a collection:
         * `/orgs/CIEL/collections/DiabetesStarterSet/concepts/CIEL:CIEL:1234/`
@@ -599,11 +602,12 @@ PUT /user/collections/:collection/references/
     * **search_term** (optional) - Used with `uri` to filter concepts/ mappings to add by search term
 * Query Parameters
     * **async** (optional) - set to `true` to process the request asynchronously; 
-    * **cascade** (optional) (default=none) string - It takes `none`, `sourcemappings`, or `sourcetoconcepts` as a value
+    * **cascade** (optional) (default=none) - Controls whether related mappings and concepts are automatically included. Accepts a string or a JSON object:
       * `none` (default): Do not cascade to any mappings or concepts
-      * `sourecemappings`: Cascade to mappings in the same source, where the concept currently being processed is the `from-concept` of the mapping
-      * `sourcetoconcepts`: Cascade to mappings and target concepts in the same source, where the concept currently being processed is the `from-concept` of the mapping
-      * Note: Full documentation on cascade parameters can be found here: https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html
+      * `sourcemappings`: Cascade to mappings in the same source where the concept is the from-concept
+      * `sourcetoconcepts`: Cascade to mappings AND their target concepts in the same source
+      * JSON object: For extended cascade control with parameters like `cascade_levels`, `map_types`, `reverse`, `cascade_hierarchy`, etc. See [Cascade parameters](collectionReferenceEvaluation.md#cascade) for the full reference.
+      * Note: Additional cascade documentation: https://docs.openconceptlab.org/en/latest/oclapi/apireference/cascade.html
 
 ### Example
 * `PUT /orgs/KenyaMOH/collections/KenyaEMR/references/?cascade=sourcemappings`
@@ -1085,6 +1089,140 @@ GET /orgs/MyOrg/collections/MyCollection/mappings/
 
 
 
+## Get collection summary
+* Get a summary of a collection's contents
+```
+GET /user/collections/:collection/summary/
+GET /users/:user/collections/:collection/summary/
+GET /orgs/:org/collections/:collection/summary/
+```
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 100,
+    "active_mappings": 50,
+    "active_references": 25,
+    "versions": 2,
+    "expansions": 1
+}
+```
+
+
+## Get verbose collection summary
+* Get a detailed summary of a collection including distributions of concepts, mappings, versions, and references
+```
+GET /user/collections/:collection/summary/?verbose=true
+GET /users/:user/collections/:collection/summary/?verbose=true
+GET /orgs/:org/collections/:collection/summary/?verbose=true
+```
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "concepts": {
+        "active": 100,
+        "retired": 3,
+        "concept_class": [["Diagnosis", 40], ["Finding", 35], ["Procedure", 25]],
+        "datatype": [["Coded", 60], ["Text", 30], ["Numeric", 10]],
+        "locale": [["en", 100], ["fr", 50]],
+        "name_type": [["FULLY_SPECIFIED", 100], ["SHORT", 40]],
+        "contributors": [["johndoe", 70], ["janedoe", 30]]
+    },
+    "mappings": {
+        "active": 50,
+        "retired": 1,
+        "map_type": [["SAME-AS", 30], ["NARROWER-THAN", 15], ["BROADER-THAN", 5]],
+        "contributors": [["johndoe", 35], ["janedoe", 15]]
+    },
+    "versions": {
+        "total": 2,
+        "released": 1
+    },
+    "references": {
+        "include": 25,
+        "exclude": 0,
+        "concepts": 18,
+        "mappings": 7,
+        "total": 25
+    },
+    "expansions": 1
+}
+```
+
+
+## Get collection summary distribution by field
+* Get the distribution of a specific field or set of fields from a collection summary. Multiple fields can be requested as a comma-separated list.
+```
+GET /orgs/:org/collections/:collection/summary/?verbose=true&distribution=concept_class
+GET /orgs/:org/collections/:collection/summary/?verbose=true&distribution=concept_class,datatype,map_type
+```
+* Parameters
+    * `verbose` (required) string - must be set to "true"
+    * `distribution` (required) string - comma-separated list of fields to retrieve. Supported values: `concept_class`, `datatype`, `name_type`, `name_locale`, `map_type`
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MyCollection",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "distribution": {
+        "concept_class": [
+            {"concept_class": "Diagnosis", "count": 40},
+            {"concept_class": "Finding", "count": 35},
+            {"concept_class": "Procedure", "count": 25}
+        ]
+    }
+}
+```
+
+
+## Get collection version summary
+* Get a summary for a specific version of a collection or the latest released version
+```
+GET /user/collections/:collection/:version/summary/
+GET /users/:user/collections/:collection/:version/summary/
+GET /orgs/:org/collections/:collection/:version/summary/
+GET /orgs/:org/collections/:collection/latest/summary/
+```
+* Notes
+    * The `latest` keyword returns the summary for the most recently created released version
+    * Supports the same `verbose` and `distribution` query parameters as the collection summary
+    * Version summaries do not include the `versions` field
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "v1.0",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 100,
+    "active_mappings": 50,
+    "active_references": 25,
+    "expansions": 1
+}
+```
+
+
+## Recalculate collection summary counts
+* Trigger a recalculation of a collection's concept and mapping counts. Requires edit access to the collection.
+```
+PUT /user/collections/:collection/summary/
+PUT /users/:user/collections/:collection/summary/
+PUT /orgs/:org/collections/:collection/summary/
+```
+
+### Response
+* Status: 202 Accepted
+
+
 ## Search and Filter Behavior
 * Text Search (e.g. `q=criteria`) - NOTE: Plus-sign (+) indicates relative relevancy weight of the term
     * collection.short_code (++++), collection.name (++++), collection.full_name (+++), collection.description (+)
@@ -1103,43 +1241,24 @@ GET /orgs/MyOrg/collections/MyCollection/mappings/
 
 
 
-## Older material - keeping here to integrate into the updated documentation
+## Expression Examples
 
-* Expressions have been split into Phase 1 and Future Phases, where phase 1 includes expressions that result in either individual concepts and mappings or static lists of concepts and mappings (such as a source or collection version). Expressions follow the REST API syntax.
-* Phase 1 support for expressions:
-    * Expressions to add individual concepts:
-        * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
-        * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
-    * Expressions to add individual mappings:
-        * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
-        * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
-* Possible support for expressions in Future Phases:
-    * Expressions to add individual concepts:
-        * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
-    * Expressions to add individual mappings:
-        * Mapping from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/mappings/:mapping/`
-    * Expressions to add concepts from a source or collection version:
-        * All concepts from specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
-    * Expressions to add mappings from a source or collection version:
-        * All concepts from specific mapping version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-        * All concepts from specific collection version: `/orgs/:org/collections/:collection/:collectionVersion/mappings/`
-    * Expressions to add all mappings for a concept:
-        * All direct mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/`
-        * All direct and inverse mappings for a concept owned by the same source as the concept: `/orgs/:org/sources/:source/concepts/:concept/mappings/?includeInverseMappings=true`
-    * Parameters or filters may be included to filter the results. For example:
-        * All public concepts matching search criteria: `/concepts/?q=malaria`
-        * All concepts from a single source matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?class=Drug`
-    * Expressions to add concepts based on relationships
-        * E.g. All concepts that are descendants of a concept
-    * Expressions to add concepts from the top-level search endpoints
-        * All public concepts that meet specific criteria: `/concepts/?q=:criteria`
-        * All public direct mappings for a concept: `/mappings/?fromConcept=:concept`
-    * Expressions to add all resources from a source or collection with a single expression:
-        * All concepts and mappings from a source: `/orgs/:org/sources/:source/[:sourceVersion/]`
-        * All concepts and mappings from a collection: `/orgs/:org/collections/:collection/[:collectionVersion/]`
-    * Expressions to add concepts and mappings from the `HEAD` of a source or collection
-        * All concepts from head of source: `/orgs/:org/sources/:source/concepts/`
-        * All concepts from head of collection: `/orgs/:org/collections/:collection/concepts/`
-        * All mappings from head of source: `/orgs/:org/collections/:collection/mappings/`
-        * All mappings from head of collection: `/orgs/:org/collections/:collection/mappings/`
+OCL supports a wide range of reference expressions. For the full syntax, see [$resolveReference](resolveReference.md). For the evaluation pipeline, see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
+
+* **Individual concepts:**
+    * Latest version of a concept: `/orgs/:org/sources/:source/concepts/:concept/`
+    * Specific concept version: `/orgs/:org/sources/:source/concepts/:concept/:conceptVersion/`
+    * Concept from a specific source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/:concept/`
+* **Individual mappings:**
+    * Latest version of a mapping: `/orgs/:org/sources/:source/mappings/:mapping/`
+    * Specific mapping version: `/orgs/:org/sources/:source/mappings/:mapping/:mappingVersion/`
+* **Bulk expressions:**
+    * All concepts from a source version: `/orgs/:org/sources/:source/:sourceVersion/concepts/`
+    * All concepts from a collection version: `/orgs/:org/collections/:collection/:collectionVersion/concepts/`
+    * All concepts from HEAD of a source: `/orgs/:org/sources/:source/concepts/`
+* **Filtered expressions:**
+    * All concepts matching search criteria: `/orgs/CIEL/sources/CIEL/concepts/?q=malaria`
+    * All concepts of a specific class: `/orgs/CIEL/sources/CIEL/concepts/?conceptClass=Drug`
+* **Cascade expressions:**
+    * All direct mappings for a concept: `/orgs/:org/sources/:source/concepts/:concept/` with `cascade=sourcemappings`
+    * Full closure (mappings + target concepts): `/orgs/:org/sources/:source/concepts/:concept/` with `cascade=sourcetoconcepts`

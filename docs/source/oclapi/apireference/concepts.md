@@ -1014,6 +1014,32 @@ DELETE /user/sources/:source/concepts/:concept/extras/:field_name/
 
 
 
+## Get concept summary
+* Get a summary of a concept's metadata counts
+```
+GET /user/sources/:source/concepts/:concept/summary/
+GET /users/:user/sources/:source/concepts/:concept/summary/
+GET /orgs/:org/sources/:source/concepts/:concept/summary/
+```
+* Notes
+    * A specific concept version can also be requested: `.../concepts/:concept/:concept_version/summary/`
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "12345",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "versioned_object_id": 42,
+    "children": 5,
+    "parents": 2,
+    "names": 3,
+    "descriptions": 1,
+    "versions": 4
+}
+```
+
+
 ## Search and Filter Behavior
 * Text Search (e.g. `q=criteria`) - NOTE: Plus-sign (+) indicates relative relevancy weight of the term
     * concept.id (++++), concept.names.name (++++), concept.descriptions.description (+)

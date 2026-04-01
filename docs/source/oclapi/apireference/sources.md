@@ -625,6 +625,161 @@ POST /orgs/:org/sources/:source/:version/processing/
 * Status: 200 OK
 
 
+## Get source summary
+* Get a summary of a source's contents
+```
+GET /user/sources/:source/summary/
+GET /users/:user/sources/:source/summary/
+GET /orgs/:org/sources/:source/summary/
+```
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MySource",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 120,
+    "active_mappings": 45,
+    "versions": 3
+}
+```
+
+
+## Get verbose source summary
+* Get a detailed summary of a source including distributions of concepts, mappings, and versions
+```
+GET /user/sources/:source/summary/?verbose=true
+GET /users/:user/sources/:source/summary/?verbose=true
+GET /orgs/:org/sources/:source/summary/?verbose=true
+```
+* Notes
+    * The `contributors` field within `concepts` and `mappings` is only included for authenticated users
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "MySource",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "default_locale": "en",
+    "supported_locales": ["en", "fr", "es"],
+    "concepts": {
+        "active": 120,
+        "retired": 5,
+        "concept_class": [["Diagnosis", 50], ["Finding", 40], ["Procedure", 30]],
+        "datatype": [["Coded", 80], ["Text", 25], ["Numeric", 15]],
+        "locale": [["en", 120], ["fr", 60], ["es", 45]],
+        "name_type": [["FULLY_SPECIFIED", 120], ["SHORT", 55]],
+        "contributors": [["johndoe", 80], ["janedoe", 40]]
+    },
+    "mappings": {
+        "active": 45,
+        "retired": 2,
+        "map_type": [["SAME-AS", 25], ["NARROWER-THAN", 12], ["BROADER-THAN", 8]],
+        "contributors": [["johndoe", 30], ["janedoe", 15]]
+    },
+    "versions": {
+        "total": 3,
+        "released": 2
+    }
+}
+```
+
+
+## Get source summary distribution by field
+* Get the distribution of a specific field or set of fields from a source summary. Multiple fields can be requested as a comma-separated list.
+```
+GET /orgs/:org/sources/:source/summary/?verbose=true&distribution=concept_class
+GET /orgs/:org/sources/:source/summary/?verbose=true&distribution=concept_class,datatype,map_type
+```
+* Parameters
+    * `verbose` (required) string - must be set to "true"
+    * `distribution` (required) string - comma-separated list of fields to retrieve. Supported values: `concept_class`, `datatype`, `name_type`, `name_locale`, `map_type`, `from_sources_map_type`, `to_sources_map_type`
+    * `sources` (optional) string - comma-separated list of source mnemonics to filter distribution results; only applicable for `from_sources_map_type` and `to_sources_map_type`
+
+### Response
+* Status: 200 OK
+* Example for `distribution=concept_class`:
+```JSON
+{
+    "id": "MySource",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "distribution": {
+        "concept_class": [
+            {"concept_class": "Diagnosis", "count": 50},
+            {"concept_class": "Finding", "count": 40},
+            {"concept_class": "Procedure", "count": 30}
+        ]
+    }
+}
+```
+* Example for `distribution=to_sources_map_type&sources=CIEL`:
+```JSON
+{
+    "id": "MySource",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "distribution": {
+        "to_sources_map_type": [
+            {
+                "distribution": {
+                    "active": 21,
+                    "retired": 0,
+                    "total": 21,
+                    "map_types": [
+                        {"map_type": "SAME-AS", "total": 19, "active": 19, "retired": 0},
+                        {"map_type": "NARROWER-THAN", "total": 2, "active": 2, "retired": 0}
+                    ]
+                },
+                "id": "HEAD",
+                "version_url": "/orgs/CIEL/sources/CIEL/",
+                "type": "Source Version",
+                "short_code": "CIEL",
+                "released": false
+            }
+        ]
+    }
+}
+```
+
+
+## Get source version summary
+* Get a summary for a specific version of a source or the latest released version
+```
+GET /user/sources/:source/:version/summary/
+GET /users/:user/sources/:source/:version/summary/
+GET /orgs/:org/sources/:source/:version/summary/
+GET /orgs/:org/sources/:source/latest/summary/
+```
+* Notes
+    * The `latest` keyword returns the summary for the most recently created released version
+    * Supports the same `verbose` and `distribution` query parameters as the source summary
+    * Version summaries do not include the `versions` field
+
+### Response
+* Status: 200 OK
+```JSON
+{
+    "id": "v1.0",
+    "uuid": "8d492ee0-c2cc-11de-8d13-0010c6dffd0f",
+    "active_concepts": 120,
+    "active_mappings": 45
+}
+```
+
+
+## Recalculate source summary counts
+* Trigger a recalculation of a source's concept and mapping counts. Requires edit access to the source.
+```
+PUT /user/sources/:source/summary/
+PUT /users/:user/sources/:source/summary/
+PUT /orgs/:org/sources/:source/summary/
+```
+
+### Response
+* Status: 202 Accepted
+
+
 ## Search and Filter Behavior
 * Text Search (e.g. `q=criteria`) - NOTE: Plus-sign (+) indicates relative relevancy weight of the term
     * source.short_code (++++), source.name (++++), source.full_name (+++), source.description (+)
