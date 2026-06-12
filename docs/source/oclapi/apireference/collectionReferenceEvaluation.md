@@ -66,7 +66,7 @@ The first stage resolves the `system` and `valueset` fields into a base queryset
 **System resolution:**
 - If `system` is a relative URL (e.g. `/orgs/CIEL/sources/CIEL/`), it resolves directly to the source repository.
 - If `system` is a canonical URL (e.g. `https://CIELterminology.org`), it is resolved using the `$resolveReference` operation, which considers namespace-specific and global Canonical URL Registries.
-- If `version` is specified, that specific source version is used. Otherwise, HEAD is used.
+- If `version` is specified, that specific source version is used. Otherwise, the source's latest released version is used (falling back to HEAD only if the source has no released version). The `system-version` expansion parameter (see [Expansion Parameters](expansions.md)) can override this default, including pinning to HEAD via `<canonical_url>|HEAD`.
 - The base queryset is the set of all concepts (or mappings) in the resolved source version.
 - For HEAD without a pinned resource version: if `transform` is `"resourceversions"`, the latest version of each resource is selected; otherwise, the HEAD (versioned_object) is selected.
 
