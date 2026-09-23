@@ -130,6 +130,7 @@ OCL Online service is scalable, fault tolerant and highly-available. OCL Online 
    :hidden:
    :caption: Other
 
+   ocl/hosting-options
    ocl/self-hosting
    ocl/branding
 
