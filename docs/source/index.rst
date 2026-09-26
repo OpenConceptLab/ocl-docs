@@ -107,8 +107,9 @@ OCL Online service is scalable, fault tolerant and highly-available. OCL Online 
    :maxdepth: 2
    :hidden:
    :caption: OCL Mapper
-   
+
    oclmap/overview
+   oclmap/matching-algorithms
 
 .. toctree::
    :maxdepth: 2
