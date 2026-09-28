@@ -276,6 +276,7 @@ POST /importers/bulk-import/
 * POST Request Parameters:
    * **test_mode** - default=`false`; set to `true` to only run a test import \<NOT CURRENTLY SUPPORTED!\>
    * **update_if_exists** - default=`true`; set to `false` to skip updating resources that already exist
+   * **index** - optional; `true` or `false`. When omitted, small imports (up to 5,000 lines by default) are indexed for search as they finish, and larger ones aren't. Set to `true` to index a larger import
 
 Submitting to a User Assigned Queue
 Adds a JSON bulk import file for asynchronous processing in a user assigned queue. User assigned queues process bulk import files using only one worker, therefore guaranteeing that they will be processed in the order in which they are submitted.
@@ -287,6 +288,7 @@ POST /importers/bulk-import/:queue/
 * POST Request Parameters:
    * **test_mode** - default=`false`; set to `true` to only run a test import \<NOT CURRENTLY SUPPORTED!\>
    * **update_if_exists** - default=`true`; set to `false` to skip updating resources that already exist
+   * **index** - optional; `true` or `false`. When omitted, small imports (up to 5,000 lines by default) are indexed for search as they finish, and larger ones aren't. Set to `true` to index a larger import
 
 
 Get a list of active and recent bulk imports for a user in the standard and user assigned queues
