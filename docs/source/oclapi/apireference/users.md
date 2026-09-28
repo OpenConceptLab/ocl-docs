@@ -16,6 +16,12 @@ The API exposes a representation of OCL `users`. Access to most resources via th
 ```
 GET /users/:user/
 ```
+* Parameters
+    * **includeAuthGroups** (optional) boolean - include `auth_groups`, the user's groups
+    * **includeCapabilities** (optional) boolean - include `permissions` and `capabilities` (each capability with `name`, `limit` and `used`)
+* Private fields are returned only for your own account and to staff. For any other user they're left out, even when the parameters above are passed:
+    * `email`, `last_login`, `is_staff`, `is_superuser`
+    * `auth_groups`, `permissions`, `capabilities`
 
 ### Response
 * Status: 200 OK
@@ -28,7 +34,6 @@ GET /users/:user/
     "name": "John Doe",
     "company": "My Company",
     "location": "Kenya",
-    "email": "johndoe@me.com",
     "preferred_locale": "en",
     "website": "http://mydomain.me/",         
 
@@ -61,7 +66,7 @@ GET /user/
 
 ### Response
 * Status: 200 OK
-* Currently this returns the same JSON response as `GET /users/:user`
+* Returns the same JSON as `GET /users/:user/` for your own account, including the private fields (`email`, `last_login`, `is_staff`, `is_superuser`). `includeAuthGroups` and `includeCapabilities` work here too.
 
 
 
@@ -78,7 +83,7 @@ POST /users/:user/
 * Note that authentication information for the user to be updated must be passed with the request. E.g. `curl -u "username" "/user/"`
 * Input
     * **name** (optional) string - public name
-    * **email** (optional) string - public email address
+    * **email** (optional) string - email address, visible only to the user and staff
     * **company** (optional) string - public company name
     * **location** (optional) string - public location (e.g. Boston, MA, USA)
     * **preferred_locale** (optional) string - ordered, comma-separated list of preferred locales (e.g. "en", "es", "en,es")
@@ -104,7 +109,7 @@ POST /users/:user/
 
 ## List all users
 * List all users
-* Returns the reference JSON representation only
+* Returns the reference JSON representation, unless `verbose=true`
 * Default sort is "created_at" ascending - meaning the order in which users were created (???)
 ```
 GET /users/
@@ -112,6 +117,7 @@ GET /users/
 * Parameters
     * **q** (optional) - search criteria to filter users (searches across "username", "full_name", "company", and "location")
     * **sortAsc/sortDesc** (optional) - sort on one of the following attributes: "bestMatch" (default), "dateJoined", "username"
+    * **verbose** (optional) boolean - return each user in full, as in `GET /users/:user/`. Private fields appear only in your own entry, or in every entry for staff. `includeAuthGroups` and `includeCapabilities` follow the same rule.
 
 ### Response
 * Status: 200 OK
@@ -136,7 +142,7 @@ POST /users/
 * Input
     * **username** (required) string - username; must be unique
     * **name** (required) string - public name
-    * **email** (required) string - public email address
+    * **email** (required) string - email address, visible only to the user and staff
     * **company** (optional) string - public company name
     * **location** (optional) string - public location (e.g. Boston, MA, USA)
     * **preferred_locale** (optional) string - ordered, comma-separated list of preferred locales (e.g. "en", "es", "en,es")
@@ -201,7 +207,7 @@ POST /users/signup/
 * Input
     * **username** (required) string - username; must be unique
     * **name** (required) string - public name
-    * **email** (required) string - public email address
+    * **email** (required) string - email address, visible only to the user and staff
     * **company** (optional) string - public company name
     * **location** (optional) string - public location (e.g. Boston, MA, USA)
     * **preferred_locale** (optional) string - ordered, comma-separated list of preferred locales (e.g. "en", "es", "en,es")
