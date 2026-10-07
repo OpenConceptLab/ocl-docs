@@ -1,9 +1,9 @@
 # Export API
 
 ## Overview
-The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `200` if the export is ready for download, or `204` if it is still processing. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repository version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export is a much faster operation.
+The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `302` if the export is ready for download, or `204` if it is still processing. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repository version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export is a much faster operation.
 
-The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint streams the export file directly as `application/zip`, with the filename provided in the `Content-Disposition` response header.
+The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint redirects to a signed download URL, and the download carries the filename in its `Content-Disposition` response header.
 
 An export is a compressed zip of the JSON results of issuing a GET for a specific repository version. For example, the JSON results contained in an export are equivalent to the following request:
 ```
@@ -16,9 +16,19 @@ In the above:
 * `:repo` is a source or collection ID, depending on the value of `:repoType`
 * `:repoVersion` is a source or collection version ID
 
-The export filename takes the following form:
+The API names the export file, so every client saves it under the same name:
 ```
-[:repositoryId]_[:repoVersion].[:lastUpdated].zip
+[:ownerType]_[:owner]_[:repoType]_[:repo]_[:repoVersion]_[:expansion]_[:lastUpdated].zip
+```
+* `_[:expansion]` appears only when the export includes an expansion, which every collection export does today.
+* `:repoVersion` is the version ID exactly as stored, or `HEAD` for an export of HEAD.
+* `:lastUpdated` always comes last. It is the time (UTC) of the repository version's last concept or mapping change, formatted `YYYY-MM-DD_HHMMSS`.
+* IDs keep their case and may contain underscores, so take the repository's identity from the JSON inside the export, not by splitting the filename.
+
+For example:
+```
+orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip
+orgs_PIH_collections_PIHEMR_Concepts_1.0_autoexpand-1.0_2026-09-30_123456.zip
 ```
 To fetch the diff between a `lastUpdated` timestamp and the current state of a source or collection:
 ```
@@ -37,7 +47,7 @@ The [[Subscriptions]] documentation describes how the export functionality can b
 
 ## Get an export of a repository version
 * Download the export for the specified repository version, or check its availability. This has three possible results:
-    * If the export exists, `GET` returns a status code of `200 OK` with the export file streamed directly as `application/zip`, and a `Content-Disposition` header containing the filename. `HEAD` returns `200 OK` with the same headers but no body (useful for checking availability without downloading).
+    * If the export exists, `GET` returns `302 Found`, redirecting to a signed download URL. The download's `Content-Disposition` header contains the filename. `HEAD` returns the same `302` with no body (useful for checking availability without downloading).
     * If the export file does not exist but the URL is correct, returns `204 No Content`
     * If the export URL is non-existent, returns `404 Not Found`
 ```
@@ -45,9 +55,9 @@ GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
-    * `:repoVersion` is required - exports can only be created for repository versions. If `HEAD` version is requested, the API will return `405 Not Allowed`.
-    * The `GET` request streams the export file directly. Use `HEAD` to check availability without downloading.
-    * The `Content-Disposition` response header contains the export filename (e.g. `attachment; filename=CIEL_CIEL_v2026-03-23.2026-03-23_073036.zip`).
+    * `:repoVersion` is required. Exports of the `HEAD` version are available to the repository's admins; for anyone else the API returns `405 Not Allowed`.
+    * Most HTTP clients follow the redirect automatically; for example, `curl -L -OJ` saves the file under its name. The signed URL expires, so request a new one each time you download.
+    * The download's `Content-Disposition` header contains the export filename (e.g. `attachment; filename="orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip"`). The signed URL carries the same value in its `response-content-disposition` parameter.
 
 ### Example
 * Download the export for v2016-08-22 of the CIEL source
@@ -60,12 +70,17 @@ HEAD /orgs/CIEL/collections/StarterSet/v1.2/export/
 ```
 
 ### Response
-* If the export file exists (`GET` returns the file, `HEAD` returns headers only):
+* If the export file exists (`GET` and `HEAD` both redirect):
+```
+Status: 302 Found
+Response Header:
+Location: [signed download URL]
+```
+* The download from the signed URL:
 ```
 Status: 200 OK
 Response Header:
-Content-Type: application/zip
-Content-Disposition: attachment; filename=CIEL_CIEL_v2016-08-22.20150516122820.zip
+Content-Disposition: attachment; filename="orgs_CIEL_sources_CIEL_v2016-08-22_2016-08-22_101500.zip"
 ```
 * If the URL is valid but the export file does not exist:
 ```
@@ -89,7 +104,7 @@ Status: 404 Not Found
 POST /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
-    * `:repoVersion` is required. If `HEAD` version is requested, the API will return `405 Not Allowed`.
+    * `:repoVersion` is required. Exports of the `HEAD` version can be created by the repository's admins; for anyone else the API returns `405 Not Allowed`.
     * This request only triggers the creation of the export file and does **NOT** return the export. It is necessary to follow up with a GET request after the file has been processed in order to download it.
 
 ### Example
