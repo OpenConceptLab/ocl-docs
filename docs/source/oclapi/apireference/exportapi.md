@@ -131,7 +131,7 @@ Status: 202 Accepted
 ```
 Status: 409 Conflict
 ```
-* If the export file already exists, the response points to the export endpoint (use GET there to download it):
+* If the export file already exists, the response points to the export endpoint; download it with a GET to the same export URL you posted to. For a `HEAD` export, the `URL` header leaves out `HEAD/`, so use the URL you posted to rather than the header.
 ```
 Status: 303 See Other
 Response Header:
