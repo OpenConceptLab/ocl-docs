@@ -19,11 +19,11 @@ _For the first synchronization, fetch the most recent export of a **released** s
 ```
 GET /orgs/[:org]/sources/[:source]/latest/
 ```
-* Retrieve the filename of full export for the latest released source version, which is returned in the response header as the `exportURL` field. Note that if the export file does not already exist, is still being processed, or is invalid, the API returns a specific status or error code and the export can be retrieved later after an appropriate interval. Refer to [[Export-API]] for more info on this request.
+* Request the full export of the latest released source version. If the export is ready, the API responds `302 Found` and its `Location` response header holds a signed URL to download the file. If the export file does not already exist or is still being created, the API returns a specific status code (`204` or `208`), and the export can be requested again after an appropriate interval. Refer to [[Export-API]] for more info on this request.
 ```
 GET /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/
 ```
-* Download the export file from the `exportURL` (returns a compressed tar file of the JSON). Record the `lastUpdated` timestamp which is part of the filename. Refer to [[Export-API]] for more info on this request. Note that the `exportURL` is designed to be used only once and it expires after a set time limit -- to ensure that the `exportURL` works correctly, use it immediately and request another `exportURL` each time you want to download an export file.
+* Download the export file from the signed URL (a zip file of the JSON); most HTTP clients follow the redirect automatically. Record the `lastUpdated` timestamp, which is the last part of the filename (e.g. `2026-09-30_123456`), and convert it to ISO 8601 (`2026-09-30T12:34:56Z`) for use with `updatedSince`. Refer to [[Export-API]] for more info on this request. Note that the signed URL expires after a set time limit -- use it immediately, and request the export again each time you want to download an export file.
 * Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). There are two methods for doing this:
     * Use a combination of the `limit` and `offset` parameters to iteratively retrieve results until fewer than `limit` results are returned. Note that the standard paging response headers (num_returned, num_found, offset, page, next_url, prev_url) are not supported at the source endpoint, and paging must be managed by the client.
 ```
@@ -46,9 +46,9 @@ GET /orgs/[:org]/sources/[:source]/?includeMappings=true&includeConcepts=true&in
 * A subscription client, such as the OpenMRS OCL Subscription module, should be configured with the source URL (e.g. `/orgs/CIEL/sources/CIEL/), an API token, and a synchronization schedule (e.g. weekly or monthly)
 * On the first synchronization:
     * Subscription client will request details on the most recent released source version: `GET /orgs/CIEL/sources/CIEL/latest/`
-    * Subscription client will request the export file URL of the most recent released source version, which will return the `exportURL` in the response header: `GET /orgs/CIEL/sources/CIEL/[:sourceVersion]/export/`
+    * Subscription client will request the export of the most recent released source version, which redirects to a signed download URL (the `Location` response header): `GET /orgs/CIEL/sources/CIEL/[:sourceVersion]/export/`
         * Note that if the export file is not ready, the subscription client will need to request the export file again after an appropriate interval
-    * Subscription client will download the export file from `exportURL`, which is returned as a compressed tar of the JSON results -- the `exportURL` can be discarded, as it is re-generated for each request
+    * Subscription client will download the export file from the signed URL, which is returned as a zip of the JSON results -- the signed URL can be discarded, as it is re-generated for each request
     * Subscription client will decompress the file and process the results
     * Subscription client may then request any changes to the source that occurred after the `lastUpdated` timestamp of the export file: `GET /orgs/CIEL/sources/CIEL/?includeConcepts=true&includeMappings=true&includeRetired=true&updatedSince=[:lastUpdated]` -- these results should be processed in the same manner as above; the `lastUpdated` date should be stored for subsequent synchronizations
 * On subsequent synchronizations:
@@ -255,7 +255,7 @@ POST /orgs/MyOrg/sources/MySource/v1.0/export/
 <li>Make changes to concepts and mappings - these will be saved to source version `v1.1`</li>
 
 <li>Fetch the export and changes made since the export<ul>
-<li>Fetch the export - the request returns the URL to download the export file in the header attribute `exportUrl`
+<li>Fetch the export - the request redirects (`302 Found`) to the URL of the export file, given in the `Location` header
 <pre>
 GET /orgs/MyOrg/sources/MySource/v1.0/export/
 </pre>
