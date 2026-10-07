@@ -1,7 +1,7 @@
 # Export API
 
 ## Overview
-The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `302` if the export is ready for download, `208` if it is still being created, or `204` if there is no export. Don't follow the redirect when checking availability (for example, use `curl -I` without `-L`): the signed URL is valid only for `GET`. Note that the old method of determining when an export is available is by checking the `is_processing` flag of the repository version, which is set to `False` after processing of the new repository version is complete. This method is still correct, but if you only need an export and not a fully processed repository version, then the Export API method is more performant as creating and uploading an export is a much faster operation.
+The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `302` if the export is ready for download, `208` if it is still being created, or `204` if there is no export. Don't follow the redirect when checking availability (for example, use `curl -I` without `-L`): the signed URL is valid only for `GET`. The repository version's `is_processing` flag is not a reliable signal for this: it turns `False` when processing of the new version ends, even if creating the export failed. Use the Export API to find out whether an export exists.
 
 The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint redirects to a signed download URL, and the download carries the filename in its `Content-Disposition` response header.
 
@@ -102,9 +102,10 @@ Status: 404 Not Found
 
 
 ## Create an export of a repository version
-* Create an export file for the specified repository version; if it already exists, no action is taken
+* Create an export file for the specified repository version. If one already exists, no action is taken unless `force=true` is passed, which creates it again.
 ```
 POST /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
+POST /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/?force=true
 ```
 * Notes
     * `:repoVersion` is required. `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
@@ -117,17 +118,28 @@ POST /orgs/CIEL/sources/CIEL/v2.2/export/
 ```
 
 ### Response
-* If no export file already exists and processing is initiated:
+* The API checks these cases in order: an export being created (`208`) takes precedence over `force` and `noRedirect`, and `force=true` takes precedence over `noRedirect`.
+* If an export file is currently being created:
+```
+Status: 208 Already Reported
+```
+* If no export file already exists (or `force=true` was passed) and processing is initiated:
 ```
 Status: 202 Accepted
 ```
-* If an export file is currently being processed:
+* If the same export job is already queued:
 ```
 Status: 409 Conflict
 ```
-* If the export file already exists (use GET to download it):
+* If the export file already exists, the response points to the export endpoint; download it with a GET to the same export URL you posted to. For a `HEAD` export, the `URL` header leaves out `HEAD/`, so use the URL you posted to rather than the header.
 ```
-Status: 200 OK
+Status: 303 See Other
+Response Header:
+URL: /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
+```
+* If the export file already exists and `noRedirect=true` was passed:
+```
+Status: 204 No Content
 ```
 * If the request is otherwise invalid - return the appropriate error code
 
@@ -140,22 +152,27 @@ DELETE /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
     * `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
-    * The passed authorization token must have administrative access to the repository in order to delete the export file
+    * The passed authorization token must have administrative access to the repository (staff, superusers or the repository's owner) in order to delete the export file; otherwise the API returns `403 Forbidden`.
+    * DELETE removes the export cached under the version's current `lastUpdated`. An export of the same version cached under an earlier timestamp isn't removed, and GET may still return it.
 
 ### Example
-* Create the export file for v2.2 of the CIEL source
+* Delete the export file for v2.2 of the CIEL source
 ```
 DELETE /orgs/CIEL/sources/CIEL/v2.2/export/
 ```
 
 ### Response
-* If the file exists, it is deleted with 204
+* If the file exists, it is deleted:
 ```
-Status: 204 Success
+Status: 204 No Content
 ```
-* If the file does NOT exist
+* If the file does NOT exist:
 ```
-Status: 404 No Content
+Status: 404 Not Found
+```
+* If the user doesn't have administrative access to the repository:
+```
+Status: 403 Forbidden
 ```
 * If the request is otherwise invalid - return the appropriate error code
 
