@@ -22,9 +22,9 @@ The API names the export file, so every client saves it under the same name:
 ```
 * `_[:expansion]` appears only when the export includes an expansion: a collection version's default expansion.
 * `:repoVersion` is the version ID as stored (OCL never adds a `v`), or `HEAD` for an export of HEAD. Characters other than letters, digits, `.`, `_`, `-` and `@` become `-` in the filename, so `1.0 beta` becomes `1.0-beta`.
-* `:lastUpdated` always comes last, formatted `YYYY-MM-DD_HHMMSS` (UTC). It is taken from the cached export, so it describes the export's content: the time of the repository version's last concept or mapping change when the export was created.
+* `:lastUpdated` always comes last, formatted `YYYY-MM-DD_HHMMSS` (UTC). It is taken from the cached export, so it describes the export's content: the time of the repository version's last concept or mapping change when the export was created (for a version with no concepts or mappings, the time the version was last updated).
 * IDs keep their case and may contain underscores, so take the repository's identity from the JSON inside the export, not by splitting the filename.
-* If a cached export's storage key carries no timestamp, the download keeps its storage name instead.
+* If a cached export's storage key carries no timestamp, the API sends no filename, and the client chooses one (most save it under the storage name).
 
 For example:
 ```
@@ -58,9 +58,9 @@ GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
-    * `:repoVersion` is required. `HEAD` exports are available only to staff and to the repository's owner (the owning user, or members of the owning organization); other users get `405 Not Allowed`.
+    * `:repoVersion` is required. `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
     * Most HTTP clients follow the redirect automatically; for example, `curl -L -OJ` saves the file under its name. The signed URL expires, so request a new one each time you download.
-    * The download's `Content-Disposition` header contains the export filename (e.g. `attachment; filename="orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip"`). The signed URL carries the same value in its `response-content-disposition` parameter.
+    * When the API names the export, the download's `Content-Disposition` header contains the filename (e.g. `attachment; filename="orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip"`). The signed URL carries the same value in its `response-content-disposition` parameter.
 
 ### Example
 * Download the export for v2016-08-22 of the CIEL source
@@ -107,7 +107,7 @@ Status: 404 Not Found
 POST /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
-    * `:repoVersion` is required. `HEAD` exports are available only to staff and to the repository's owner (the owning user, or members of the owning organization); other users get `405 Not Allowed`.
+    * `:repoVersion` is required. `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
     * This request only triggers the creation of the export file and does **NOT** return the export. It is necessary to follow up with a GET request after the file has been processed in order to download it.
 
 ### Example
@@ -139,7 +139,7 @@ Status: 200 OK
 DELETE /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 * Notes
-    * `HEAD` exports are available only to staff and to the repository's owner (the owning user, or members of the owning organization); other users get `405 Not Allowed`.
+    * `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
     * The passed authorization token must have administrative access to the repository in order to delete the export file
 
 ### Example
