@@ -1,7 +1,7 @@
 # Export API
 
 ## Overview
-The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `302` if the export is ready for download, `208` if it is still being created, or `204` if there is no export. Don't follow the redirect when checking availability (for example, use `curl -I` without `-L`): the signed URL is valid only for `GET`. The repository version's `is_processing` flag is not a reliable signal for this: it turns `False` when processing of the new version ends, even if creating the export failed. Use the Export API to find out whether an export exists. It is also faster, since creating and uploading an export takes much less time than fully processing a version.
+The API provides an `export` endpoint for creating, fetching, and deleting a cached export of repository version. Exports are automatically generated upon creation of a new source or collection version and cached, so requesting an export is a quick operation even for a large repository. The recommended method for determining if an export is available after creating a new repository version is by checking the status code of a `HEAD` request to the export, eg `HEAD /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/`. The status code is `302` if the export is ready for download, `208` if it is still being created, or `204` if there is no export. Don't follow the redirect when checking availability (for example, use `curl -I` without `-L`): the signed URL is valid only for `GET`. The repository version's `is_processing` flag is not a reliable signal for this: it turns `False` when processing of the new version ends, even if creating the export failed. Use the Export API to find out whether an export exists.
 
 The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint redirects to a signed download URL, and the download carries the filename in its `Content-Disposition` response header.
 
@@ -118,13 +118,14 @@ POST /orgs/CIEL/sources/CIEL/v2.2/export/
 ```
 
 ### Response
-* If no export file already exists (or `force=true` was passed) and processing is initiated:
-```
-Status: 202 Accepted
-```
+* The API checks these cases in order: an export being created (`208`) takes precedence over `force` and `noRedirect`, and `force=true` takes precedence over `noRedirect`.
 * If an export file is currently being created:
 ```
 Status: 208 Already Reported
+```
+* If no export file already exists (or `force=true` was passed) and processing is initiated:
+```
+Status: 202 Accepted
 ```
 * If the same export job is already queued:
 ```
@@ -152,6 +153,7 @@ DELETE /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 * Notes
     * `HEAD` exports are available only to staff, superusers and the repository's owner (the owning user, or members of the owning organization); other users who can see the repository get `405 Not Allowed`.
     * The passed authorization token must have administrative access to the repository (staff, superusers or the repository's owner) in order to delete the export file; otherwise the API returns `403 Forbidden`.
+    * DELETE removes the export cached under the version's current `lastUpdated`. An export of the same version cached under an earlier timestamp isn't removed, and GET may still return it.
 
 ### Example
 * Delete the export file for v2.2 of the CIEL source

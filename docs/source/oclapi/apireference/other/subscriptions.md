@@ -19,7 +19,7 @@ _For the first synchronization, fetch the most recent export of a **released** s
 ```
 GET /orgs/[:org]/sources/[:source]/latest/
 ```
-* Request the full export of the latest released source version. If the export is ready, the API responds `302 Found` and its `Location` response header holds a signed URL to download the file. If the export file does not already exist or is still being created, the API returns a specific status code (`204` or `208`), and the export can be requested again after an appropriate interval. Refer to [[Export-API]] for more info on this request.
+* Request the full export of the latest released source version. If the export is ready, the API responds `302 Found` and its `Location` response header holds a signed URL to download the file. If the export is still being created, the API returns `208 Already Reported`; request it again after an appropriate interval. If there is no export, the API returns `204 No Content`; create one with `POST /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/`, then request it again once it is ready. Refer to [[Export-API]] for more info on this request.
 ```
 GET /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/
 ```
@@ -47,7 +47,7 @@ GET /orgs/[:org]/sources/[:source]/?includeMappings=true&includeConcepts=true&in
 * On the first synchronization:
     * Subscription client will request details on the most recent released source version: `GET /orgs/CIEL/sources/CIEL/latest/`
     * Subscription client will request the export of the most recent released source version, which redirects to a signed download URL (the `Location` response header): `GET /orgs/CIEL/sources/CIEL/[:sourceVersion]/export/`
-        * Note that if the export file is not ready, the subscription client will need to request the export file again after an appropriate interval
+        * Note that if the export file is not ready (`208`), the subscription client will need to request the export file again after an appropriate interval; if there is no export (`204`), it must first create one with a `POST` to the same URL
     * Subscription client will download the export file from the signed URL, which is returned as a zip of the JSON results -- the signed URL can be discarded, as it is re-generated for each request
     * Subscription client will decompress the file and process the results
     * Subscription client may then request any changes to the source that occurred after the `lastUpdated` timestamp of the export file: `GET /orgs/CIEL/sources/CIEL/?includeConcepts=true&includeMappings=true&includeRetired=true&updatedSince=[:lastUpdated]` -- these results should be processed in the same manner as above; the `lastUpdated` date should be stored for subsequent synchronizations
