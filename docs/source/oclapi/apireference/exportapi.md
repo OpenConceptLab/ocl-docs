@@ -5,7 +5,7 @@ The API provides an `export` endpoint for creating, fetching, and deleting a cac
 
 The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint redirects to a signed download URL, and the download carries the filename in its `Content-Disposition` response header.
 
-An export is a compressed zip of the JSON results of issuing a GET for a specific repository version. For example, the JSON results contained in an export are equivalent to every page of the following request (the API returns these lists page by page; `limit=0` doesn't return them all at once):
+An export is a compressed zip of the JSON results of issuing a GET for a specific repository version. For example, the JSON results contained in an export are equivalent to every page of the following request:
 ```
 GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/?includeConcepts=true&includeMappings=true&includeRetired=true
 ```

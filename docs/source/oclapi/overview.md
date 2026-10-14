@@ -68,7 +68,7 @@ Which results are returned can be controlled using the `limit` and `page` parame
 * `limit` - default=25; set the number of results returned in a request. The maximum is 1,000. A `limit` above the maximum, or `limit=0`, returns the default of 25 results, not all results.
 * `page` - default=1; set the page number of the results returned
 
-OCL is lowering the maximum to 100 for lists of concepts, mappings and references. Once it does, a larger `limit` returns 100 results per page. Clients that page as described below keep working either way.
+OCL is lowering the maximum to 100 for lists of concepts, mappings and references. Once it does, a larger `limit` returns 100 results per page.
 
 Additionally, headers containing pagination meta information are returned with the response, as follows:
 * `num_found` - total number of results found
