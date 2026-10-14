@@ -78,7 +78,7 @@ Additionally, headers containing pagination meta information are returned with t
 * `next` - url to next page of results; absent on the last page
 * `previous` - url to previous page of results; absent on the first page
 
-To fetch every result, follow the `next` header until a response doesn't have one, or keep requesting pages until you have `num_found` results. Don't stop just because a page has fewer results than the `limit` you asked for: the API can return fewer results than you requested.
+To fetch every result, set `limit` to 100 or less, then follow the `next` header until a response doesn't have one, or keep requesting pages until you have `num_found` results. A `limit` above the maximum can leave later pages of a repository version's concepts or mappings empty. Don't stop just because a page has fewer results than the `limit` you asked for: the API can return fewer results than you requested.
 
 To download a whole source or collection version, use its export instead of paging through it: see the [Export API](apireference/exportapi.md).
 
