@@ -65,15 +65,22 @@ The API exposes the following resources:
 
 ## Pagination and Limiting the Number of Returned Results
 Which results are returned can be controlled using the `limit` and `page` parameters as follows:
-* `limit` - default=10; set the number of results returned in a request. Set limit=0 to return all results.
+* `limit` - default=25; set the number of results returned in a request. The maximum is 1,000. A `limit` above the maximum, or `limit=0`, returns the default of 25 results, not all results.
 * `page` - default=1; set the page number of the results returned
 
+OCL is lowering the maximum to 100 for lists of concepts, mappings and references. Once it does, a larger `limit` returns 100 results per page. Clients that page as described below keep working either way.
+
 Additionally, headers containing pagination meta information are returned with the response, as follows:
-* `next` - url to next page of results
 * `num_found` - total number of results found
-* `offset` - number of results on all previous pages combined
 * `num_returned` - results returned from the current request
-* `previous` - url to previous page of results
+* `pages` - total number of pages
+* `page_number` - number of the current page
+* `next` - url to next page of results; absent on the last page
+* `previous` - url to previous page of results; absent on the first page
+
+To fetch every result, follow the `next` header until a response doesn't have one, or keep requesting pages until you have `num_found` results. Don't stop just because a page has fewer results than the `limit` you asked for: the API can return fewer results than you requested.
+
+To download a whole source or collection version, use its export instead of paging through it: see the [Export API](apireference/exportapi.md).
 
 Examples:
 ```

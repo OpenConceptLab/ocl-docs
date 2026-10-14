@@ -24,20 +24,18 @@ GET /orgs/[:org]/sources/[:source]/latest/
 GET /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/
 ```
 * Download the export file from the signed URL (a zip file of the JSON); most HTTP clients follow the redirect automatically. Record the `lastUpdated` timestamp, which is the last part of the filename (e.g. `2026-09-30_123456`), and convert it to ISO 8601 (`2026-09-30T12:34:56Z`) for use with `updatedSince`. Refer to [[Export-API]] for more info on this request. Note that the signed URL expires after a set time limit -- use it immediately, and request the export again each time you want to download an export file.
-* Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). There are two methods for doing this:
-    * Use a combination of the `limit` and `offset` parameters to iteratively retrieve results until fewer than `limit` results are returned. Note that the standard paging response headers (num_returned, num_found, offset, page, next_url, prev_url) are not supported at the source endpoint, and paging must be managed by the client.
+* Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). Use the `limit` and `offset` parameters to retrieve the results page by page, until a page returns fewer results than your `limit`. The source endpoint doesn't send the standard paging headers (`num_found`, `num_returned`, `next`), so the client manages paging.
+    * Keep `limit` at 100 or less. OCL is lowering the maximum page size to 100, and a larger `limit` will then return only 100 results, which a client would mistake for the last page.
+    * `limit=0` doesn't return all results: it returns the default page of 30.
+    * The `Compress: true` request header doesn't turn off paging at this endpoint. The response is a zip file, but it holds the same page of results as without the header.
 ```
-GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=500&offset=500&updatedSince=[:lastUpdated]
-```
-    * Use the `Compress: true` request header to retrieve the results as a compressed file -- this will disable paging (the `limit` and `offset` parameters will have no effect) and return all the concept/mapping results. Note that this will result in a server timeout / 404 if there are too many results. In practice, if you expect more than 1,000 results, it is not recommended to use this approach at this time.
-```
-GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&updatedSince=[:lastUpdated]
+GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=100&offset=100&updatedSince=[:lastUpdated]
 ```
 
 _For subsequent synchronizations, fetch records that have been updated since the `lastUpdated` timestamp_
-* Fetch all updates to the source that are more recent than `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)) from the previous synchronization. See above for the two methods of retrieving updated records at the source endpoint. Record the current timestamp to be used in subsequent requests.
+* Fetch all updates to the source that are more recent than `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)) from the previous synchronization. Page through the results with `limit` and `offset` as described above. Record the current timestamp to be used in subsequent requests.
 ```
-GET /orgs/[:org]/sources/[:source]/?includeMappings=true&includeConcepts=true&includeRetired=true&limit=0&updatedSince=[lastUpdated]
+GET /orgs/[:org]/sources/[:source]/?includeMappings=true&includeConcepts=true&includeRetired=true&limit=100&offset=0&updatedSince=[lastUpdated]
 ```
 
 
