@@ -582,6 +582,20 @@ Status: 200 OK
 
 
 
+## List parents or children of a concept
+* List the concepts that are the parents, or the children, of a concept in its source's hierarchy, where an optional `:sourceVersion` is a source version ID
+```
+GET /orgs/:org/sources/:source/[:sourceVersion/]concepts/:concept/parents/
+GET /orgs/:org/sources/:source/[:sourceVersion/]concepts/:concept/children/
+GET /users/:user/sources/:source/[:sourceVersion/]concepts/:concept/parents/
+GET /users/:user/sources/:source/[:sourceVersion/]concepts/:concept/children/
+GET /user/sources/:source/[:sourceVersion/]concepts/:concept/parents/
+GET /user/sources/:source/[:sourceVersion/]concepts/:concept/children/
+```
+* Notes
+    * Only concepts the requester can view are listed: a parent or child in another source is listed only if the requester can view that source.
+    * These lists aren't searchable: `q` and other search parameters are ignored. To search a source's concepts, use [List concepts in a source](#list-concepts-in-a-source).
+
 ## Get a single concept name
 * Get a single concept name
 ```
