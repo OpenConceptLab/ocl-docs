@@ -24,12 +24,12 @@ GET /orgs/[:org]/sources/[:source]/latest/
 GET /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/
 ```
 * Download the export file from the signed URL (a zip file of the JSON); most HTTP clients follow the redirect automatically. Record the `lastUpdated` timestamp, which is the last part of the filename (e.g. `2026-09-30_123456`), and convert it to ISO 8601 (`2026-09-30T12:34:56Z`) for use with `updatedSince`. Refer to [[Export-API]] for more info on this request. Note that the signed URL expires after a set time limit -- use it immediately, and request the export again each time you want to download an export file.
-* Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). Use the `limit` and `offset` parameters to retrieve the results page by page, until a page returns fewer results than your `limit`. The source endpoint doesn't send the standard paging headers (`num_found`, `num_returned`, `next`), so the client manages paging.
+* Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). Use the `limit` and `offset` parameters to retrieve the results page by page: start at `offset=0`, add your `limit` to `offset` for each next page, and stop when a page returns fewer results than your `limit`. The source endpoint doesn't send the standard paging headers (`num_found`, `num_returned`, `next`), so the client manages paging.
     * Keep `limit` at 100 or less. OCL is lowering the maximum page size to 100, and a larger `limit` will then return only 100 results, which a client would mistake for the last page.
     * `limit=0` doesn't return all results: it returns the default page of 30.
     * The `Compress: true` request header doesn't turn off paging at this endpoint. The response is a zip file, but it holds the same page of results as without the header.
 ```
-GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=100&offset=100&updatedSince=[:lastUpdated]
+GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=100&offset=0&updatedSince=[:lastUpdated]
 ```
 
 _For subsequent synchronizations, fetch records that have been updated since the `lastUpdated` timestamp_
