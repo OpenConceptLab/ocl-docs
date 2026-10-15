@@ -86,7 +86,7 @@ GET /user/orgs/
 POST /orgs/
 ```
 * Input
-    * **id** (required) string
+    * **id** (required) string - unique regardless of letter case: an id that differs from an existing organization's only in case (e.g. `my-org` when `My-Org` exists) returns `400 Bad Request`
     * **name** (required) string
     * **company** (optional) string
     * **website** (optional) string
