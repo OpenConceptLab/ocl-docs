@@ -5,9 +5,9 @@ The API provides an `export` endpoint for creating, fetching, and deleting a cac
 
 The Export API enables a client to manage cached exports manually for special situations, such as triggering the creation of a new export that did not get cached correctly. The filename of the export contains the export's `lastUpdated` timestamp, which can be used to fetch the diff between an export and the current state of a source or collection. A `GET` request to the export endpoint redirects to a signed download URL, and the download carries the filename in its `Content-Disposition` response header.
 
-An export is a compressed zip of the JSON results of issuing a GET for a specific repository version. For example, the JSON results contained in an export are equivalent to every page of the following request:
+An export is a zip holding one file, `export.json`: the repository version's details and every concept and mapping in it, retired ones included. Its URL is:
 ```
-GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/?includeConcepts=true&includeMappings=true&includeRetired=true
+GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/export/
 ```
 In the above:
 * `:ownerType` is "orgs" or "users", or it is omitted if `:owner` is "user"
@@ -31,14 +31,7 @@ For example:
 orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip
 orgs_PIH_collections_PIHEMR_Concepts_1.0_autoexpand-1.0_2026-09-30_123456.zip
 ```
-To fetch the diff between a `lastUpdated` timestamp and the current state of a source or collection, convert the timestamp to ISO 8601 first (`2026-09-30_123456` becomes `2026-09-30T12:34:56Z`), then page through the results with `limit` (100 or less) and `offset`, as described in [[Subscriptions]]:
-```
-GET /[:ownerType/]:owner/:repoType/:repo/:repoVersion/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=100&offset=0&updatedSince=:lastUpdated
-```
-
-Refer to [[sources]] and [[collections]] documentation for details on the above requests.
-
-The [[Subscriptions]] documentation describes how the export functionality can be used to subscribe to a source or collection to keep a client system in synch.
+[Subscriptions](other/subscriptions.md) describes how to pass an export's `lastUpdated` as `updatedSince` to the source's concepts and mappings lists, to keep a client system in sync.
 
 ### Future Considerations
 * Add `lastUpdated` into the response header of GET request (right now lastUpdated is only stored in the filename)
