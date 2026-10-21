@@ -7,7 +7,7 @@ A subscription keeps a copy of an OCL source up to date in another system, such 
 
 Both start by downloading the export of the latest released version.
 
-Every request needs an API token, sent as `Authorization: Token <token>` (see the [API overview](../../overview.md)). Use an OCL account set up just for the subscription. To match records between OCL and your system, use their `external_id`, which sources, concepts, mappings, concept names and concept descriptions all carry.
+Every request needs an API token, sent as `Authorization: Token <token>` (see the [API overview](../../overview.md)). Use an OCL account set up just for the subscription. Match concepts and mappings to your copy by their `url` (for example `/orgs/CIEL/sources/CIEL/concepts/1234/`), which is the same in exports and in the lists below. Many sources also fill in `external_id`, but it's optional and not guaranteed unique.
 
 ## Follow releases
 
@@ -31,7 +31,7 @@ Check for a new release on a schedule; once a day is plenty. Don't ask a release
 Start with steps 1–3 above, then fetch everything that changed after the export:
 
 1. Take the timestamp at the end of the export's filename and convert it to ISO 8601 (UTC). For example, `orgs_CIEL_sources_CIEL_v2026-09-24_2026-09-24_030336.zip` gives `2026-09-24T03:03:36Z`. The API names the file in the download's `Content-Disposition` header.
-2. Note the current time in UTC, minus a few minutes to allow for clock differences: the next sync starts from it. Then ask the source's concepts and mappings for everything updated since the timestamp:
+2. Note the current time in UTC, minus a few minutes to allow for clock differences. Then ask the source's concepts and mappings for everything updated since the timestamp:
    ```
    GET /orgs/:org/sources/:source/concepts/?updatedSince=2026-09-24T03:03:36Z&includeRetired=true&verbose=true&limit=100
    GET /orgs/:org/sources/:source/mappings/?updatedSince=2026-09-24T03:03:36Z&includeRetired=true&verbose=true&limit=100
@@ -39,7 +39,7 @@ Start with steps 1–3 above, then fetch everything that changed after the expor
    Each response is one page. Follow its `next` response header to the next page, until a response has none.
 3. Save each record over your copy of it. A record with `"retired": true` has been retired, which is how OCL deletes concepts and mappings.
 
-For each later sync, repeat steps 2 and 3, starting from the time you noted in the previous sync.
+Once every page of both lists is saved, store the time you noted: the next sync starts from it. If a sync fails partway, keep the previous time and run it again. For each later sync, repeat steps 2 and 3.
 
 About these requests:
 * `includeRetired=true` is needed to see retirements. A concept or mapping that was hard-deleted is gone entirely, so it never appears here.
