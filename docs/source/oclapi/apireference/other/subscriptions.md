@@ -1,282 +1,66 @@
 # Subscriptions
-## Overview
-A client system may subscribe to the `concepts` and `mappings` in a source by using a combination of the [[Export API]] and the [[sources]] endpoint. The high-level subscription process is as follows:
 
-1. **SUBSCRIPTION CLIENT CONFIGURATION:** Configure OCL subscription module to subscribe to a specific source with the correct authentication token and to optionally automatic retrieve future updates on a schedule
-2. **INITIAL SYNCHRONIZATION:** Perform initial synchronization, which consists of (1) downloading and importing the full export file (containing concepts and mappings) of the "latest" released source version; and (2) fetching updates to the dictionary that were made after the export timestamp
-3. **SUBSEQUENT SYNCHRONIZATIONS:** Requests additional updates (includes Creates, Updates and Deletions) to the source manually or automatically based on a schedule (e.g. weekly/monthly) that occurred after the most recent prior synchronization. Import the changes into the OpenMRS concept dictionary.
+A subscription keeps a copy of an OCL source up to date in another system, such as an OpenMRS concept dictionary. A client can:
 
+* **Follow releases:** download each new released version of the source. This suits most systems: a released version has been published by the source's owner, and it never changes.
+* **Follow every change:** also pick up edits made between releases. These come from the source's working copy (HEAD), which includes unreleased work.
 
-The recommended approach is to create an OCL user that is only used for subscriptions. All requests must use the API token displayed on the OCL user profile page.
+Both start by downloading the export of the latest released version.
 
-An `external_id` field is supported in most resources to allow correct matching of resources between OCL and client systems. The following resources include the `external_id` field: `sources`, `concepts`, `mappings`, `concept names`, and `concept descriptions`.
+Every request needs an API token, sent as `Authorization: Token <token>` (see the [API overview](../../overview.md)). Use an OCL account set up just for the subscription. To match records between OCL and your system, use their `external_id`, which sources, concepts, mappings, concept names and concept descriptions all carry.
 
+## Follow releases
 
+1. Get the latest released version and note its `id` (for example `v2026-09-24`). If you already have that version, there's nothing new.
+   ```
+   GET /orgs/:org/sources/:source/latest/
+   ```
+2. Request that version's export:
+   ```
+   GET /orgs/:org/sources/:source/:version/export/
+   ```
+   * `302 Found`: the export is ready, and the `Location` header holds a signed download URL.
+   * `208 Already Reported`: the export is still being created. Try again in a few minutes.
+   * `204 No Content`: there is no export. Create one with a `POST` to the same URL, then request it again once it's ready.
+3. Download the zip from the signed URL; most HTTP clients follow the redirect for you. It holds `export.json`: the version's details and every concept and mapping in it, retired ones included. The signed URL expires, so request the export again each time instead of saving the URL.
 
-## Subscription Process
-_For the first synchronization, fetch the most recent export of a **released** source version_
-* Fetch the latest released version of the source -- record the source version "id" field
-```
-GET /orgs/[:org]/sources/[:source]/latest/
-```
-* Request the full export of the latest released source version. If the export is ready, the API responds `302 Found` and its `Location` response header holds a signed URL to download the file. If the export is still being created, the API returns `208 Already Reported`; request it again after an appropriate interval. If there is no export, the API returns `204 No Content`; create one with `POST /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/`, then request it again once it is ready. Refer to [[Export-API]] for more info on this request.
-```
-GET /orgs/[:org]/sources/[:source]/[:sourceVersion]/export/
-```
-* Download the export file from the signed URL (a zip file of the JSON); most HTTP clients follow the redirect automatically. Record the `lastUpdated` timestamp, which is the last part of the filename (e.g. `2026-09-30_123456`), and convert it to ISO 8601 (`2026-09-30T12:34:56Z`) for use with `updatedSince`. Refer to [[Export-API]] for more info on this request. Note that the signed URL expires after a set time limit -- use it immediately, and request the export again each time you want to download an export file.
-* Fetch all updates to the source that are more recent than the export using the `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)). Use the `limit` and `offset` parameters to retrieve the results page by page: start at `offset=0`, add your `limit` to `offset` for each next page, and stop when a page returns fewer results than your `limit`. Concepts and mappings page separately, so keep going until both come back shorter than `limit`. The source endpoint doesn't send the standard paging headers (`num_found`, `num_returned`, `next`), so the client manages paging.
-    * Keep `limit` at 100 or less. OCL is lowering the maximum page size to 100, and a larger `limit` will then return only 100 results, which a client would mistake for the last page.
-    * `limit=0` doesn't return all results: it returns the default page of 30.
-    * The `Compress: true` request header doesn't turn off paging at this endpoint. The response is a zip file, but it holds the same page of results as without the header.
-```
-GET /orgs/[:org]/sources/[:source]/?includeConcepts=true&includeMappings=true&includeRetired=true&limit=100&offset=0&updatedSince=[:lastUpdated]
-```
+Check for a new release on a schedule; once a day is plenty. Don't ask a released version for changes with `updatedSince`: a released version never changes. The [Export API](../exportapi.md) has more on exports.
 
-_For subsequent synchronizations, fetch records that have been updated since the `lastUpdated` timestamp_
-* Fetch all updates to the source that are more recent than `lastUpdated` timestamp (e.g. ISO 8601 timestamp (e.g. `2011-11-16T14:26:15Z`)) from the previous synchronization. Page through the results with `limit` and `offset` as described above. Record the current timestamp to be used in subsequent requests.
-```
-GET /orgs/[:org]/sources/[:source]/?includeMappings=true&includeConcepts=true&includeRetired=true&limit=100&offset=0&updatedSince=[lastUpdated]
-```
+## Follow every change
 
+Start with steps 1–3 above, then fetch everything that changed after the export:
 
+1. Take the timestamp at the end of the export's filename and convert it to ISO 8601 (UTC). For example, `orgs_CIEL_sources_CIEL_v2026-09-24_2026-09-24_030336.zip` gives `2026-09-24T03:03:36Z`. The API names the file in the download's `Content-Disposition` header.
+2. Note the current time in UTC, minus a few minutes to allow for clock differences: the next sync starts from it. Then ask the source's concepts and mappings for everything updated since the timestamp:
+   ```
+   GET /orgs/:org/sources/:source/concepts/?updatedSince=2026-09-24T03:03:36Z&includeRetired=true&verbose=true&limit=100
+   GET /orgs/:org/sources/:source/mappings/?updatedSince=2026-09-24T03:03:36Z&includeRetired=true&verbose=true&limit=100
+   ```
+   Each response is one page. Follow its `next` response header to the next page, until a response has none.
+3. Save each record over your copy of it. A record with `"retired": true` has been retired, which is how OCL deletes concepts and mappings.
 
-## Example
-* A subscription client, such as the OpenMRS OCL Subscription module, should be configured with the source URL (e.g. `/orgs/CIEL/sources/CIEL/), an API token, and a synchronization schedule (e.g. weekly or monthly)
-* On the first synchronization:
-    * Subscription client will request details on the most recent released source version: `GET /orgs/CIEL/sources/CIEL/latest/`
-    * Subscription client will request the export of the most recent released source version, which redirects to a signed download URL (the `Location` response header): `GET /orgs/CIEL/sources/CIEL/[:sourceVersion]/export/`
-        * Note that if the export file is not ready (`208`), the subscription client will need to request the export file again after an appropriate interval; if there is no export (`204`), it must first create one with a `POST` to the same URL
-    * Subscription client will download the export file from the signed URL, which is returned as a zip of the JSON results -- the signed URL can be discarded, as it is re-generated for each request
-    * Subscription client will decompress the file and process the results
-    * Subscription client may then request any changes to the source that occurred after the `lastUpdated` timestamp of the export file: `GET /orgs/CIEL/sources/CIEL/?includeConcepts=true&includeMappings=true&includeRetired=true&updatedSince=[:lastUpdated]` -- these results should be processed in the same manner as above; the `lastUpdated` date should be stored for subsequent synchronizations
-* On subsequent synchronizations:
-    * Later, subscription client may request any changes to the source that occurred after the `lastUpdated` timestamp of the previous synchronization: `GET /orgs/CIEL/sources/CIEL/?includeConcepts=true&includeMappings=true&includeRetired=true&updatedSince=[:lastUpdated]` -- these results should be processed in the same manner as above; the `lastUpdated` date should be stored for subsequent synchronizations
+For each later sync, repeat steps 2 and 3, starting from the time you noted in the previous sync.
 
+About these requests:
+* `includeRetired=true` is needed to see retirements. A concept or mapping that was hard-deleted is gone entirely, so it never appears here.
+* `verbose=true` adds the names, descriptions and extras you need to update your copy.
+* Each record is the full current version, not a list of what changed. The same record can come back twice: `updatedSince` includes records updated at that exact time, and edits made while you page can push a record onto the next page. Overwrite rather than append.
+* Keep `limit` at 100 or less: OCL is lowering the maximum page size to 100. These lists page with `next` (or `page`) and ignore `offset`. See the [API overview](../../overview.md) for paging.
+* An `updatedSince` value the API can't read is ignored, and the whole list comes back. If `num_found` on the first page is unexpectedly large, check the timestamp.
 
+Earlier versions of this guide fetched changes with a single request to the source, `GET /orgs/:org/sources/:source/?includeConcepts=true&includeMappings=true&updatedSince=…`. Don't use it. It returns `404 Not Found` when the source's own details haven't changed since `updatedSince`, and its records have no names or descriptions.
 
-## Subscription Client Testing Process
+## Testing a client
 
-### Overview
-This page outlines a step-by-step process for testing all key functionality of OCL from the point of view of a **Subscription Client** -- that is, any external software/module that will connect to OCL via the API to fetch exports and source updates, and perform basic content updates. Note that there may be additional functionality performed by the subscription client, such as an import or logging, that should be tested in addition to the steps outlined below.
+Use a source you can edit, such as one in a test organization:
 
-#### A note on Source Versions
-Also note about source versions:
-Unfortunately source versions were not implemented to spec (meaning, they work differently than Github tags) -- so they need a bit of explanation.
-
-* First, the most recent source version is a container of all edits that you make until you create a new source version. Originally, source versions were supposed to be a frozen snapshot in time (like Github tags), but there was something lost in translation with the developer. Meaning, that to create a snapshot that does not change, you must create a new source version (let's call it v9) and then create an additional version (v9-head) which will effectively freeze v9 and cause v9-head to contain all subsequent edits until a new source version is created.
-* Second, only one source version can be "released" per source (this will be changed in the future).
-* Third, source versions should always be created with previous_version ID set to the most recent source version and with released = false -- not doing so can corrupt the entire source.
-
-### Process
-<ol>
-
-<li>Manually create user account on OCL to get an API token
-<ul>
-<li>From OCL website, sign up for new OCL user account</li>
-<li>From your email account, verify your new account</li>
-<li>Sign-in to OCL using your new account and browse to your user profile (link is at the top-right)</li>
-<li>Record your user's API token from your user profile page</li>
-</ul>
-</li>
-
-
-<li>Create a new organization and source<ul>
-
-<li>Create new org (e.g. "MyOrg") using the "+" dropdown at top-right -- or using the API:
-<pre>POST /orgs/</pre>
-<pre>
-{
-    "id": "MyOrg",
-    "full_name": "My Organization"
-}
-</pre></li>
-
-<li>Create new source (e.g. "MySource") using the "Add Source" link on your organization's page -- or from API:
-<pre>
-POST /orgs/MyOrg/sources/
-</pre>
-<pre>
-{
-    "id": "MySource",
-    "full_name": "My Source"
-}
-</pre>
-</li>
-</ul></li>
-
-
-<li>Populate your new source with some starter content<ul>
-
-<li>Add minimum of 3 concepts to test the different types of concept edits (New, Update, Delete/Retire, No Change) -- can do this on the OCL website using the "Add Concept" link on the source page, or via the API:
-<pre>
-POST /orgs/MyOrg/source/MySource/concepts/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/concepts/
-</pre>
-<pre>
-{
-}
-</pre><pre>
-POST /orgs/MyOrg/source/MySource/concepts/
-</pre>
-<pre>
-{
-}
-</pre>
-</li>
-
-<li>Add minimum of 6 mappings, 1 internal and 1 external mapping per concept, to test the different types of mapping edits (Create, Update, Delete/Retire, No Change) for both internal and external mappings -- can do this on the OCL website using the "Add Mappings" link on individual concept pages, or via the API:
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-<pre>
-POST /orgs/MyOrg/source/MySource/mappings/
-</pre>
-<pre>
-{
-}
-</pre>
-</li>
-</ul></li>
-
-
-<li>Create new source versions to save the current state of the source and prepare for export<ul>
-<li>Fetch the automatically created source version and record ID
-<pre>
-GET /orgs/MyOrg/sources/MySource/versions/
-</pre>
-<pre>
-{
-    # source version output goes here
-}
-</pre>
-</li>
-<li>Create first new source version setting `previous_version` to `id` from above
-<pre>
-POST /orgs/CIEL/sources/CIEL/versions/
-</pre>
-<pre>
-{
-    "id":"v1.0",
-    "previous_version": "5582be2550d61b5538ed694c",
-    "description": "CIEL Dictionary release 2015-05-14",
-    "released": false
-}
-</pre></li>
-
-<li>Verify that source version `v1.0` has finished processing -- `_ocl_processing` should be `false` or null/not returned
-<pre>
-GET /orgs/CIEL/sources/CIEL/v1.0/
-</pre>
-<pre>
-{
-    "id":"v1.0",
-    ...
-    "_ocl_processing": false
-}
-</pre>
-</li>
-
-<li>After `v1.0` has finished processing, create a second new source version called `v1.1` setting `previous_version` to the `id` from the one you just created - this effectively freezes `v1.0` and all new changes will be saved to `v1.1`
-<pre>
-POST /orgs/CIEL/sources/CIEL/versions/
-</pre>
-<pre>
-{
-    "id":"v1.1",
-    "previous_version": "v1.0",
-    "description": "My Source v1.1 -- under development",
-    "released": false
-}
-</pre>
-</li>
-
-<li>Now release `v1.0`
-<pre>
-POST /orgs/CIEL/sources/CIEL/v1.0/
-</pre>
-<pre>
-{
-    "released": true
-}
-</pre>
-</li>
-</ul></li>
-
-
-
-<li>Cache export of the newly released export version<ul>
-<li>Create and cache the export of source version `v1.0`
-<pre>
-POST /orgs/MyOrg/sources/MySource/v1.0/export/
-</pre>
-</li>
-</ul></li>
-
-<li>Make changes to concepts and mappings - these will be saved to source version `v1.1`</li>
-
-<li>Fetch the export and changes made since the export<ul>
-<li>Fetch the export - the request redirects (`302 Found`) to the URL of the export file, given in the `Location` header
-<pre>
-GET /orgs/MyOrg/sources/MySource/v1.0/export/
-</pre>
-</li>
-<li>Fetch changes to source since the export using the lastUpdated timestamp from the export file as an ISODate
-<pre>
-GET /orgs/MyOrg/sources/MySource/?includeConcepts=true&includeMappings=true&updatedSince=[:LastUpdatedTimestamp-as-ISODate]
-</pre>
-</li>
-</ul></li>
-
-<li>Test the subscription client configuration and initial synchronization<ul>
-<li>Subscription Client Configuration</li>
-<li>Initial Synchronization</li>
-</ul></li>
-
-<li>Make additional updates to concepts and mappings to test subsequent synchronization of the subscription module<ul>
-<li>Make some concept changes</li>
-<li>Make some mapping changes</li>
-</ul></li>
-
-<li>Test the subscription client subsequent synchronization<ul>
-<li>Perform subsequent synchronization</li>
-</ul></li>
-
-</ol>
+1. Create the source and add a few concepts and mappings.
+2. Create a released version. OCL creates its export, and the export request returns `302` once it's ready.
+   ```
+   POST /orgs/:org/sources/:source/versions/
+   {"id": "v1.0", "description": "Test release", "released": true}
+   ```
+3. Run the client's first sync. Its copy should match the source.
+4. In the source, edit a concept, retire one and add one; edit a mapping and retire one.
+5. Sync again. A client following every change should pick up exactly those edits. A client following releases should find nothing new.
+6. Create and release `v1.1` the same way, then sync again. Now both kinds of client should have the edits.
