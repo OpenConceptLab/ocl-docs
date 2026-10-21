@@ -31,7 +31,7 @@ For example:
 orgs_CIEL_sources_CIEL_v2026-03-23_2026-03-23_073036.zip
 orgs_PIH_collections_PIHEMR_Concepts_1.0_autoexpand-1.0_2026-09-30_123456.zip
 ```
-To fetch what changed in a source after an export, convert `lastUpdated` to ISO 8601 (`2026-09-30_123456` becomes `2026-09-30T12:34:56Z`) and pass it as `updatedSince` to the source's concepts and mappings lists. [Subscriptions](other/subscriptions.md) describes how to use exports and these lists to keep a client system in sync.
+[Subscriptions](other/subscriptions.md) describes how to pass an export's `lastUpdated` as `updatedSince` to the source's concepts and mappings lists, to keep a client system in sync.
 
 ### Future Considerations
 * Add `lastUpdated` into the response header of GET request (right now lastUpdated is only stored in the filename)
