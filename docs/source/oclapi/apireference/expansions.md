@@ -10,7 +10,7 @@ For the full end-to-end evaluation pipeline — how references are resolved and 
 
 ### Version locking
 
-An expansion keeps every unversioned reference to the same source on one source version: the first unversioned reference to a source sets the version, and later unversioned references to it use the same one. A reference that names a source version uses that version, and the `system-version` parameter takes precedence over the lock. Each expansion lists the source and collection versions it used in `explicit_source_versions`, `evaluated_source_versions`, `explicit_collection_versions` and `evaluated_collection_versions`. Rebuilding an expansion (see [Rebuild an expansion](#rebuild-an-expansion)) starts the lock over, normally on each source's latest release. [Version Locking](collectionReferenceEvaluation.md) has the full rules, including when a lock carries over to references added later and how to check expansions built before version locking.
+An expansion keeps every unversioned reference to the same source on one source version: the first unversioned reference to a source sets the version, and later ones use the same one. References that name a source version, and the `system-version` parameter, take precedence. [Version Locking](collectionReferenceEvaluation.md) has the full rules, including what a rebuild does, when a lock carries over to references added later, and how to check expansions built before version locking.
 
 The list of supported expansion parameters are listed below, along with their current development status in OCL.
 
