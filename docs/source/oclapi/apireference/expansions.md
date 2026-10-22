@@ -8,6 +8,10 @@ Expansions can be generated manually, both in the API and in the TermBrowser, or
 
 For the full end-to-end evaluation pipeline — how references are resolved and processed into expansion contents — see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
 
+### Version locking
+
+An expansion keeps every unversioned reference to the same source on one source version: the first unversioned reference to a source sets the version, and later unversioned references to it use the same one. A reference that names a source version uses that version, and the `system-version` parameter takes precedence over the lock. Each expansion lists the source and collection versions it used in `explicit_source_versions`, `evaluated_source_versions`, `explicit_collection_versions` and `evaluated_collection_versions`. Rebuilding an expansion (see [Rebuild an expansion](#rebuild-an-expansion)) starts the lock over, normally on each source's latest release. [Version Locking](collectionReferenceEvaluation.md) has the full rules, including when a lock carries over to references added later and how to check expansions built before version locking.
+
 The list of supported expansion parameters are listed below, along with their current development status in OCL.
 
 ## Generate an expansion for a collection version
@@ -110,7 +114,7 @@ Adapted from [FHIR’s value set expansion specification](https://www.hl7.org/fh
 | excludePostCoordinated | TBD                  | Controls whether or not the value set expansion includes post coordinated codes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | displayLanguage        | Deployed             | Specifies the language to be used for description in the expansions  i.e. the language to be used for ValueSet.expansion.contains.display                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | exclude-system         | Deployed             | Code system, or a particular version of a code system to be excluded  from the value set expansion. The format is the same as a canonical  URL: [system]\|[version] - e.g. http://loinc.org\|2.56                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| system-version         | Deployed             | Specifies a version to use for a system, if the value set does not  specify which one to use. The format is the same as a canonical URL:  [system]\|[version] - e.g. http://loinc.org\|2.56                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| system-version         | Deployed             | Specifies a version to use for a system, if the value set does not  specify which one to use. The format is the same as a canonical URL:  [system]\|[version] - e.g. http://loinc.org\|2.56. In OCL, a version named here takes precedence over the expansion's version lock for references that don't name a version.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | check-system-version   | Upcoming             | Edge Case: Specifies a version to use for a system. If a value set  specifies a different version, an error is returned instead of the  expansion. The format is the same as a canonical URL: [system]\|[version]  - e.g. http://loinc.org\|2.56                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | force-system-version   | Upcoming             | Edge Case: Specifies a version to use for a system. This parameter  overrides any specified version in the value set (and any it depends  on). The format is the same as a canonical URL: [system]\|[version] -  e.g. http://loinc.org\|2.56. Note that this has obvious safety issues, in  that it may result in a value set expansion giving a different list of  codes that is both wrong and unsafe, and implementers should only use  this capability reluctantly. It primarily exists to deal with situations  where specifications have fallen into decay as time passes. If the  value is override, the version used SHALL explicitly be represented in  the expansion parameters                                                                                                                                                                                  |
 
@@ -247,7 +251,54 @@ Status: 200 OK
     "active_concepts": 10,
     "active_mappings": 10
   },
-  "is_processing": false
+  "is_processing": false,
+  "unresolved_repo_versions": [],
+  "explicit_source_versions": [],
+  "evaluated_source_versions": [
+    {
+      "type": "Source Version",
+      "short_code": "MySource",
+      "id": "v2",
+      "version": "v2",
+      "url": "/orgs/MyOrg/sources/MySource/",
+      "version_url": "/orgs/MyOrg/sources/MySource/v2/",
+      "released": true,
+      "retired": false
+    }
+  ],
+  "explicit_collection_versions": [],
+  "evaluated_collection_versions": []
+}
+```
+
+The repository version lists show the source and collection versions the expansion used: `explicit_*` for references that name a version, `evaluated_*` for unversioned references. Each entry is a source or collection version summary (shortened above). `unresolved_repo_versions` lists repositories OCL couldn't resolve. See [Version Locking](collectionReferenceEvaluation.md) for how OCL fills these lists.
+
+## Rebuild an expansion
+```
+POST /orgs/:org/collections/:collection/:collectionVersion/expansions/:expansionID/re-evaluate/
+POST /users/:user/collections/:collection/:collectionVersion/expansions/:expansionID/re-evaluate/
+POST /user/collections/:collection/:collectionVersion/expansions/:expansionID/re-evaluate/
+```
+Clears the expansion's members, its repository version lists and `unresolved_repo_versions`, then evaluates every reference again with the expansion's parameters. The version lock starts over, so references that don't name a version move to the latest release of their source, or to the version the `system-version` parameter names. Only the collection's owner, members of its owning organization and staff can rebuild an expansion. TBv3 calls this *Rebuild*.
+
+### Response
+* `204 No Content` - the rebuild finished within the request
+* `202 Accepted` - the rebuild is still running; the response describes the task
+* `409 Conflict` - the expansion is already being processed
+
+## Check an expansion for newer repository versions
+```
+GET /orgs/:org/collections/:collection/:collectionVersion/expansions/:expansionID/resolved-repo-updates/
+GET /users/:user/collections/:collection/:collectionVersion/expansions/:expansionID/resolved-repo-updates/
+GET /user/collections/:collection/:collectionVersion/expansions/:expansionID/resolved-repo-updates/
+```
+For each repository version in the expansion's four lists, OCL resolves the repository again with `$resolveReference`, ignoring any version. The response maps each listed version for which that gives a different version, normally a newer release, to the version it gives now. An empty object means every listed version is current.
+
+### Response
+Status: 200 OK
+```
+{
+    "/orgs/MyOrg/sources/MySource/v1/": "/orgs/MyOrg/sources/MySource/v2/"
 }
 ```
 

@@ -30,6 +30,8 @@ The API exposes a global `$resolveReference` operation to resolve one or more re
 ### Internal usage
 The `$resolveReference` operation is used internally by OCL to resolve all collection references and mapping references. When a collection reference specifies a `system` (source) or `valueset` (collection), `$resolveReference` is invoked to locate the corresponding repository version. This means the resolution logic described above applies consistently whether a user calls the operation directly or OCL evaluates it internally during collection expansion.
 
+During an expansion, OCL also applies version locking to references that don't name a source version: the `system-version` expansion parameter, then the version the expansion already uses for that source, take precedence over `$resolveReference`'s default (the latest released version, or HEAD if there is none). The `$resolveReference` operation itself doesn't apply version locking. See [Version Locking](collectionReferenceEvaluation.md).
+
 For the full end-to-end evaluation pipeline for collection references, see [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
 
 ### Permissions
