@@ -2,7 +2,7 @@
 
 *This page is a stub. It lists the ways OCL can be run today; each option still needs a full write-up.*
 
-The [OCL Digital Public Good](https://github.com/OpenConceptLab/.github/blob/main/DIGITAL-PUBLIC-GOOD.md) (the OCL Terminology Service, TermBrowser, Mapper and client tools, and their documentation) is open source: its code is under MPL-2.0 and its documentation under CC BY 4.0. You can use the hosted service, have a deployment run for you, or run it entirely on your own infrastructure — and move between these as your needs change. The terminology content and the APIs are the same in every case.
+The [OCL Digital Public Good](https://github.com/OpenConceptLab/.github/blob/main/DIGITAL-PUBLIC-GOOD.md) (the OCL Terminology Service, TermBrowser, Mapper and client tools, and their documentation) is open source: its code is under MPL-2.0 with the [OCL Healthcare Disclaimer](https://openconceptlab.org/license), and its documentation under CC BY 4.0. You can use the hosted service, have a deployment run for you, or run it entirely on your own infrastructure — and move between these as your needs change. The terminology content and the APIs are the same in every case.
 
 ### OCL Online (hosted by OCL)
 
