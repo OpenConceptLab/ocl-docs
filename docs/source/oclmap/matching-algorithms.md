@@ -41,9 +41,9 @@ Pick it when your terms are worded differently from the target terminology, as l
 
 Bridge terminology search uses CIEL, an interface terminology with mappings to many reference terminologies, as a bridge. It runs a semantic search of CIEL, limited to CIEL concepts that have mappings into your target repository, and follows those mappings: the concepts they point to in your target repository become candidates. It can find target concepts that a direct search of the target repository misses.
 
-In the candidate list, a candidate found this way shows the CIEL concept it came through and the map type of that mapping. The CIEL concepts themselves are never proposed as matches. They appear when you group candidates by algorithm, and the OCL AI Assistant gets them as context.
+In the candidate list, a candidate found this way shows the CIEL concept it came through and the map type of that mapping. The CIEL concepts themselves are never proposed as matches. They appear when you group candidates by algorithm.
 
-Pick it when CIEL has mappings into your target repository. It finds candidates only through those mappings, so it isn't available for every target repository.
+Pick it when CIEL has mappings into your target repository; it isn't available for every target repository.
 
 ### ScispaCy LOINC search
 
@@ -71,12 +71,9 @@ AutoMatch sends rows to OCL Search, OCL Semantic and custom algorithms in batche
 
 **One algorithm** is the simplest place to start: every candidate comes from a single method. Use OCL Semantic Algorithm if your target repository supports it, and OCL Search Algorithm if it doesn't.
 
-**Several algorithms** widen the net. You can select up to five. Each one runs on every row, and their candidates are merged into one list per row. Add a second algorithm when one method alone misses matches, for example OCL Semantic Algorithm plus Bridge terminology search, or OCL Semantic Algorithm plus ScispaCy LOINC search for laboratory tests mapped to LOINC.
+**Several algorithms** widen the net. You can select up to five. Add a second algorithm when one method alone misses matches, for example OCL Semantic Algorithm plus Bridge terminology search.
 
-Two rules limit the combinations:
-
-- **OCL Search and OCL Semantic exclude each other.** Once you select one, the other can't be selected.
-- **OCL Semantic needs semantic search on the target repository version**, as described above.
+**OCL Search and OCL Semantic can't be selected together**, and OCL Semantic needs a target repository version with semantic search.
 
 ### How candidates are merged
 
