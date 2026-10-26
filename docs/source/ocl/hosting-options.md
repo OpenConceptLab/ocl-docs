@@ -2,7 +2,7 @@
 
 *This page is a stub. It lists the ways OCL can be run today; each option still needs a full write-up.*
 
-OCL is open source under MPL-2.0. You can use the hosted service, have a deployment run for you, or run it entirely on your own infrastructure — and move between these as your needs change. The terminology content and the APIs are the same in every case.
+The [OCL Digital Public Good](https://github.com/OpenConceptLab/.github/blob/main/DIGITAL-PUBLIC-GOOD.md) (the OCL Terminology Service, TermBrowser, Mapper and client tools, and their documentation) is open source: its code is under MPL-2.0 with the [OCL Healthcare Disclaimer](https://openconceptlab.org/license), and its documentation under CC BY 4.0. You can use the hosted service, have a deployment run for you, or run it entirely on your own infrastructure — and move between these as your needs change. The terminology content and the APIs are the same in every case.
 
 ### OCL Online (hosted by OCL)
 
@@ -21,6 +21,8 @@ Contact us at info@openconceptlab.org to discuss a managed deployment.
 ### Self-hosting (run by you)
 
 Run OCL on your own servers, in your own cloud account, or inside an air-gapped network. There is no license fee. You are responsible for deployment, upgrades, backups and monitoring.
+
+Self-hosting covers the OCL Digital Public Good. Proprietary OCL components, such as the OCL AI Assistant, aren't part of a self-hosted install. A model for deploying them is being developed.
 
 See [Self-hosting OCL](self-hosting.md) for configuration notes.
 
