@@ -96,7 +96,7 @@ Changing the thresholds regroups candidates and rows at once, but it doesn't cha
 
 ## Available on OCL Online
 
-[OCL Online](https://openconceptlab.org/) is where the OCL tools run for the global community, hosted by OCL. Its Mapper adds two algorithms and the OCL AI Assistant, which run on services that OCL hosts, so a Mapper you install yourself doesn't offer them. Your OCL Online account decides which of them you can use, and it can also limit the batch size and concurrent requests you can set and how much matching you can run.
+[OCL Online](https://openconceptlab.org/) is where the OCL tools run for the global community, hosted by OCL. Its Mapper adds two algorithms and the OCL AI Assistant, which run on services that OCL hosts, so a Mapper you install yourself doesn't offer them. Your OCL Online account decides which of them you can use.
 
 ### Bridge terminology search
 
