@@ -9,8 +9,8 @@ The `$match` endpoint allows you to find similar or matching concepts across dif
 ### Authentication & Access
 
 - **Authentication required.** The user must be signed in.
-- The user must be **mapper-approved** and not on the mapper waitlist. Returns `403 Forbidden` otherwise.
-- Plan-based throttling is applied per user.
+- The user must have permission to use the Mapper. Returns `403 Forbidden` otherwise.
+- The server may limit how often each user can call `$match`. Returns `429 Too Many Requests` beyond that limit.
 
 ### Row Indexing
 
@@ -21,7 +21,7 @@ For every request, the API automatically adds a zero-based `__index` field to ea
 The API processes rows in batches. The client interface allows you to set the batch size, which is useful for APIs with longer computation times—using a lower batch size helps avoid timeouts. By default, the UI sends two concurrent batch requests at a time. For example, with 1000 rows and a batch size of 50, two batches (each with 50 rows) are sent concurrently; as soon as one finishes, the next batch is sent, maintaining exactly two in-flight requests.
 
 ### $match Algorithm Fields
-- `id` - Exact match on `concept.id` in the target repository
+- `id` - Search on `concept.id` in the target repository, word by word as in a text search: `ABC-123` can also match `DEF-123`
 - `name` - Keyword or semantic search on concept primary display name
 - `synonyms` - Keyword or semantic search on all concept names and synonyms
 - `description` - String search on all concept descriptions
@@ -52,10 +52,10 @@ POST /concepts/$match/
 | `includeRetired` | Boolean | No | `false` | Match against retired concepts as well |
 | `bestMatch` | Boolean | No | `false` | Forces a minimum search score threshold to be applied, filtering out low-quality matches |
 | `semantic` | Boolean | No | `false` | Use semantic (LM-based) matching algorithm. The target repository must have the semantic match algorithm enabled. |
-| `numCandidates` | Integer | No | `3000` | Only needed when semantic=true. Number of approximate nearest neighbor candidates. Range: 1 to 3000. For more information: https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html#tune-approximate-knn-for-speed-accuracy |
+| `numCandidates` | Integer | No | `500` | Only needed when semantic=true. Number of approximate nearest neighbor candidates. Range: 1 to 3000. For more information: https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html#tune-approximate-knn-for-speed-accuracy |
 | `kNearest` | Integer | No | `100` | Only needed when semantic=true. Number of nearest neighbors to return from vector search. Range: 1 to 100. |
 | `encoder_model` | String | No | (none) | Custom encoder model name for semantic vector search |
-| `reranker` | Boolean | No | `false` | Enable cross-encoder reranking of results. Only applicable when semantic=true. |
+| `reranker` | Boolean | No | `false` | Rerank each row's results with a cross-encoder model, against the row's `name`. Rows without a `name` aren't reranked. |
 
 ### Request Body Schema
 
@@ -64,7 +64,7 @@ POST /concepts/$match/
 | `target_repo_url`              | 0..1      | string               | Repository URL to match against. Uses `$resolve` to identify the specific repo version. Either `target_repo_url` or `target_repo` must be provided. **Example:** `/orgs/CIEL/sources/CIEL/`                           |
 | `target_repo`                  | 0..1      | object               | Alternative to `target_repo_url`. Object with `owner`, `source`, `source_version`, and `owner_type` fields. Either `target_repo_url` or `target_repo` must be provided.                                              |
 | `rows`                         | 1..\*     | list      | List of concept-like key-value pairs; each row may have different fields. Only fields that are recognized by the matching algorithm are used, all other fields are ignored. **Example:** `[{"s_n":"1","name":"malaria"},{"s_n":"2","name":"blood type"}]`                                                            |
-| `rows.id`                      | 0..1      | string               | Exact match against a concept ID. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
+| `rows.id`                      | 0..1      | string               | Search on concept IDs, word by word as in a text search, so `ABC-123` can also match `DEF-123`. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
 | `rows.name`                    | 0..1      | string               | Semantic or fuzzy search on primary display name. **Example Input Data:** `Anemia due to blood loss`                                                                                                                 |
 | `rows.synonyms`                | 0..1     | string or list       | Semantic or fuzzy search across all names/synonyms. Accepts a single string or a list of strings. **Example Input Data:** `"Anemia, blood loss"` or `["Anemia, blood loss", "Anémie secondaire à une hémorragie"]`    |
 | `rows.description`             | 0..1      | string               | Text search on concept descriptions. **Example Input Data:** `"Anemia due to bleeding or a hemorrhagic process"`                                                                                                     |
@@ -112,7 +112,7 @@ POST /concepts/$match/
 | results.search_meta.search_normalized_score | 1 | decimal | Normalized score on a 0-100 scale |
 | results.search_meta.search_rerank_score | 0..1 | decimal | Cross-encoder rerank score (only present when `reranker=true`) |
 | results.search_meta.match_type | 1 | string | Match confidence: `very_high`, `high`, `medium`, or `low` (see below) |
-| results.search_meta.algorithm | 1 | string | Algorithm used: `ocl-search`, `ocl-semantic`, or `ocl-ciel-bridge` |
+| results.search_meta.algorithm | 1 | string | Algorithm used: `ocl-search`, `ocl-semantic`, or `ocl-bridge` |
 | results.search_meta.search_highlight | 0..1 | map | Highlighted matching fields (e.g. `name`, `synonyms`) |
 | results.search_meta.search_confidence | 0..1 | string | Confidence value (may be null) |
 | results.source | 0..1 | string | Source mnemonic |
@@ -153,7 +153,7 @@ When `bestMatch=true`, results with `low` match type are excluded.
 ### Notes
 
 - **`search_meta` is always included** in `$match` responses. There is no need to pass `includeSearchMeta=true`.
-- **CIEL bridge algorithm:** When the target repo is CIEL and a `filter.target_repo` points to a non-CIEL repo, the `ocl-ciel-bridge` algorithm is used.
+- **Bridge algorithm:** With `semantic=true` and a `filter.target_repo` other than the repository being searched, `$match` searches that repository's concepts that have mappings into `filter.target_repo`, and reports the algorithm as `ocl-bridge`. The OCL Mapper's Bridge terminology search uses it to search CIEL.
 - **Pagination** via `offset`/`limit` or `page`/`limit` applies to each row's result set independently.
 
 ### Example Response
