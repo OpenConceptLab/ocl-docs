@@ -21,7 +21,7 @@ For every request, the API automatically adds a zero-based `__index` field to ea
 The API processes rows in batches. The client interface allows you to set the batch size, which is useful for APIs with longer computation times—using a lower batch size helps avoid timeouts. By default, the UI sends two concurrent batch requests at a time. For example, with 1000 rows and a batch size of 50, two batches (each with 50 rows) are sent concurrently; as soon as one finishes, the next batch is sent, maintaining exactly two in-flight requests.
 
 ### $match Algorithm Fields
-- `id` - Exact match on `concept.id` in the target repository
+- `id` - Search on `concept.id` in the target repository, word by word as in a text search: `ABC-123` can also match `DEF-123`
 - `name` - Keyword or semantic search on concept primary display name
 - `synonyms` - Keyword or semantic search on all concept names and synonyms
 - `description` - String search on all concept descriptions
@@ -64,7 +64,7 @@ POST /concepts/$match/
 | `target_repo_url`              | 0..1      | string               | Repository URL to match against. Uses `$resolve` to identify the specific repo version. Either `target_repo_url` or `target_repo` must be provided. **Example:** `/orgs/CIEL/sources/CIEL/`                           |
 | `target_repo`                  | 0..1      | object               | Alternative to `target_repo_url`. Object with `owner`, `source`, `source_version`, and `owner_type` fields. Either `target_repo_url` or `target_repo` must be provided.                                              |
 | `rows`                         | 1..\*     | list      | List of concept-like key-value pairs; each row may have different fields. Only fields that are recognized by the matching algorithm are used, all other fields are ignored. **Example:** `[{"s_n":"1","name":"malaria"},{"s_n":"2","name":"blood type"}]`                                                            |
-| `rows.id`                      | 0..1      | string               | Exact match against a concept ID. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
+| `rows.id`                      | 0..1      | string               | Search on concept IDs, word by word as in a text search, so `ABC-123` can also match `DEF-123`. *(May be removed in future versions.)* **Example Input Data:** `12`, `57`, `A01.1`                                                                                                 |
 | `rows.name`                    | 0..1      | string               | Semantic or fuzzy search on primary display name. **Example Input Data:** `Anemia due to blood loss`                                                                                                                 |
 | `rows.synonyms`                | 0..1     | string or list       | Semantic or fuzzy search across all names/synonyms. Accepts a single string or a list of strings. **Example Input Data:** `"Anemia, blood loss"` or `["Anemia, blood loss", "Anémie secondaire à une hémorragie"]`    |
 | `rows.description`             | 0..1      | string               | Text search on concept descriptions. **Example Input Data:** `"Anemia due to bleeding or a hemorrhagic process"`                                                                                                     |

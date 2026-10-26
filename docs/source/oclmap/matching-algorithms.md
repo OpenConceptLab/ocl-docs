@@ -23,7 +23,7 @@ For each row, the Mapper:
 OCL Search runs a keyword search of your target repository in Elasticsearch. It uses the input columns you assign in **Field Configuration**:
 
 - **Name** and **Synonyms**: keyword search of each concept's names and synonyms that tolerates small spelling differences.
-- **ID**: exact match on the concept ID.
+- **ID**: search of concept IDs, word by word as in a text search, so a row with `ABC-123` can also find a concept whose ID is `DEF-123`, not only the exact ID.
 - **Mapping: Code** and **Mapping: List**: concepts that share a mapping with the row, for example to the same LOINC code.
 - **Description**, **Property: Class**, **Property: Datatype** and other properties: string matching.
 
@@ -65,7 +65,7 @@ For each batch of rows, the Mapper sends your service a `POST` request, the same
 
 ### Batch size and concurrent requests
 
-Each selected algorithm has a **Batch Size**, the number of rows AutoMatch sends it in one request, and a **Concurrent Requests** setting, the number of requests it keeps open at once. Lower the batch size for a slow service whose requests time out. See "Batching & Concurrency" in the [`$match` reference](../oclapi/apireference/match.md).
+AutoMatch sends rows to OCL Search, OCL Semantic and custom algorithms in batches. **Batch Size** is the number of rows in one request, and **Concurrent Requests** the number of requests it keeps open at once. Lower the batch size for a slow service whose requests time out. See "Batching & Concurrency" in the [`$match` reference](../oclapi/apireference/match.md). Bridge terminology search and ScispaCy LOINC search match one row at a time, whatever these settings say.
 
 ## One algorithm or several
 
@@ -89,7 +89,7 @@ Each algorithm scores its candidates in its own way, so those scores can't be co
 - When a project has one algorithm, and it's OCL Search or OCL Semantic, the reranker runs in the same request and the candidates arrive scored.
 - Otherwise, with several algorithms or a bridge, ScispaCy or custom algorithm, the Mapper sends the row's merged candidates to OCL's `$rerank` endpoint once every algorithm has answered for the row. Until then, the candidates wait under **Unranked Candidates**.
 
-The unified score measures how well the names match. Codes, mappings and the other columns help the algorithms find candidates, but they don't change the score, so assign the column that holds your terms' names to **Name**. A row without a name gets no unified score, and its candidates stay unranked. The exception is a project whose only algorithm is OCL Search or OCL Semantic: there, such a row's candidates get the search's own score relative to its best candidate, which scores 100.
+The unified score measures how well the names match. Codes, mappings and the other columns help the algorithms find candidates, but they don't change the score, so assign the column that holds your terms' names to **Name**. A row without a name gets no unified score, and its candidates stay unranked. The exception is a project whose only algorithm is OCL Search or OCL Semantic: there, such a row's candidates get the search's own score relative to its best candidate, which scores 100, so AutoMatch always proposes it.
 
 The candidate list sorts by **Unified Score**. To see each algorithm's own score, sort by **Raw Algorithm Score**; the list then groups the candidates by algorithm, since those scores aren't comparable across algorithms.
 
@@ -111,7 +111,7 @@ Changing the thresholds regroups candidates and rows at once, but it doesn't cha
 
 ## Where the OCL AI Assistant fits
 
-The OCL AI Assistant doesn't search for candidates. It works on the candidates the algorithms found: it weighs a row's candidates against the row's fields and your project's **Context**, then recommends one of them as the match and others as alternates, or none if nothing fits, and explains why. It chooses only among candidates in your target repository. The CIEL concepts that Bridge terminology search went through are given to it as context.
+The OCL AI Assistant doesn't search for candidates. It works on the candidates the algorithms found: it weighs a row's candidates against the row's fields and your project's **Context**, then recommends one of them as the match and others as alternates, or none if nothing fits, and explains why. The Mapper gives it the row's candidates in your target repository to choose from, and the CIEL concepts that Bridge terminology search went through as context only.
 
 You can run it:
 
