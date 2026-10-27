@@ -99,6 +99,7 @@ OCL Online service is scalable, fault tolerant and highly-available. OCL Online 
    :hidden:
    :caption: OCL TermBrowser
    
+   oclweb/global-search
    oclweb/configuringtermbrowser
    oclweb/updatingCoreTableValues
    oclweb/FHIRconnectors
