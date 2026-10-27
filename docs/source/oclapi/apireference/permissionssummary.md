@@ -11,23 +11,20 @@ Note: This document is currently a DRAFT version
 * A "private organization" is an organization that has `public_access` set to "None". Note that the `user` resource does not have a `public_access` field and the user profile is always public.
 * A "public repository" is a source or collection that has `public_access` set to "View" or "Edit". A "public resource" refers to any user profile and any public organization, public repository and any sub-resource of a public repository (i.e. concept, mapping, version).
 * A "private repository" is a source or collection that has `public_access` set to "None". A "private resource" refers to any private organization, private repository or any sub-resource (i.e. concept, mapping, version) of a private repository.
-* All POST, PUT, DELETE, and PATCH requests require authentication. Many GET and HEAD requests may be performed without authentication, however GET/HEAD requests still requires authentication for private and other protected resources.
+* All requests for public or private resources require authentication. Each must include an authentication token (see [Authentication and Authorization](https://docs.openconceptlab.org/en/latest/oclapi/overview.html#authentication-and-authorization)); a request without one is refused with `403 Forbidden`.
 
 
 ## Permissions
 
-### Permissions for anonymous users
-* An unauthenticated user is not permitted to make any requests using the `/user/` endpoint.
-* An unauthenticated user is not permitted to perform any POST, PUT, PATCH, or DELETE requests on any endpoint.
-* An unauthenticated user is not permitted to perform GET or HEAD requests on a private organization, a private repository, or any sub-resources of a private organization or private repository.
-* An unauthenticated user is permitted to search using the `/users/` endpoint and to view user profiles (e.g. `GET /users/` and `GET /users/:user/`), since all user profiles are public.
-* An unauthenticated user is permitted to search using the top-level search endpoints. Note that only **public** resources are available through these endpoints.
+### Permissions for authenticated users
+* An authenticated user is permitted to search using the `/users/` endpoint and to view user profiles (e.g. `GET /users/` and `GET /users/:user/`), since all user profiles are public.
+* An authenticated user is permitted to search using the top-level search endpoints. Note that private resources appear in these results only for users who have access to them.
 	* `GET /collections/`
 	* `GET /sources/`
 	* `GET /concepts/`
 	* `GET /mappings/`
 	* `GET /orgs/`
-* An unauthenticated user is permitted to search **public** repositories and any sub-resources of **public** repositories, including versions, concepts, and mappings. For example, these requests are all permitted:
+* An authenticated user is permitted to search **public** repositories and any sub-resources of **public** repositories, including versions, concepts, and mappings. For example, these requests are all permitted:
 	* `GET /:ownerType/:owner/sources/`
 	* `GET /:ownerType/:owner/collections/`
 	* `GET /:ownerType/:owner/sources/versions/`
@@ -36,7 +33,7 @@ Note: This document is currently a DRAFT version
 	* `GET /:ownerType/:owner/sources/:source/[/:sourceVersion/]mappings/`
 	* `GET /:ownerType/:owner/collections/:collection/[:collectionVersion/]concepts/`
 	* `GET /:ownerType/:owner/collections/:collection/[:collectionVersion/]mappings/`
-* An unauthenticated user is permitted to view details of any **public** repository and any sub-resources of **public** repositories, including versions, concepts, and mappings. For example, these requests are all permitted:
+* An authenticated user is permitted to view details of any **public** repository and any sub-resources of **public** repositories, including versions, concepts, and mappings. For example, these requests are all permitted:
     * `GET /:ownerType/:owner/sources/:source/`
     * `GET /:ownerType/:owner/sources/:source/versions/:version/`
     * `GET /:ownerType/:owner/sources/:source/[:sourceVersion/]/concepts/:concept/[:conceptVersion/]`
@@ -45,9 +42,6 @@ Note: This document is currently a DRAFT version
     * `GET /:ownerType/:owner/collections/:collection/versions/:version/`
     * `GET /:ownerType/:owner/collections/:collection/[:collectionVersion/]concepts/:concept/`
     * `GET /:ownerType/:owner/collections/:collection/[:collectionVersion/]mappings/:mapping/`
-
-### Permissions for authenticated users
-* An authenticated user is permitted to perform any operation that an unauthenticated user is permitted to perform (see above).
 * An authenticated user is permitted to perform any operation on resources and sub-resources available through the `/user/` endpoint. For example:
 	* `GET /user/`
 	* `POST /user/sources/`
