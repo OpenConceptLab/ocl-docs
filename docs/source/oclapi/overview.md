@@ -296,7 +296,11 @@ OCL API limits (aka throttles) the number of requests that can be made within a 
 In the current implementation, requests made from all clients (e.g. direct REST API requests or from the OCL TermBrowser) impact the rate limits.
 
 ### Unauthenticated users
-Even public data needs authentication. Requests for organizations, users, repositories (sources and collections) and their contents must include an authentication token (see [Authentication and Authorization](#authentication-and-authorization)); a request without one is refused with `403 Forbidden`.
+OCL's hosted API at `api.openconceptlab.org` needs an authentication token on every request for organizations, users, repositories (sources and collections) and their contents, even for public data (see [Authentication and Authorization](#authentication-and-authorization)). It refuses a request without one with `403 Forbidden`.
+
+An OCL instance whose administrator hasn't turned on required authentication serves public data to unauthenticated requests. Unauthenticated requests are associated with the originating IP address, not with the user or application that made the request.
+
+The default rate limit for unauthenticated requests is 400 requests/minute and 10,000 requests/day. A system administrator may adjust this setting for a specific OCL instance.
 
 ### Authenticated users
 You can use a personal access token to make API requests.
