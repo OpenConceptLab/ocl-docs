@@ -91,6 +91,38 @@ GET /concepts/?q=malaria&limit=15
 GET /concepts/?q=malaria&limit=15&page=2
 ```
 
+### Fetch every result
+This Python script fetches every result of a list, 100 at a time. It follows the `next` header until a response doesn't have one. When the API rate-limits it with `429 Too Many Requests`, it waits as long as the `Retry-After` header says, then tries again. It needs the `requests` package, and your API token in the `OCL_API_TOKEN` environment variable (see [Authentication and Authorization](#authentication-and-authorization)).
+
+```python
+import os
+import time
+
+import requests
+
+API = "https://api.openconceptlab.org"
+TOKEN = os.environ["OCL_API_TOKEN"]
+
+
+def fetch_all(path, **params):
+    """Yield every result of an OCL list, one page of 100 at a time."""
+    session = requests.Session()
+    session.headers["Authorization"] = f"Token {TOKEN}"
+    url, params = API + path, {**params, "limit": 100}
+    while url:
+        response = session.get(url, params=params, timeout=120)
+        if response.status_code == 429:  # rate limited: wait as long as the API asks, then retry
+            time.sleep(int(response.headers.get("Retry-After", 60)))
+            continue
+        response.raise_for_status()
+        yield from response.json()
+        url, params = response.headers.get("next"), None  # `next` already carries the query
+
+
+for concept in fetch_all("/orgs/CIEL/sources/CIEL/concepts/", q="tuberculosis"):
+    print(concept["id"], concept["display_name"])
+```
+
 
 ## Sorting
 Results may be sorted based on a single field using the `sortAsc` and `sortDesc` parameters. Note that not all fields support sorting. The documentation for each resource indicates which fields are supported.
