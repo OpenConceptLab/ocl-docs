@@ -3,8 +3,8 @@ OCL supports a subset of the [FHIR R4B Terminology Services specification](https
 
 * OCL Cabability Statement DRAFT: [https://fhir.openconceptlab.org/fhir/](https://fhir.openconceptlab.org/fhir/)
 
-## FHIR Validator
-The [FHIR Validator](https://github.com/hapifhir/org.hl7.fhir.validator-wrapper) is deployed at: [https://fhir-validator.qa.openconceptlab.org](https://fhir-validator.qa.openconceptlab.org). Requests may use `GET` or `POST`. The FHIR Validator is used by OCL to transform XML FHIR requests to JSON, which is natively understood by OCL.
+## XML support
+OCL FHIR accepts and returns `application/fhir+xml` and `application/xml` as well as JSON, selected with the `Accept` header or `_format`. Conversion happens inside the API.
 
 Example requests:
 ```
