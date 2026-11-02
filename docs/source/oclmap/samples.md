@@ -4,6 +4,8 @@ Use these CSVs to try OCL Mapper with a recommended target repository. **Guided 
 
 For project creation and field configuration, start with the [Quick Start](overview.html#quick-start) in the Mapper Overview.
 
+![Mapper project setup showing where to upload a sample spreadsheet](images/create-mapping-project-upload.jpg)
+
 ## Guided demos
 
 The four guided demo files use `Code,Name`; their `Code` values are CIEL concept IDs. If you choose CIEL as the target, map `Code` to **ID**; for other targets, leave it unmapped. The original lab sample also has a `Specimen` column, and its `Code` values are local codes rather than target IDs. These examples help users inspect candidate results, but they do not guarantee an exact or equivalent match for every row.

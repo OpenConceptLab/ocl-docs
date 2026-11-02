@@ -11,8 +11,6 @@ OCL Mapper is an AI-enabled, open-source terminology mapping tool.
 5. **Configure matching.** Choose one or more algorithms, map **Name** to **Name**, and map additional columns only when their values match fields the algorithms can use. See [Matching Algorithms](matching-algorithms.html) for algorithm choices and [Mapper Sample Files](samples.html) for sample formats and target suggestions.
 6. **Save and review.** Select **Save & Close** to save the project under its owner, run AutoMatch, and review each proposed candidate before confirming your decisions. Use **Save to Collection** to save selected concepts to a collection.
 
-![Mapper project setup with the Input Data upload control highlighted](images/create-mapping-project-upload.jpg)
-
 ## Detailed fields overview
 
 ### Project and input
