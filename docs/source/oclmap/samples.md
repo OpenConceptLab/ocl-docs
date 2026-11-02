@@ -12,11 +12,11 @@ The four guided demo files use `Code,Name`; their `Code` values are CIEL concept
 
 | Sample | Suggested target repositories (`ORG:SOURCE`) | Download |
 |---|---|---|
-| Diagnoses | [WHO:ICD-10-WHO](https://app.openconceptlab.org/#/orgs/WHO/sources/ICD-10-WHO) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_github_diagnoses.csv) |
-| Procedures | [SNOMED-International:SNOMED-GPS](https://app.openconceptlab.org/#/orgs/SNOMED-International/sources/SNOMED-GPS/) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_github_procedures.csv) |
-| Lab tests and imaging | [Regenstrief:LOINC](https://app.openconceptlab.org/#/orgs/Regenstrief/sources/LOINC) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_github_lab_imaging.csv) |
-| Mixed domains (general purpose) | [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_github_general_ciel.csv) |
-| Lab tests (original sample) | [Regenstrief:LOINC](https://app.openconceptlab.org/#/orgs/Regenstrief/sources/LOINC) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_lab_tests.csv) |
+| Diagnoses | [WHO:ICD-10-WHO](https://app.openconceptlab.org/#/orgs/WHO/sources/ICD-10-WHO) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_github_diagnoses.csv) |
+| Procedures | [SNOMED-International:SNOMED-GPS](https://app.openconceptlab.org/#/orgs/SNOMED-International/sources/SNOMED-GPS/) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_github_procedures.csv) |
+| Lab tests and imaging | [Regenstrief:LOINC](https://app.openconceptlab.org/#/orgs/Regenstrief/sources/LOINC) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_github_lab_imaging.csv) |
+| Mixed domains (general purpose) | [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_github_general_ciel.csv) |
+| Lab tests (original sample) | [Regenstrief:LOINC](https://app.openconceptlab.org/#/orgs/Regenstrief/sources/LOINC) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_lab_tests.csv) |
 
 ## Real-world samples
 
@@ -24,8 +24,8 @@ These real-world samples use informal, abbreviated or less predictable terms to 
 
 | Sample | Suggested target repositories (`ORG:SOURCE`) | Download |
 |---|---|---|
-| Diagnoses | [WHO:ICD-10-WHO](https://app.openconceptlab.org/#/orgs/WHO/sources/ICD-10-WHO) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_realistic_diagnoses.csv) |
-| Procedures and imaging | [SNOMED-International:SNOMED-GPS](https://app.openconceptlab.org/#/orgs/SNOMED-International/sources/SNOMED-GPS/) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_realistic_procedures_imaging.csv) |
-| Medications | [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](samples/mapper_sample_realistic_medications.csv) |
+| Diagnoses | [WHO:ICD-10-WHO](https://app.openconceptlab.org/#/orgs/WHO/sources/ICD-10-WHO) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_realistic_diagnoses.csv) |
+| Procedures and imaging | [SNOMED-International:SNOMED-GPS](https://app.openconceptlab.org/#/orgs/SNOMED-International/sources/SNOMED-GPS/) or [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_realistic_procedures_imaging.csv) |
+| Medications | [CIEL:CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL) | [CSV](../mapper_sample_realistic_medications.csv) |
 
 The medication target is a broad starting point, not a claim that every drug name has an exact CIEL match. Compare candidates with the intended clinical meaning before confirming a mapping. For all samples, check that the suggested source and version are available in your Mapper instance; repository access and content can vary.
