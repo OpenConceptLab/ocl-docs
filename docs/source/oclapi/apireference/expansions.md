@@ -65,6 +65,20 @@ POST /user/collections/:collection/:collectionVersion/expansions/
 ```
 Status: 201 Created
 ```
+
+If `system-version` names two different versions of one source (for example `http://loinc.org|2.56,http://loinc.org|2.57`), the request fails and no expansion is created:
+```
+Status: 400 Bad Request
+```
+```
+{
+    "parameters": {
+        "system-version": [
+            "Names more than one version of /orgs/Regenstrief/sources/LOINC/: http://loinc.org|2.56, http://loinc.org|2.57. Use only one version of a source in system-version."
+        ]
+    }
+}
+```
 ```
 {
     "mnemonic": "test",
