@@ -194,7 +194,7 @@ After each reference is evaluated, **expansion parameters** are applied to filte
 | `filter` | Text filter to restrict resources by display name or code (applied via Elasticsearch). |
 | `date` | Only include resources that existed as of this date (applied via date comparison). |
 | `exclude-system` | Exclude resources from the specified code system (applied via source URI matching). |
-| `system-version` | Specifies a version to use for a system when the reference does not specify one. Multiple systems can be comma-separated. Takes precedence over the expansion's version lock (see [Version Locking](#version-locking)). |
+| `system-version` | Specifies a version to use for a system when the reference does not specify one. Multiple systems can be comma-separated, one version per system. Takes precedence over the expansion's version lock (see [Version Locking](#version-locking)). |
 
 Parameters are applied in a specific order: `activeOnly` (before filter), then `date`, `exclude-system`, and `filter` (after filters).
 
@@ -230,7 +230,8 @@ For each reference with a `system`, OCL picks the source version as follows.
 Some details:
 - OCL compares sources by their URL without the version, so a canonical URL and a relative URL for the same source share one lock.
 - Exclude references follow the same rules as include references.
-- OCL resolves each `system-version` entry with `$resolveReference` in the global namespace. An entry that doesn't resolve is listed in `unresolved_repo_versions` with type `expansion.parameters.system-version`, and references to that source skip step 1. If the parameter names more than one version of a source, OCL evaluates each unversioned reference to that source against every one of them.
+- OCL resolves each `system-version` entry with `$resolveReference` in the namespace of the collection's owner, as it resolves the collection's references. With URL registries in use, a canonical URL is looked up in the owner's URL registry, then among the owner's repositories, then in the global URL registry. Otherwise OCL looks for a canonical URL in every namespace. An entry that doesn't resolve is listed in `unresolved_repo_versions` with type `expansion.parameters.system-version`, and references to that source skip step 1.
+- `system-version` may name only one version of a source, as in FHIR's `$expand`. Creating an expansion whose `system-version` names two different versions of one source fails with `400 Bad Request`, and no expansion is created. A collection whose own references name both versions is still valid: each of those references uses the version it names (rule 1).
 
 ### When a lock carries over
 
