@@ -91,6 +91,22 @@ Status: 201 Created
 }
 ```
 
+If `system-version` names two different versions of one source (for example `http://loinc.org|2.56,http://loinc.org|2.57`), the request fails and no expansion is created:
+```
+Status: 400 Bad Request
+```
+```
+{
+    "parameters": {
+        "system-version": [
+            "Names more than one version of /orgs/Regenstrief/sources/LOINC/: http://loinc.org|2.56, http://loinc.org|2.57. Use only one version of a source in system-version."
+        ]
+    }
+}
+```
+
+A `system-version` of `null` or `""` is the same as leaving it out. Any other value that isn't a string (such as a list, a number or `false`) also fails with `400 Bad Request`.
+
 ### Expansion Parameters
 Adapted from [FHIR’s value set expansion specification](https://www.hl7.org/fhir/valueset-operation-expand.html):
 
