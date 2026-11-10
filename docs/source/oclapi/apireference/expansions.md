@@ -105,7 +105,7 @@ Status: 400 Bad Request
 }
 ```
 
-A `system-version` that isn't a string (such as a list) also fails with `400 Bad Request`.
+A `system-version` of `null` or `""` is the same as leaving it out. Any other value that isn't a string (such as a list, a number or `false`) also fails with `400 Bad Request`.
 
 ### Expansion Parameters
 Adapted from [FHIR’s value set expansion specification](https://www.hl7.org/fhir/valueset-operation-expand.html):
