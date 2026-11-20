@@ -126,6 +126,7 @@ OCL Online service is scalable, fault tolerant and highly-available. OCL Online 
    :caption: OCL Online
 
    oclonline/publicationplan
+   oclonline/verified-repositories
 
 .. toctree::
    :maxdepth: 2
