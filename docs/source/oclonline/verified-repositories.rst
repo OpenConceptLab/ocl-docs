@@ -1,19 +1,19 @@
 Verified repository versions
 ============================
 
-A Verified mark means OCL checked a particular released repository version against the publisher's official release. Differences from that release are documented in the version's verification notes.
+A Verified mark on a repository version means its content was checked against the publisher's official release using the process below. Every difference from that release was reviewed, accepted and listed on the version's About tab.
 
 What Verified covers
 --------------------
 
 Verification applies to a released version, not to HEAD or to every version of a repository. It applies to reference terminologies published by another organization and maintained by OCL, not community copies or repositories maintained on OCL by their own publishers.
 
-The mark is OCL's claim, not the publisher's endorsement or a judgment of the terminology's quality. It does not mean that the version is the latest release. A version without the mark is not necessarily of lower quality.
+The mark is not an endorsement by the publisher or a judgment of the terminology's quality. It does not mean that the version is the latest release. A version without the mark is not necessarily of lower quality.
 
-What OCL checks
+What is checked
 ---------------
 
-OCL checks each version using a documented process. The checks below explain what the Verified mark means. The process can be adapted to the way a publisher makes a terminology available.
+Each version is checked using a documented process. The checks below explain what the Verified mark means. The process can be adapted to the way a publisher makes a terminology available.
 
 From the publisher
 ~~~~~~~~~~~~~~~~~~
@@ -33,12 +33,12 @@ The name, official identifier, version and release date are checked against the 
 Complete
 ~~~~~~~~
 
-The content is compared with the official release to check for missing or extra entries. Any differences are accounted for in the verification notes.
+The content is compared with the official release to check for missing or extra entries. Every difference found is reviewed, accepted and listed (see Differences listed).
 
-Changes listed
-~~~~~~~~~~~~~~
+Differences listed
+~~~~~~~~~~~~~~~~~~
 
-The version's verification notes describe how its content differs from the publisher's release, including content that is added, missing or changed, with the reason and count for each difference.
+The version's About tab lists how its content differs from the publisher's release: content that is added, missing or changed, with the reason for each difference. Each difference was reviewed and accepted.
 
 Checked independently
 ~~~~~~~~~~~~~~~~~~~~~
@@ -48,4 +48,4 @@ An automated run checks the version again against the recorded source, and desig
 The verification record
 -----------------------
 
-The About tab shows when the version was verified, the process used and a fingerprint of the private verification record. The fingerprint can help confirm that a shared record is the one behind the mark; it does not show the evidence itself. The version's summary provides its counts, and its verification notes describe differences from the release.
+The About tab shows when the version was verified, the process used and a fingerprint of the private verification record. The fingerprint can help confirm that a shared record is the one behind the mark; it does not show the evidence itself. The version's summary provides its counts, and its About tab lists the reviewed and accepted differences from the release.
