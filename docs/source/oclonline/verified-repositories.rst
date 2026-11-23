@@ -45,6 +45,32 @@ Checked independently
 
 An automated run checks the version again against the recorded source, and designated reviewers approve the record before the version is marked Verified. The full verification record is private and can be made available to the publisher on request.
 
+Verification processes
+----------------------
+
+The process name identifies the recipe used to check a version. A suffix identifies an adaptation for a terminology. The descriptions below explain the recipes; they do not mean that a particular repository version has been verified.
+
+.. _ocl-verification-v1:
+
+ocl-verification-v1
+~~~~~~~~~~~~~~~~~~~
+
+The general recipe compares a released repository version with a recorded copy of the publisher's release. It checks the source, identification, license and citation, and content; differences are reviewed and accepted. An automated check and review are completed before the Verified mark is granted.
+
+.. _ocl-verification-v1-atc:
+
+ocl-verification-v1.atc
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The ATC adaptation follows the general recipe using the WHO Collaborating Centre's ATC and ATC/DDD release files. The repository version is compared with those files, including the classification and defined daily doses. Differences in how the content is represented are reviewed and listed for the version.
+
+.. _ocl-verification-v1-icd11:
+
+ocl-verification-v1.icd11
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ICD-11 adaptation follows the general recipe using a recorded collection of WHO release data, including the Simple Tabulation and data captured from the WHO ICD API. The repository version is compared with that recorded source, including its concepts, names and mappings. The capture is assembled for verification; it is not a single file downloaded from WHO.
+
 The verification record
 -----------------------
 
