@@ -428,6 +428,7 @@ POST /orgs/:org/collections/:collection/versions/
     * **description** (optional) string
     * **external_id** (optional) string
     * **extras** (optional) JSON dictionary
+    * **expansion** (optional) string - how to build the new version's expansion: "lock" (the repository versions HEAD's expansion used), "latest" (evaluate every reference from scratch) or "none" (no expansion). "lock" and "latest" turn the version's `autoexpand` on, and "none" turns it off. Without it, a version that auto-expands (`autoexpand`, true by default) gets "lock" if HEAD has a default expansion, else "latest". See Version Locking in [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md).
 ```JSON
 {
     "id": "1.5",
