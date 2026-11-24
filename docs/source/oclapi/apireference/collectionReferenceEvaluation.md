@@ -325,7 +325,7 @@ OCL checks whether a collection version's default expansion resolved each reposi
 
 `health.members` counts the concepts and mappings by class, and `multiple_named_versions` lists repositories that references name at more than one version on purpose; that alone doesn't make an expansion unhealthy.
 
-`health_is_current` is `true` when the stored health matches the expansion's members. It is `false` when something changed and a recheck is queued, and `null` when it's out of date and nothing is queued; the nightly recheck picks those up. `health` is `null` until it has been computed. OCL computes health only for a collection version's default expansion. With health on, `?includeHealth=true` on an expansion's concepts or mappings list adds each member's `health`: its `class` and the `references` that judged it. TBv3 shows the state as a badge on the collection's Versions tab, with the reasons in the expansion's details.
+`health_is_current` is `true` when the stored health matches the expansion's members. It is `false` when something changed and a recheck is queued, and `null` when it's out of date and nothing is queued; the nightly recheck picks those up. `health` is `null` until it has been computed. OCL computes health only for a collection version's default expansion. `?includeHealth=true` on any expansion's concepts or mappings list adds each member's `health`, worked out for that page: its `class` and the `references` it's attributed to. TBv3 shows the state as a badge on the collection's Versions tab, with the reasons in the expansion's details.
 
 ### Expansions built before version locking
 
