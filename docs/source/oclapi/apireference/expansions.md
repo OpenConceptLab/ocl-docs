@@ -287,7 +287,7 @@ Status: 200 OK
 }
 ```
 
-The repository version lists show the source and collection versions the expansion used: `explicit_*` for references that name a version, `evaluated_*` for unversioned references. Each entry is a source or collection version summary (shortened above). `unresolved_repo_versions` lists repositories OCL couldn't resolve, and references pinned to a concept or mapping version that no version holds. See [Version Locking](collectionReferenceEvaluation.md) for how OCL fills these lists.
+The repository version lists show the source and collection versions the expansion used: `explicit_*` for references that name a version, `evaluated_*` for unversioned references. Each entry is a source or collection version summary (shortened above). `unresolved_repo_versions` lists repositories OCL couldn't resolve, and references pinned to a concept or mapping version that the source version they resolved to doesn't hold. See [Version Locking](collectionReferenceEvaluation.md) for how OCL fills these lists.
 
 ## Rebuild an expansion
 ```

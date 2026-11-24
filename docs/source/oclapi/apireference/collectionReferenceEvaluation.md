@@ -30,7 +30,7 @@ Each `CollectionReference` has the following fields that control evaluation:
 | `resource_version` | string | Pin to a specific version of the concept or mapping. |
 | `filter` | JSON[] | List of property-based filter criteria (see [Filters](#stage-3-search-filters-filters)). |
 | `cascade` | string/JSON | Cascade configuration for graph traversal (see [Cascade](#stage-4-cascade-cascade)). |
-| `transform` | string | Version resolution strategy: `"resourceversions"` or `"extensional"` (see [Transforms](#transforms)). |
+| `transform` | string | Version resolution strategy: `"resourceversions"` or `"extensional"` (see [Transforms](#stage-5-transforms-transforms)). |
 | `display` | string | Overrides the default display name for a concept (only with `code`). |
 
 ## Evaluation Pipeline
