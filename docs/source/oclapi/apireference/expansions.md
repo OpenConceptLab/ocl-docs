@@ -10,7 +10,7 @@ For the full end-to-end evaluation pipeline — how references are resolved and 
 
 ### Version locking
 
-An expansion keeps every unversioned reference to the same source or value set on one version: the first unversioned reference sets the version, and later ones use the same one, even after that version is retired or a newer release comes out. References that name a source version, and the `system-version` parameter, take precedence. [Version Locking](collectionReferenceEvaluation.md#version-locking) has the full rules, including what a rebuild does, when a lock carries over to references added later, how a new collection version is built, and how to check expansions built before version locking.
+An expansion keeps every unversioned reference to the same source or value set on one version: the first unversioned reference sets the version, and later ones use the same one, even after that version is retired or a newer release comes out. References that name a source version, and the `system-version` parameter, take precedence. Version Locking in [Collection Reference Evaluation Logic](collectionReferenceEvaluation.md) has the full rules, including what a rebuild does, when a lock carries over to references added later, how a new collection version is built, and how to check expansions built before version locking.
 
 The list of supported expansion parameters are listed below, along with their current development status in OCL.
 
@@ -287,7 +287,7 @@ Status: 200 OK
 }
 ```
 
-The repository version lists show the source and collection versions the expansion used: `explicit_*` for references that name a version, `evaluated_*` for unversioned references. Each entry is a source or collection version summary (shortened above). `unresolved_repo_versions` lists repositories OCL couldn't resolve. See [Version Locking](collectionReferenceEvaluation.md) for how OCL fills these lists.
+The repository version lists show the source and collection versions the expansion used: `explicit_*` for references that name a version, `evaluated_*` for unversioned references. Each entry is a source or collection version summary (shortened above). `unresolved_repo_versions` lists repositories OCL couldn't resolve, and references pinned to a concept or mapping version that no version holds. See [Version Locking](collectionReferenceEvaluation.md) for how OCL fills these lists.
 
 ## Rebuild an expansion
 ```
