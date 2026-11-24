@@ -120,7 +120,7 @@ Each filter in the array must be a JSON object with three string fields:
 **Filter evaluation:**
 1. An Elasticsearch search is built from the filter criteria.
 2. The search is intersected with the base queryset (processed in batches of 500 to respect Elasticsearch clause limits).
-3. If version is specified or transform is set, the versioned resources are returned directly. Otherwise, the HEAD resources for the matching versioned_object_ids are returned.
+3. The resources found in the searched source version are returned as they are, so a reference resolved to a release adds that release's concept and mapping versions. Under HEAD these are the HEAD resources.
 
 ### Stage 4: Cascade {#cascade}
 
@@ -210,16 +210,22 @@ This prevents the same logical concept from appearing multiple times when refere
 
 ## Version Locking
 
-An expansion keeps every unversioned reference to the same source on one source version. This is **version locking**: the first unversioned reference to a source sets the version, and later unversioned references to that source use the same version instead of resolving on their own. Without it, references added at different times could bring in resources from different releases of the same source.
+An expansion keeps every unversioned reference to the same repository on one version. This is **version locking**: the first unversioned reference to a source or value set sets the version, and later unversioned references to it use the same version instead of resolving on their own. Without it, references added at different times could bring in resources from different releases of the same source.
 
-Version locking applies to source versions, the `system` of a reference. Collection versions named in `valueset` aren't locked: OCL resolves each `valueset` URL on its own.
+Version locking applies to source versions, the `system` of a reference, and to value-set collection versions, the `valueset` URLs that don't name a version. Changing the version an expansion is locked to takes a rebuild: retiring a release, or publishing a new one, doesn't move the lock.
 
 ### How OCL picks a source version
 
 For each reference with a `system`, OCL picks the source version as follows.
 
 1. **A reference that names a source version** (a `version`, or a URL such as `/orgs/MyOrg/sources/MySource/v1/concepts/123/`) uses that version, even if the expansion is locked to another one. A reference pinned to `HEAD` counts. OCL lists the version in `explicit_source_versions`. These references don't lock the source: unversioned references to it still follow rule 3.
-2. **A reference pinned to a resource version (deprecated)** with no source version, such as `/orgs/MyOrg/sources/MySource/concepts/123/456/`, uses the source's `$resolveReference` default: its latest released version, or HEAD if it has none. Neither the lock nor the `system-version` parameter applies, and OCL lists the version in `explicit_source_versions`. If that source version doesn't contain the pinned resource version, the reference adds nothing to the expansion. Replace these references with references that name a source version.
+2. **A reference pinned to a resource version (deprecated)** with no source version, such as `/orgs/MyOrg/sources/MySource/concepts/123/456/`, uses a source version that holds the pinned resource version. Of the source's active versions that hold it, OCL takes the first of:
+   1. a version the expansion is locked to;
+   2. the newest release that isn't retired;
+   3. HEAD;
+   4. the newest of the rest, retired or unreleased.
+
+   The `system-version` parameter doesn't apply to these references, and OCL lists the version in `explicit_source_versions`. If no version holds the pinned resource version, OCL keeps the members the reference already had, lists the reference in `unresolved_repo_versions` with type `reference.resource_version`, and FHIR `$expand` of that expansion returns `422`. Replace these references with references that name a source version.
 3. **An unversioned reference** (no source version and no resource version) uses the first of:
    1. the version of this source named in the expansion's `system-version` parameter;
    2. the version the expansion has already evaluated for this source, its **lock** (see [When a lock carries over](#when-a-lock-carries-over));
@@ -227,28 +233,41 @@ For each reference with a `system`, OCL picks the source version as follows.
 
    OCL lists the version in `evaluated_source_versions`.
 
+A `valueset` URL that names a version (`url|v1` or `.../collections/MyValueSet/v1/`) uses that version, listed in `explicit_collection_versions`. One that doesn't uses the expansion's lock for that value set, else its latest release, and is listed in `evaluated_collection_versions`. `system-version` doesn't reach value sets.
+
 Some details:
 - OCL compares sources by their URL without the version, so a canonical URL and a relative URL for the same source share one lock.
 - Exclude references follow the same rules as include references.
 - OCL resolves each `system-version` entry with `$resolveReference` in the namespace of the collection's owner, as it resolves the collection's references. With URL registries in use, a canonical URL is looked up in the owner's URL registry, then among the owner's repositories, then in the global URL registry. Otherwise OCL looks for a canonical URL in every namespace. An entry that doesn't resolve is listed in `unresolved_repo_versions` with type `expansion.parameters.system-version`, and references to that source skip step 1.
 - `system-version` may name only one version of a source, as in FHIR's `$expand`. Creating an expansion whose `system-version` names two different versions of one source fails with `400 Bad Request`, and no expansion is created. A collection whose own references name both versions is still valid: each of those references uses the version it names (rule 1).
+- An unversioned filter or search reference (see [Search Filters](#filters)) searches the source version it resolved to and adds the concept and mapping versions it found there, not their HEAD versions. Under HEAD the two are the same.
 
 ### When a lock carries over
 
 OCL looks for a lock in two places:
-- **In the same evaluation run** (creating an expansion, rebuilding one, or one request that adds references), the version picked for the first unversioned reference to a source is used for every later unversioned reference to it. Any version counts, including HEAD.
-- **From earlier runs**, OCL reads the expansion's `evaluated_source_versions` and uses the most recently created version of the source that is released, active and not retired. So a lock doesn't carry over to references added later if it is on HEAD (the source had no release when the first reference was added), or on a release since retired, deactivated or marked as not released.
+- **In the same evaluation run** (creating an expansion, rebuilding one, or one request that adds references), the version picked for the first unversioned reference to a repository is used for every later unversioned reference to it. Any version counts, including HEAD.
+- **From earlier runs**, OCL reads the default expansion's `evaluated_source_versions` and `evaluated_collection_versions` and uses the most recently recorded version of the repository that is still active. A release, a retired release, an unreleased version and HEAD all count, so a lock on HEAD stays on HEAD after the source's first release, and a lock on a release stays there after the release is retired. Only a deactivated version is skipped.
 
-The new reference then gets the `$resolveReference` default, normally the source's latest release. If that differs from the old lock, the expansion lists both versions of the source in `evaluated_source_versions`, since the old one stays. Rebuild the expansion to put every unversioned reference back on one version.
+To move an expansion to a newer release, rebuild it. In TBv3, "New releases are available" under an expansion on a collection's Versions tab lists the versions with a newer release, and says whether the lock is on HEAD or on a retired release.
+
+**A deleted locked version.** Deleting a repository version removes it from every expansion's lists, so the lock goes with it. OCL records the deleted version on each expansion that was locked to it. The next reference added, or a rebuild, resolves that repository again, normally to its latest release.
 
 ### Creating, rebuilding and adding references
 
-- **Creating an expansion** (`POST .../expansions/`): OCL evaluates every reference with the rules above, starting with no lock.
-- **Rebuilding an expansion** ([re-evaluate](expansions.md), or *Rebuild* in TBv3): OCL clears the expansion, including its lists, and evaluates every reference again. The lock starts over, so unversioned references move to the source's current latest release, or to the `system-version` version. This is how an expansion moves to a new release. To compare first, create a similar expansion and look at it before you rebuild.
-- **Adding references to a collection** updates only the collection version's default expansion. Its other expansions keep their contents until they're rebuilt. What happens in the default expansion depends on its kind:
-  - A **named expansion** (one created with its own mnemonic and set as the default) evaluates the new references, plus the collection's exclude references, with the rules above. New unversioned references follow the lock, where it carries over.
-  - An **auto-expansion** (`autoexpand-HEAD`, which OCL keeps up to date for a collection that auto-expands) doesn't apply the lock to new references. It uses the result OCL stored when it saved each reference (from the reference's own version, or the `$resolveReference` default), yet records the locked version in `evaluated_source_versions`. So after a source's new release, a new unversioned reference brings in resources from the new release while the list shows only the old one. Rebuild the auto-expansion to put every reference on one version.
-- **Creating a collection version** that auto-expands copies HEAD's references, with the results OCL stored for them, into the new version's auto-expansion without evaluating them again. Its `evaluated_source_versions` shows the versions the rules pick at that moment, normally each source's latest release, even where members came from the release a reference resolved to when it was added. Rebuild it to make the two match.
+- **Creating an expansion** (`POST .../expansions/`): OCL evaluates every reference with the rules above, starting with no lock. A new expansion of HEAD has no lock of its own either, so a value set named without a version resolves to its latest release, as a source does.
+- **Rebuilding an expansion** ([re-evaluate](expansions.md#rebuild-an-expansion), or *Rebuild* in TBv3): OCL clears the expansion, including its lists, and evaluates every reference again. The lock starts over, so unversioned references move to the repository's current latest release, or to the `system-version` version. This is how an expansion moves to a new release. To compare first, create a similar expansion and compare the two before you rebuild. One exception: the expansion of a collection version created with `expansion: lock` (see below) keeps the value-set versions it was created with, and its source versions are kept through its `system-version` parameter.
+- **Adding references to a collection** updates only the collection version's default expansion. Its other expansions keep their contents until they're rebuilt. New unversioned references resolve within the default expansion's lock, whatever kind of expansion it is:
+  - A **named expansion** (one created with its own mnemonic and set as the default) evaluates the new references, plus the collection's exclude references, with the rules above.
+  - An **auto-expansion** (`autoexpand-HEAD`, which OCL keeps up to date for a collection that auto-expands) adds the results OCL stored for each new reference, which were resolved under the same lock.
+
+  Whenever the default expansion evaluates a reference (a named expansion on add, or any rebuild), OCL saves the result back to the reference. A reference's stored result, and "Brought into collection by" in TBv3, then match the expansion.
+- **Removing a reference** removes its members and adds back the stored results of the collection's other references. It doesn't resolve them again.
+- **Creating a collection version** (`POST .../collections/:collection/versions/`) copies HEAD's references and builds the new version's expansion with HEAD's expansion parameters. The `expansion` field of the request picks how:
+  - `lock`: OCL adds HEAD's locked source versions to `system-version` and carries over HEAD's value-set locks, so the new version resolves to the versions HEAD's expansion used. TBv3 calls this *Lock repo versions*.
+  - `latest`: OCL evaluates every reference from scratch, so unversioned references use each repository's latest release. TBv3 calls this *Evaluate from scratch*.
+  - `none`: the version has no expansion; you can add one later.
+
+  Without `expansion`, a version that auto-expands gets `lock` if HEAD has a default expansion, else `latest`. With `lock` or `latest`, OCL evaluates every reference again: it doesn't copy HEAD's expansion. HEAD concepts and mappings in the new version become their latest concept and mapping versions.
 
 ### Repository version lists
 
@@ -260,7 +279,7 @@ The new reference then gets the `$resolveReference` default, normally the source
 | `evaluated_source_versions` | Source versions OCL picked for unversioned references (see [When a lock carries over](#when-a-lock-carries-over)). |
 | `explicit_collection_versions` | Collection versions named by `valueset` URLs that include a version (`url|v1` or `.../collections/MyValueSet/v1/`). |
 | `evaluated_collection_versions` | Collection versions resolved for `valueset` URLs without a version. |
-| `unresolved_repo_versions` | Repositories OCL couldn't resolve, each with a `url` and a `type`: `reference.system`, `reference.valueset` or `expansion.parameters.system-version`. It holds the entries from the latest evaluation that had any, and a rebuild clears it. |
+| `unresolved_repo_versions` | Repositories OCL couldn't resolve, each with a `url` and a `type`: `reference.system`, `reference.valueset`, `reference.resource_version` (a deprecated resource-version reference no version holds) or `expansion.parameters.system-version`. It holds the entries from the latest evaluation that had any, and a rebuild clears it. |
 
 A version appears in both source lists when some references name it and unversioned references resolve to it as well. For example, if one reference pins `v2` and an unversioned reference resolves to the latest release, also `v2`, then `v2` is in `explicit_source_versions` and `evaluated_source_versions`.
 
@@ -285,7 +304,7 @@ Before oclapi2 2.3.215, a rebuild didn't start over either: it kept the existing
 - a source with more than one version across the two lists, beyond what its version-pinned references explain;
 - both lists empty in an expansion that has members, which means it was built before OCL recorded repository versions at all and hasn't been rebuilt since.
 
-The lists can't show the auto-expansion case described above, where members come from a newer release than the one listed. If references were added to an auto-expansion after a source's new release, rebuild it.
+The lists also can't show one older case. Before auto-expansions applied the lock to added references, an unversioned reference added after a source's new release brought in resources from that release while the list showed only the old one. Likewise, a collection version created before OCL evaluated its references again took its members from HEAD's stored results. If either could apply, rebuild the expansion.
 
 **How to fix.** Rebuild the expansion (see above). To stay on an older release instead, create an expansion whose `system-version` names that release, or pin the references to it.
 

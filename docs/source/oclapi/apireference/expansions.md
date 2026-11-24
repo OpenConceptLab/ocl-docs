@@ -10,7 +10,7 @@ For the full end-to-end evaluation pipeline — how references are resolved and 
 
 ### Version locking
 
-An expansion keeps every unversioned reference to the same source on one source version: the first unversioned reference to a source sets the version, and later ones use the same one. References that name a source version, and the `system-version` parameter, take precedence. [Version Locking](collectionReferenceEvaluation.md) has the full rules, including what a rebuild does, when a lock carries over to references added later, and how to check expansions built before version locking.
+An expansion keeps every unversioned reference to the same source or value set on one version: the first unversioned reference sets the version, and later ones use the same one, even after that version is retired or a newer release comes out. References that name a source version, and the `system-version` parameter, take precedence. [Version Locking](collectionReferenceEvaluation.md#version-locking) has the full rules, including what a rebuild does, when a lock carries over to references added later, how a new collection version is built, and how to check expansions built before version locking.
 
 The list of supported expansion parameters are listed below, along with their current development status in OCL.
 
@@ -295,7 +295,11 @@ POST /orgs/:org/collections/:collection/:collectionVersion/expansions/:expansion
 POST /users/:user/collections/:collection/:collectionVersion/expansions/:expansionID/re-evaluate/
 POST /user/collections/:collection/:collectionVersion/expansions/:expansionID/re-evaluate/
 ```
-Clears the expansion's members, its repository version lists and `unresolved_repo_versions`, then evaluates every reference again with the expansion's parameters. The version lock starts over, so references that don't name a version move to the latest release of their source, or to the version the `system-version` parameter names. Only the collection's owner, members of its owning organization and staff can rebuild an expansion. TBv3 calls this *Rebuild*.
+Clears the expansion's members, its repository version lists and `unresolved_repo_versions`, then evaluates every reference again with the expansion's parameters. The version lock starts over, so references that don't name a version move to the latest release of their source or value set, or to the version the `system-version` parameter names. This is how an expansion moves off a lock on HEAD or on a retired release. Only the collection's owner, members of its owning organization and staff can rebuild an expansion. TBv3 calls this *Rebuild*.
+
+The expansion of a collection version created with `expansion: lock` is the exception: a rebuild keeps the value-set versions it was created with, and its source versions are kept through its `system-version` parameter. If a version that parameter names has since been deleted, the entry is listed in `unresolved_repo_versions` and references to that source resolve to its latest release.
+
+A rebuild saves each reference's new result back to the reference when the expansion is its collection version's default. To see what a rebuild would change, create a similar expansion with the same parameters and compare the two first; TBv3 offers this before *Rebuild*.
 
 ### Response
 * `204 No Content` - the rebuild finished within the request
