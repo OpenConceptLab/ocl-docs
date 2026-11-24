@@ -303,21 +303,21 @@ OCL checks whether a collection version's default expansion resolved each reposi
 |---|---|
 | `healthy` | Every unversioned reference to a repository resolves to one released version, every member is in the version its reference resolved to, and none of the reasons below apply. |
 | `head_resolved` | Consistent, but at least one repository resolves to HEAD, which can still change. They are listed in `head_resolved_repositories`. |
-| `unhealthy` | At least one reason below applies. |
-| `empty` | The expansion has no members. |
+| `unhealthy` | It has members, and at least one reason below applies. |
+| `empty` | The expansion has no members, whatever else applies. |
 
 `health.reasons` lists each reason that applies, with a `count`:
 
 | Code | What it counts |
 |---|---|
 | `inconsistent_resolution` | Repositories whose unversioned references took members from versions with no single version in common (`repositories`). |
-| `duplicate_repo_versions` | Repositories recorded at more than one version by unversioned references (`repositories`). |
-| `locked_version_deleted` | Locked repository versions deleted since the expansion was built (see [When a lock carries over](#when-a-lock-carries-over)). `versions` names those the collection's owner can view. |
-| `resource_versioned_references` | Deprecated resource-version references. |
+| `duplicate_repo_versions` | Repositories recorded at more than one version, at least one of them by an unversioned reference (`repositories`), for example a reference pinning `v1` and an unversioned reference resolving to `v2`. |
+| `locked_version_deleted` | Locked repository versions deleted since the expansion was built, including those a version created with `expansion: lock` inherited from HEAD's expansion (see [When a lock carries over](#when-a-lock-carries-over)). `versions` names those the collection's owner can view. |
+| `resource_versioned_references` | References pinned to a concept or mapping version, with or without a source version. |
 | `unresolved_references` | Entries in `unresolved_repo_versions` from references. |
 | `value_set_without_expansion` | References to a value set version that has no expansion. |
 | `system_version_unresolved` | `system-version` entries that didn't resolve. |
-| `unreleased_versions` | Members from a repository version that was never released. |
+| `unreleased_versions` | Members from a repository version that isn't released. |
 | `interim_resource_versions` | Members that are replaced concept or mapping versions, in neither a release nor HEAD. |
 | `version_mismatches` | Members held by another version than the one their reference resolved to. `head_concept` and `head_mapping` count the HEAD concepts and mappings among them. |
 | `ambiguous_members` | Members that different references judge differently. |
@@ -325,7 +325,7 @@ OCL checks whether a collection version's default expansion resolved each reposi
 
 `health.members` counts the concepts and mappings by class, and `multiple_named_versions` lists repositories that references name at more than one version on purpose; that alone doesn't make an expansion unhealthy.
 
-`health_is_current` is `true` when the stored health matches the expansion's members. It is `false` when something changed and a recheck is queued, and `null` when it's out of date and nothing is queued; the nightly recheck picks those up. `health` is `null` until it has been computed. OCL computes health only for a collection version's default expansion. TBv3 shows the state as a badge on the collection's Versions tab, with the reasons in the expansion's details.
+`health_is_current` is `true` when the stored health matches the expansion's members. It is `false` when something changed and a recheck is queued, and `null` when it's out of date and nothing is queued; the nightly recheck picks those up. `health` is `null` until it has been computed. OCL computes health only for a collection version's default expansion. With health on, `?includeHealth=true` on an expansion's concepts or mappings list adds each member's `health`: its `class` and the `references` that judged it. TBv3 shows the state as a badge on the collection's Versions tab, with the reasons in the expansion's details.
 
 ### Expansions built before version locking
 
