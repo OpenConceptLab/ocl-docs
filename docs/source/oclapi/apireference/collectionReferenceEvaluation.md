@@ -301,7 +301,7 @@ OCL checks whether a collection version's default expansion resolved each reposi
 
 | State | Meaning |
 |---|---|
-| `healthy` | Every unversioned reference to a repository resolves to one released version, every member is in the version its reference resolved to, and none of the reasons below apply. |
+| `healthy` | It has members, none of the reasons below apply, and no repository resolves to HEAD. |
 | `head_resolved` | Consistent, but at least one repository resolves to HEAD, which can still change. They are listed in `head_resolved_repositories`. |
 | `unhealthy` | It has members, and at least one reason below applies. |
 | `empty` | The expansion has no members, whatever else applies. |
