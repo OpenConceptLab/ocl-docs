@@ -75,6 +75,8 @@ To ensure that the content loads into OCL as expected, there are several validat
     - Checks for duplicate concept or mapping IDs in the export file
     - Compares concept attributes to ensure these attributes are similar between the import and the export files
 
+See :doc:`verified-repositories` for the verification process used for eligible reference repository versions and what the Verified mark means.
+
 When will content be published in OCL for public use?
 -------------------------------------------------------
 
