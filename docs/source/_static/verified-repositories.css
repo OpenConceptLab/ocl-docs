@@ -1,0 +1,61 @@
+/* Verified Repositories page (OpenConceptLab/ocl_issues#3049). Scoped to classes the page sets itself. */
+
+/* The Verified chip, in the colors of the TBv3 chip (oclweb3 verifiedColors.js) */
+.rst-content .verified-chip-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 24px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid #e1e4e5;
+}
+
+.rst-content .verified-chip-row p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 21px;
+}
+
+.rst-content .verified-chip {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px 0 9px;
+    border: 1px solid #2e7d32;
+    border-radius: 8px;
+    background: #edf7ee;
+    color: #1b5e20;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rst-content .verified-chip svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* The theme keeps table cells on one line; this table wraps its text and bolds its first column */
+.wy-table-responsive table.verified-table td,
+.wy-table-responsive table.verified-table th {
+    white-space: normal;
+}
+
+.rst-content table.verified-table td:first-child {
+    font-weight: 700;
+}
+
+/* A round green check before each verification check's heading */
+.rst-content .verified-check > h3::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    vertical-align: -3px;
+    background: url(verified-check.svg) no-repeat center / contain;
+}
